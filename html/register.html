@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="../css/bootstrap-old.css" rel="stylesheet">
+<head>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+<style>
+.form-control { margin-bottom: 10px; }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+            <form class="form" role="form" id="reg-form">
+            <div class="row">
+                <div class="col-xs-6 col-md-6">
+                    <input class="form-control" name="firstname" placeholder="First Name" type="text"
+                        required autofocus />
+                </div>
+                <div class="col-xs-6 col-md-6">
+                    <input class="form-control" name="lastname" placeholder="Last Name" type="text" required autofocus />
+                </div>
+            </div>
+            <input class="form-control" name="email" placeholder="Your Email" type="email" required autofocus />
+            <input class="form-control" name="reenteremail" placeholder="Re-enter Email" type="email" required autofocus />
+            <input class="form-control" name="password" placeholder="New Password" type="password" required autofocus />
+            <label for="">
+                Birth Date</label>
+            <div class="row">
+            <div class="col-xs-6 col-md-6">
+                    <input class="form-control" name="birthdate" type="date"
+                        required autofocus />
+                </div>
+				 <label class="radio-inline">
+                <input type="radio" name="sex" id="male" value="male" required autofocus />
+                Male
+            </label>
+           <label class="radio-inline">
+                <input type="radio" name="sex" id="female" value="female" required autofocus />
+                Female
+            </label>
+            
+			</div>
+            
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">
+                Sign up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
