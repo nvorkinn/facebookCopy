@@ -1,9 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<link href="../css/bootstrap-old.css" rel="stylesheet">
 <head>
+<link href="../css/bootstrap-old.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script>
+	$( document ).ready(function() {
+	
+	var elem = document.getElementById("reenteremail");
+	elem.addEventListener("blur", verifyEmail);
+	
+	
+	function verifyEmail(input) {
+		input = input.srcElement;
+		if (input.value != document.getElementById('email').value) {
+		// the provided value doesn’t match the primary email address
+		input.setCustomValidity('The two email addresses must match.');
+		} else {
+		// input is valid -- reset the error message
+		input.setCustomValidity('');
+  }
+  	  
+}
+	
+      $(function () {
+        $('form').on('submit', function (e) {
+          $.ajax({
+            type: 'post',
+            url: '../php/register.php',
+            data: $('form').serialize(),
+            success: function () {
+              alert('form was submitted');
+            }
+          });
+          e.preventDefault();
+        });
+      });
+	  });
+
+    </script>
 </head>
+
 <body>
 
 <style>
@@ -13,7 +49,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
-            <form class="form" role="form" id="reg-form">
+            <form>
             <div class="row">
                 <div class="col-xs-6 col-md-6">
                     <input class="form-control" name="firstname" placeholder="First Name" type="text"
@@ -23,9 +59,9 @@
                     <input class="form-control" name="lastname" placeholder="Last Name" type="text" required autofocus />
                 </div>
             </div>
-            <input class="form-control" name="email" placeholder="Your Email" type="email" required autofocus />
-            <input class="form-control" name="reenteremail" placeholder="Re-enter Email" type="email" required autofocus />
-            <input class="form-control" name="password" placeholder="New Password" type="password" required autofocus />
+            <input class="form-control" name="email" id="email" placeholder="Your Email" type="email" required autofocus />
+            <input class="form-control" name="reenteremail" id="reenteremail" placeholder="Re-enter Email" type="email" required autofocus />
+            <input class="form-control" name="password" placeholder="New Password" type="password" id="password" pattern="^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$"  required autofocus />
             <label for="">
                 Birth Date</label>
             <div class="row">
@@ -52,8 +88,5 @@
     </div>
 </div>
 
-<script>
-
-</script>
 </body>
 </html>
