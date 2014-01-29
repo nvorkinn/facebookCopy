@@ -48,3 +48,13 @@
 		-webkit-border-radius: 5px;
 	 }
 	 
+	 #login-error-bar{
+		background-color:#428BCA;
+		height:25px;
+		text-align:center;
+		color:white;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-size:14px;
+		
+	}
+	 
