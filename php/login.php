@@ -1,5 +1,5 @@
 <?php
-include '../includes/php-includes.php';
+require '../includes/php-includes.php';
 
 $data = array();
 $data['exists'] = false;
