@@ -1,14 +1,9 @@
-<?php 
+<?PHP 
 session_start();
 
-$link = mysql_connect('localhost', 'root', '');
-if (!$link) {
-    die('Not connected : ' . mysql_error());
-}
-
-$db_selected = mysql_select_db('facebookcopy', $link);
-if (!$db_selected) {
-    die ('Can\'t use database : ' . mysql_error());
+$mysqli = new mysqli('localhost', 'root', '', 'facebookcopy');
+if($mysqli->connect_errno > 0){
+    die('Unable to connect to database [' . $mysqli->connect_error . ']');
 }
 
 ?>

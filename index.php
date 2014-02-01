@@ -14,7 +14,7 @@
   <body>
     <div class="topbar">
 	  <div class="fill">
-	  <div id="login-error-bar"><div style="padding-top:5px;">Oops.. it looks like you have entered incorrect login details try: <a href=""><u>Forgotten login details</u></a></div></div>
+	  <div id="notif-bar"><div style="padding-top:5px;">Oops.. it looks like you have entered incorrect login details try: <a href=""><u>Forgotten login details</u></a></div></div>
         
         <div class="container">
 		  <a class="brand" href="#">FacebookCopy</a>
@@ -38,22 +38,23 @@
 			<iframe style="padding-top:20px"src="html/register.html" height="330" width="500" frameborder="0" scrolling="no" ></iframe>
           </div>
         </div>
-      </div>
+		<div id="DEBUG"></div>
+      
+	  </div>
 
 	 
       <footer>
         <p>&copy; FacebookCopy 2014</p>
-      </footer>
+		
+		</footer>
 
-	  
-	  
     </div> <!-- /container -->
     </div>
 
 
 	<script>
 	$( document ).ready(function() {
-		 $('#login-error-bar').hide();
+		 $('#notif-bar').hide();
 		 
 		 $(function () {
         $('form').on('submit', function (e) {
@@ -68,7 +69,7 @@
 			  if(response.exists==true){
 				window.location.href = "/home"
 			  }else{
-				 $('#login-error-bar').slideDown(500);
+				 $('#notif-bar').slideDown(500);
 			  }
             }
           });

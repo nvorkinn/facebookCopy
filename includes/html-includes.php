@@ -21,5 +21,3 @@
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 	
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	
-	<div id="DEBUG"></div>

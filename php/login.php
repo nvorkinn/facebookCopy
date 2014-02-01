@@ -4,32 +4,27 @@ require ('../includes/php-includes.php');
 $data = array();
 $data['exists'] = false;
 
+//Extract login details from the form submission
 $email = strip_tags(stripslashes(mysql_real_escape_string($_POST['login-email'])));
 $password = sha1(strip_tags(stripslashes(mysql_real_escape_string($_POST['login-password']))));
 
-$query = "SELECT user.id,user.admin,user.verified,user.profile_id,profile.name,profile.surname FROM user,profile WHERE profile.email='$email' AND profile.password='$password' AND user.profile_id=user.profile_id";
+//Query the database to check if the user exists and to extract further information regarding that user if they do exist
+$query = "SELECT user.id,user.admin,user.verified,user.profile_id,profile.name,profile.surname FROM user,profile WHERE profile.email='$email' AND profile.password='$password' AND user.profile_id=user.profile_id LIMIT 1";
 
-$result = mysql_query($query,$link);
-
-if (!$result) {
-    echo "DB Error, could not query the database\n";
+if ($result = $mysqli->query($query)){
+	if ($result->num_rows == 1){
+		$row = $result->fetch_object();
+		$data=$row;
+		$data->exists = true;
+		$_SESSION["user_id"] = $row->id;
+		$_SESSION["admin"] = $row->admin;
+	}
+}else{
+	echo "DB Error, could not query the database\n";
     echo 'MySQL Error: ' . mysql_error();
-    exit;
+	exit;
 }
 
-$row = mysql_fetch_row($result);
-
-if(mysql_num_rows($result) == 1) {
-    $data = $row;
-	$data['exists'] = true;
-	
-	$_SESSION["user_id"] = $row[0];
-	$_SESSION["admin"] = $row[1];
-	
-}else if(mysql_num_rows($result)>1){
-	echo 'Error: found more than one user, this should never happen!!!!!';
-    exit;
-}
-
+//Encode the results from the SQL as JSON and return it to the frontend for further processing	
 echo json_encode($data);
 ?>
