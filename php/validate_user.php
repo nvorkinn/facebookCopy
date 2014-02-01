@@ -1,5 +1,5 @@
 <?php
-include '../includes/php-includes.php';
+require ('../includes/php-includes.php');
 
 // Ensure both email and hash are present in URL
 if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){

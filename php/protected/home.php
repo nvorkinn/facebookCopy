@@ -20,13 +20,15 @@
         
         <div class="container">
 		  <a class="brand" href="#">FacebookCopy</a>
+		  
     	</div>
       </div>
 	  
     <div class="container">
 
     <div class="content-white">
-        
+        content here
+		
 	</div>
 	 
       <footer>
