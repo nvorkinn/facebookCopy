@@ -75,7 +75,7 @@ Password: '.$password.'
 Please click the link below to activate the account:
 
 http://localhost/php/validate_user.php?email='.$email.'&hash='.$hash.'
-		
+			
 ';
 
 $headers = 'From: Me <nikolai.vorkinn.10@ucl.ac.uk>';
