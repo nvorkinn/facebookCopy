@@ -1,4 +1,6 @@
 <?php 
+session_start();
+
 $link = mysql_connect('localhost', 'root', '');
 if (!$link) {
     die('Not connected : ' . mysql_error());

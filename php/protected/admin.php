@@ -3,12 +3,11 @@
 <head>
 	<?php 
 		session_start();
-		require("includes/html-includes.php"); 
-		if(isset($_SESSION['user_id'])){
-			header("location:/home");
+		require("/../../includes/html-includes.php"); 
+		if(!isset($_SESSION['user_id'])||$_SESSION['admin']!=1){
+			header("location:/login");
 		}
 	?>
-	
 </head>
 
   <body>
@@ -18,28 +17,14 @@
         
         <div class="container">
 		  <a class="brand" href="#">FacebookCopy</a>
-          <form class="pull-right">
-            <input class="input-medium" type="email" placeholder="Email" name="login-email" required autofocus>
-            <input class="input-medium" type="password" placeholder="Password" name="login-password" required autofocus>
-            <button class="btn rounded" type="submit">Log in</button>
-		</div>
+    	</div>
       </div>
 	  
     <div class="container">
 
-      <div class="content">
-        <div class="row" style="padding-top:20px">
-          <div class="span10">
-            <h2 style="font-weight:bold;color:#0E385F">FacebookCopy helps you connect and share with the people in your life.</h2>
-			<img style="padding-top:20px" src="images/home-graph.png" alt="graph">
-          </div>
-          <div class="span4">
-            <h3 style="font-weight:bold;font-size:30px;">Create an account</h3>
-			<iframe style="padding-top:20px"src="html/register.html" height="330" width="500" frameborder="0" scrolling="no" ></iframe>
-          </div>
-        </div>
-      </div>
-
+    <div class="content-white">
+        
+	</div>
 	 
       <footer>
         <p>&copy; FacebookCopy 2014</p>
