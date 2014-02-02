@@ -11,38 +11,21 @@
 			header("location:/admin");
 		}
 	?>
-	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
 <script>
 	$(function ()
 		{ $("#friends-notif").popover({title: 'Friend Requests', content: "It's so simple to create a tooltop for my website!",placement:'bottom'});
 	});
 </script>
 
-<script>
-	$( document ).ready(function() {
-		$("#logo" ).click(function() {
-			$.ajax({
-            type: 'post',
-			data: {'action':'newActivity','to_user_id':'2','type':'0'},
-            url: '../php/ACTION.php',
-			success: function (response) {
-				alert(response);
-            }
-          });
-		});
-	});
-</script>
-	
 </head>
 
   <body>
     <div class="topbar">
 	  <div class="fill">
         <div class="container">
-			<a class="brand" id="logo" href="#" >FacebookCopy</a>
+			<a class="brand" id="logo" href="#">FacebookCopy</a>
 			
-			<a class="brand" id="friends-notif" href="#" style="margin-left:5px;" ><span class="glyphicon glyphicon-user" style="" ></span></a>
+			<a class="brand" id="friends-notif" href="#" style="margin-left:5px;" ><span class="glyphicon glyphicon-user"><span class="badge badge-important">102</span></span></a>
 			
     	</div>
       </div>
@@ -57,7 +40,8 @@
         <p>&copy; FacebookCopy 2014</p>
       </footer>
 
-	 	  
+	  
+	  
     </div> <!-- /container -->
     </div>
 

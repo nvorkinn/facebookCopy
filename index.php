@@ -22,6 +22,7 @@
             <input class="input-medium" type="email" placeholder="Email" name="login-email" required autofocus>
             <input class="input-medium" type="password" placeholder="Password" name="login-password" required autofocus>
             <button class="btn rounded" type="submit">Log in</button>
+			</form>
 		</div>
       </div>
 	  
