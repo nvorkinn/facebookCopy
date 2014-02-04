@@ -17,7 +17,7 @@
 			$this->mysqli = $mysqli;
 			
 			// Check if the circle exists from before
-			$exists_circle = "SELECT name, owner FROM circle WHERE name='$this->circle_name' AND owner_user_id = $this->owner_user_id";
+			$exists_circle = "SELECT name, owner_user_id FROM circle WHERE name='$this->circle_name' AND owner_user_id = $this->owner_user_id";
 			if ($result = $this->mysqli->query($exists_circle)){
 				if ($result->num_rows == 0){
 					
