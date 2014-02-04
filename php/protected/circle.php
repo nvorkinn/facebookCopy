@@ -20,6 +20,7 @@
 			$exists_circle = "SELECT name, owner FROM circle WHERE name='$this->circle_name' AND owner_user_id = $this->owner_user_id";
 			if ($result = $this->mysqli->query($exists_circle)){
 				if ($result->num_rows == 0){
+					
 					// If circle does not exist, create new circle entry
 					$insert = "INSERT INTO circle (owner_user_id, name) VALUES ($this->owner_user_id, '$this->circle_name')";
 					if (!$this->mysqli->query($insert)) {
@@ -96,15 +97,6 @@
 		
 		function delete() {
 			
-			// To delete a circle first delete its members
-			$delete_members = "DELETE FROM user_circle WHERE circle_id = $this->id";
-			if (!$this->mysqli->query($delete_members)) {
-				echo "Could not delete members from circle. Cannot delete circle\n";
-				echo "MySQL Error: " . mysql_error();
-				exit;
-			}
-			
-			// Then delete the circle itself
 			$delete_circle = "DELETE FROM circle WHERE id = $this->id";
 			if (!$this->mysqli->query($delete_circle)) {
 				echo "Could not delete circle from database\n";
