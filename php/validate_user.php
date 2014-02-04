@@ -5,21 +5,21 @@
 	if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){
 	
 		// Get data off URL
-		$email = mysqli_escape_string($link, $_GET['email']);
-		$hash = mysqli_escape_string($link, $_GET['hash']);
+		$email = mysqli_escape_string($mysqli, $_GET['email']);
+		$hash = mysqli_escape_string($mysqli, $_GET['hash']);
 	
 		// Search for un-verified entry
-		$search = mysqli_query($link, "SELECT email, hash, verified FROM user u, profile p
+		$search = mysqli_query($mysqli, "SELECT email, hash, verified FROM user u, profile p
 					WHERE email='".$email."'AND hash='".$hash."' AND verified=0
-					AND p.id = u.profile_id") or die(mysql_error($link));
+					AND p.id = u.profile_id") or die(mysql_error($mysqli));
 		$match = mysqli_num_rows($search);
 	
 		// If there was a match, set it to active
 		if ($match > 0) {
 		
-			mysqli_query($link, "UPDATE user u, profile p SET verified=1
+			mysqli_query($mysqli, "UPDATE user u, profile p SET verified=1
 			WHERE email='".$email."' AND hash='".$hash."'AND verified=0
-			AND p.id = u.profile_id") or die(mysqli_error($link));
+			AND p.id = u.profile_id") or die(mysqli_error($mysqli));
 		}
 		else {
 		

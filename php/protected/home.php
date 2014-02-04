@@ -3,7 +3,7 @@
 <head>
 	<?php 
 		session_start();
-		require("/../../includes/html-includes.php"); 
+		require("../../includes/html-includes.php"); 
 		if(!isset($_SESSION['user_id'])){
 			header("location:/login");
 		}
