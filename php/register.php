@@ -1,5 +1,6 @@
 <?PHP
-	require ('../includes/php-includes.php');
+
+	require_once ($_SERVER['DOCUMENT_ROOT'].'/includes/php-includes.php');
 
 	// Adding privacy_setting entry. This is required to make a profile
 	$privacy_setting_insert = "INSERT INTO privacy_setting (visible_to, name) VALUES (99, 'somename')";

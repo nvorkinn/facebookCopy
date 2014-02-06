@@ -1,6 +1,7 @@
 <?php
-require_once ('Activity.php');
-require_once ('protected/circle.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/includes/php-includes.php');
+require_once ('protected/Activity.php');
+require_once ('protected/Circle.php');
 
 $action = $_POST['action']; 
 

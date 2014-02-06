@@ -1,6 +1,5 @@
 <?PHP
 	
-	require ('../../includes/php-includes.php');
 	class Circle {
 	
 		var $id;
