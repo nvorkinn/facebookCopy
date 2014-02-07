@@ -1,30 +1,32 @@
-<?php
-require_once ($_SERVER['DOCUMENT_ROOT'].'/includes/php-includes.php');
+<?PHP
 
-$data = array();
-$data['exists'] = false;
+    require_once($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
 
-//Extract login details from the form submission
-$email = strip_tags(stripslashes(mysql_real_escape_string($_POST['login-email'])));
-$password = sha1(strip_tags(stripslashes(mysql_real_escape_string($_POST['login-password']))));
+    $data = array();
+    $data["exists"] = false;
 
-//Query the database to check if the user exists and to extract further information regarding that user if they do exist
-$query = "SELECT user.id,user.admin,user.verified,user.profile_id,profile.name,profile.surname FROM user,profile WHERE profile.email='$email' AND profile.password='$password' AND user.profile_id=profile.id LIMIT 1";
+    //Extract login details from the form submission
+    $email = strip_tags(stripslashes(mysql_real_escape_string($_POST["login-email"])));
+    $password = sha1(strip_tags(stripslashes(mysql_real_escape_string($_POST["login-password"]))));
 
-if ($result = $mysqli->query($query)){
-	if ($result->num_rows == 1){
-		$row = $result->fetch_object();
-		$data=$row;
-		$data->exists = true;
-		$_SESSION["user_id"] = $row->id;
-		$_SESSION["admin"] = $row->admin;
-	}
-}else{
-	echo "DB Error, could not query the database\n";
-    echo 'MySQL Error: ' . mysql_error();
-	exit;
-}
+    //Query the database to check if the user exists and to extract further information regarding that user if they do exist
+    $query = "SELECT user.id, user.admin, user.verified, user.profile_id, profile.name, profile.surname FROM user, profile WHERE profile.email = '$email' AND profile.password = '$password' AND user.profile_id = profile.id LIMIT 1";
 
-//Encode the results from the SQL as JSON and return it to the frontend for further processing	
-echo json_encode($data);
+    if ($result = $mysqli->query($query)){
+        if ($result->num_rows == 1){
+            $row = $result->fetch_object();
+            $data = $row;
+            $data->exists = true;
+            $_SESSION["user_id"] = $row->id;
+            $_SESSION["admin"] = $row->admin;
+        }
+    }else{
+        echo "DB Error, could not query the database\n";
+        echo "MySQL Error: " . mysql_error();
+        exit;
+    }
+
+    //Encode the results from the SQL as JSON and return it to the frontend for further processing	
+    echo json_encode($data);
+
 ?>

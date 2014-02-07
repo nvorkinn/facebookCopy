@@ -16,7 +16,7 @@
 			$this->mysqli = $mysqli;
 			
 			// Check if the circle exists from before
-			$exists_circle = "SELECT name, owner_user_id FROM circle WHERE name='$this->circle_name' AND owner_user_id = $this->owner_user_id";
+			$exists_circle = "SELECT name, owner_user_id FROM circle WHERE name = '$this->circle_name' AND owner_user_id = $this->owner_user_id";
 			if ($result = $this->mysqli->query($exists_circle)){
 				if ($result->num_rows == 0){
 					
@@ -24,7 +24,7 @@
 					$insert = "INSERT INTO circle (owner_user_id, name) VALUES ($this->owner_user_id, '$this->circle_name')";
 					if (!$this->mysqli->query($insert)) {
 						echo "DB Error, could not create new circle in database\n";
-						echo 'MySQL Error: ' . mysql_error();
+						echo "MySQL Error: " . mysql_error();
 						exit;
 					}
 					
@@ -60,8 +60,7 @@
 					// If user exists, just let us know
 					echo "User already exists in circle";
 				}
-			}
-			else {
+			} else {
 				echo "Could not check if user already exists in circle\n";
 				echo "MySQL Error: " . mysql_error();
 				exit;
