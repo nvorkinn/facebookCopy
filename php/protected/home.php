@@ -6,13 +6,14 @@
     
         <?PHP 
             session_start();
-            require($_SERVER['DOCUMENT_ROOT'].'/includes/html-includes.php'); 
-            require ($_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php');
+            require($_SERVER["DOCUMENT_ROOT"] . "/includes/html-includes.php"); 
+            require ($_SERVER["DOCUMENT_ROOT"] . "/vendor/autoload.php");
 
-            if(!isset($_SESSION['user_id'])){
+            if(!isset($_SESSION["user_id"])){
                 header("location:/login");
             }
-            if(isset($_SESSION['admin'])&&$_SESSION['admin']==1){
+            
+            if(isset($_SESSION["admin"]) && $_SESSION["admin"]==1){
                 header("location:/admin");
             }
         ?>

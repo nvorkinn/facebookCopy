@@ -33,9 +33,9 @@
                     <a class="brand" href="#">FacebookCopy</a>
                     
                     <form class="pull-right">
-                    <input class="input-medium" type="email" placeholder="Email" name="login-email" required autofocus>
-                    <input class="input-medium" type="password" placeholder="Password" name="login-password" required autofocus>
-                    <button class="btn rounded" type="submit">Log in</button>
+                        <input class="input-medium" type="email" placeholder="Email" name="login-email" required autofocus>
+                        <input class="input-medium" type="password" placeholder="Password" name="login-password" required autofocus>
+                        <button class="btn rounded" type="submit">Log in</button>
                     </form>
                     
                 </div>
@@ -86,6 +86,7 @@
                             url: "/php/login.php",
                             data: $("form").serialize(),
                             success: function (response) {
+                                console.log(response);
                                 response = JSON.parse(response);
                                 
                                 if(response.exists == true){
