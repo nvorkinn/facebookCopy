@@ -6,12 +6,12 @@
     $data["exists"] = false;
 
     //Extract login details from the form submission
-    $email = strip_tags(stripslashes(mysql_real_escape_string($_POST["login-email"])));
-    $password = sha1(strip_tags(stripslashes(mysql_real_escape_string($_POST["login-password"]))));
-
+    $email = strip_tags(stripslashes($mysqli->real_escape_string($_POST["login-email"])));
+    $password = sha1(strip_tags(stripslashes($mysqli->real_escape_string($_POST["login-password"]))));
+    
     //Query the database to check if the user exists and to extract further information regarding that user if they do exist
     $query = "SELECT user.id, user.admin, user.verified, user.profile_id, profile.name, profile.surname FROM user, profile WHERE profile.email = '$email' AND profile.password = '$password' AND user.profile_id = profile.id LIMIT 1";
-
+    
     if ($result = $mysqli->query($query)){
         if ($result->num_rows == 1){
             $row = $result->fetch_object();
