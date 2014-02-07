@@ -3,7 +3,9 @@
 <head>
 	<?php 
 		session_start();
-		require("../../includes/html-includes.php"); 
+		require($_SERVER['DOCUMENT_ROOT'].'/includes/html-includes.php'); 
+		require ($_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php');
+
 		if(!isset($_SESSION['user_id'])){
 			header("location:/login");
 		}
@@ -12,22 +14,32 @@
 		}
 	?>
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
-<script>
+	<script src="/js/bootstrap.min.js"></script>
+	
+	<script>
+	
 	$(function ()
 		{ $("#friends-notif").popover({title: 'Friend Requests', content: "It's so simple to create a tooltop for my website!",placement:'bottom'});
 	});
-</script>
+	
+	$( document ).ready(function() {		
+		
+		
+		
 
-<script>
-	$( document ).ready(function() {
+var conn = new WebSocket('ws://localhost:8080');
+
+		var conn = connectToNotifServer();
+		
 		$("#logo" ).click(function() {
 			$.ajax({
             type: 'post',
 			data: {'action':'newActivity','to_user_id':'2','type':'0'},
-            url: '../php/ACTION.php',
+            url: '/php/ACTION.php',
 			success: function (response) {
-				alert(response);
+				if(response==1){
+					conn.send(JSON.stringify({user_id: sessionStorage.getItem("user_id"),target_user_id:2,message:"New friend request"}));
+				}
             }
           });
 		});

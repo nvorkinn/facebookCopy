@@ -16,14 +16,11 @@ class Activity
 	$this->to_user_id=$to_user_id;
 	$this->type=$type;
 	$this->mysqli=$mysqli;
-	}
-	
-	function save(){
-		$this->created_date = date("Y-m-d H:i:s");
+	$this->created_date = date("Y-m-d H:i:s");
 
 		if($this->type==0){
 			$this->makeFriendRequest();
-		}	
+		}
 	}
 	
 	private function makeFriendRequest(){
@@ -34,17 +31,11 @@ class Activity
 					$query="INSERT INTO activity (from_user_id, to_user_id, type, created_date)VALUES ('$this->from_user_id', '$this->to_user_id','$this->type','$this->created_date')";
 					$this->mysqli->query($query);
 					$this->id=$this->mysqli->insert_id;
+					
+					$notif = new Notification($this->id,$this->from_user_id,$this->to_user_id);
+					$notif->save();
 				}
 			}
-	}
-	
-	function notify(){
-		if(isset($this->id)){
-		$notif = new Notification($this->id,$this->to_user_id);
-		$notif->save();
-		$notif->notify();
-		}
-	}
-	
+	}	
 }
 ?>

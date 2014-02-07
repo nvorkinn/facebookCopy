@@ -1,7 +1,4 @@
 <?PHP 
-//Start NotificationServer
-require_once ($_SERVER['DOCUMENT_ROOT'].'/php/protected/NotificationServer.php');
-
 //Start sessions
 session_start();
 

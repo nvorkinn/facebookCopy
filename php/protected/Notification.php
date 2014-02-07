@@ -1,15 +1,18 @@
 <?php
+
 class Notification
 {
 	var $activity_id;
+	var $from_id;
 	var $target_id;
 	var $created_date;
 	var $mysqli;
 	
-	function __construct($activity_id=NULL, $target_id=NULL) 
+	function __construct($activity_id=NULL,$from_id=NULL,$target_id=NULL) 
 	{
 	global $mysqli;
 	$this->activity_id=$activity_id;
+	$this->from_id=$from_id;
 	$this->target_id=$target_id;
 	$this->mysqli=$mysqli;
 	}
@@ -25,9 +28,6 @@ class Notification
 		exit;
 	}
 	$this->id=$this->mysqli->insert_id;
-	}
-	
-	function notify(){
 	}
 	
 }
