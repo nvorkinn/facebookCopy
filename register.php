@@ -6,7 +6,6 @@
     
          <?PHP 
         
-            session_start();
             require("includes/html-includes.php"); 
             require("includes/php-includes.php"); 
             
