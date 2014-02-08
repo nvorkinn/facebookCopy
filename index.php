@@ -1,111 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="bg-black">
 
 
     <head>
     
-        <?PHP 
+         <?PHP 
         
             session_start();
             require("includes/html-includes.php"); 
+            require("includes/php-includes.php"); 
             
             if(isset($_SESSION["user_id"])){
-                header("location:/home");
+                header("location: wall.php");
             }
             
         ?>
-        
+
     </head>
+    
+    
+    <body class="bg-black">
 
-
-    <body>
-
-        <div class="topbar">
+        <div class="form-box" id="login-box">
         
-            <div class="fill">
+            <div class="header">Sign In</div>
             
-                <div id="notif-bar">        
-                    <div style="padding-top:5px;">Oops.. it looks like you have entered incorrect login details try: <a href=""><u>Forgotten login details</u></a></div>
-                </div>
-                
-                <div class="container">
-                
-                    <a class="brand" href="#">FacebookCopy</a>
-                    
-                    <form class="pull-right">
-                        <input class="input-medium" type="email" placeholder="Email" name="login-email" required autofocus>
-                        <input class="input-medium" type="password" placeholder="Password" name="login-password" required autofocus>
-                        <button class="btn rounded" type="submit">Log in</button>
-                    </form>
-                    
-                </div>
-                
-            </div>
+            <form action="#" method="post" id="login-form">
             
-            <div class="container">
-            
-                <div class="content">
-                
-                    <div class="row" style="padding-top:20px">
+                <div class="body bg-gray">
                     
-                        <div class="span10">
-                            <h2 style="font-weight:bold;color:#0E385F">FacebookCopy helps you connect and share with the people in your life.</h2>
-                            <img style="padding-top:20px" src="images/home-graph.png" alt="graph">
-                        </div>
-                        
-                        <div class="span4">
-                            <h3 style="font-weight:bold;font-size:30px;">Create an account</h3>
-                            <iframe style="padding-top:20px"src="html/register.html" height="330" width="500" frameborder="0" scrolling="no" ></iframe>
-                        </div>
-                        
+                    <div class="form-group">
+                        <input type="text" name="login-email" class="form-control" placeholder="Email"/>
                     </div>
-                    <div id="DEBUG"></div>
+                    
+                    <div class="form-group">
+                        <input type="password" name="login-password" class="form-control" placeholder="Password"/>
+                    </div>          
+                    
+                    <div class="form-group">
+                        <input type="checkbox" name="remember_me"/> Remember me
+                    </div>
                     
                 </div>
                 
-                <footer>
-                    <p>&copy; FacebookCopy 2014</p>
-                </footer>
+                <div class="footer">                                                               
+                    <button type="submit" class="btn bg-olive btn-block">Sign me in</button>  
+                    
+                    <p><a href="#">I forgot my password</a></p>
+                    
+                    <a href="register.php" class="text-center">Register a new membership</a>
+                </div>
                 
-            </div><!-- /container -->
+            </form>
+            
+            <script>
+                            
+                $( document ).ready(function() {
+                
+                    $(function () {
+                    
+                        $("#login-form").on("submit", function (e) {
+                        
+                            $.ajax({
+                                type: "POST",
+                                url: "tools/login.php",
+                                data: $("#login-form").serialize(),
+                                success: function (response) {
+                                    console.log(response);
+                                    response = JSON.parse(response);
+
+                                    if(response.exists == true) {
+                                        sessionStorage.setItem("user_id", response.id);
+                                        window.location = "wall.php";
+                                    }
+                                }
+                            });
+                            
+                            e.preventDefault();
+                        });
+                        
+                    });
+                    
+                });
+                
+            </script>
             
         </div>
 
-        <script>
-        
-            $( document ).ready(function() {
-                $("#notif-bar").hide();
 
-                $(function () {
-                
-                    $("form").on("submit", function (e) {
-
-                        $("#login-error-bar").hide();
-                        $.ajax({
-                            type: "POST",
-                            url: "/php/login.php",
-                            data: $("form").serialize(),
-                            success: function (response) {
-                                console.log(response);
-                                response = JSON.parse(response);
-                                
-                                if(response.exists == true){
-                                    sessionStorage.setItem("user_id", response.id);
-                                    window.location.href = "/home";
-                                }else{
-                                    $("#notif-bar").slideDown(500);
-                                }
-                            }
-                        });
-                        
-                        e.preventDefault();
-                    });
-                });
-            });
-            
-        </script>
+        <!-- jQuery 2.0.2 -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="../../js/bootstrap.min.js" type="text/javascript"></script>        
 
     </body>
-   
-   
+    
+    
 </html>

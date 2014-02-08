@@ -1,0 +1,67 @@
+
+label{
+	font-family: Pirulen;
+	text-shadow: 0 -1px 0 #666;
+	-webkit-font-smoothing:  antialiased; 
+}
+
+.block{
+    text-align: center;
+	background: #3c8dbc;
+	margin-top: 75px;
+}
+
+.block label{
+	background: #dedede;
+    display: inline-block;
+    width:  5%;
+	margin-left: 1%;
+	text-align: center;
+	line-height: 2.6;
+	color: #222222;
+	height: 34px;
+	background: #dedede;
+	box-shadow: 0.1px 0 2px #6c5B6d;
+}
+
+.block input, .option p {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	-webkit-font-smoothing: antialiased;
+}
+
+.block input{
+    width: 91.5%;
+	height: 32px;
+	margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 1%;
+    border: 0;
+	outline: 0;
+	display: inline-block;
+	font-size: 18px;
+}
+
+.block input[type="submit"]{
+    width: 20%;
+    font-size: 20px;
+    height: 50px;
+    padding: 1%;
+    font-weight: bold;
+}
+
+input{
+padding-left: 10px;
+}
+
+
+/* placeholder */
+: : -webkit-input-placeholder {
+	-webkit-font-smoothing:  antialiased;
+	color: #999;
+	font-size: 16px;
+}
+: -moz-input-placeholder {  
+	color: #999;
+	font-size: 16px;
+}

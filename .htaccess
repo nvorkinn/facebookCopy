@@ -1,6 +1,0 @@
-<IfModule mod_rewrite.c>
-RewriteEngine on
-RewriteRule ^login$ /index.php
-RewriteRule ^home$ /php/protected/home.php
-RewriteRule ^admin$ /php/protected/admin.php
-</IfModule>
