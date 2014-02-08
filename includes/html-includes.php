@@ -25,7 +25,9 @@
         
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         
-        <script src="js/global.js"></script>        
+        <script src="js/global.js"></script>
+		<script src="js/moment.min.js"></script>
+		<script src="js/livestamp.min.js"></script>
         <link href="css/global.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
