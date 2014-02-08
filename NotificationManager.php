@@ -17,6 +17,7 @@
 
         public function onMessage(ConnectionInterface $from, $data) {	
             $obj = json_decode($data);
+			
             if(!$this->clients->contains($from)){
                 $this->clients->attach($from, $obj->user_id);
                 

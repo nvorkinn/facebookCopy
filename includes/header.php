@@ -77,7 +77,13 @@
 								?>
                             </a>
 							<ul class="dropdown-menu">
-								<li class="header">Friend Requests</li>
+								<li class="header">
+									<?PHP if($friend_notif_count>0){
+											echo 'Friend Requests</li>';
+										}else{
+											echo 'No Friend Requests</li>';
+										}
+									?>
 								<li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -157,4 +163,3 @@
             </nav>
             
         </header>
-        

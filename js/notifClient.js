@@ -8,13 +8,12 @@ conn.onopen = function(e) {
 };
 
 conn.onmessage = function(e) {
-    alert(e.data);
+	alert(e.data);
 };
 
 conn.onclose = function(e) {
     alert("Connection closed!");
 };
-
 return conn;
 
 }
