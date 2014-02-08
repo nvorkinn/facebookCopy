@@ -10,7 +10,7 @@
     $password = sha1(strip_tags(stripslashes($mysqli->real_escape_string($_POST["login-password"]))));
     
     //Query the database to check if the user exists and to extract further information regarding that user if they do exist
-    $query = "SELECT user.id, user.admin, user.verified, user.profile_id, profile.name, profile.surname FROM user, profile WHERE profile.email = '$email' AND profile.password = '$password' AND user.profile_id = profile.id LIMIT 1";
+    $query = "SELECT user.id, user.admin, user.verified, user.hash, user.profile_id, profile.name, profile.surname FROM user, profile WHERE profile.email = '$email' AND profile.password = '$password' AND user.profile_id = profile.id LIMIT 1";
     $data["q"] = "SELECT user.id, user.admin, user.verified, user.profile_id, profile.name, profile.surname FROM user, profile WHERE profile.email = '$email' AND profile.password = '$password' AND user.profile_id = profile.id LIMIT 1";
     
     if ($result = $mysqli->query($query)){
@@ -20,6 +20,7 @@
             $data->exists = true;
             $_SESSION["user_id"] = $row->id;
             $_SESSION["admin"] = $row->admin;
+			$_SESSION["user_hash"]=$row->hash;
         }
     }else{
         echo "DB Error, could not query the database\n";

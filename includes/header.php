@@ -1,54 +1,82 @@
+
+		<script>
+		$( document ).ready(function() {
+			var conn = connectToNotifServer();
+			
+			conn.onmessage = function(e) {
+				console.log(e.data);
+				if(e.data=="newFriendRequest"){
+					var elem = document.getElementById('friend-request-count');
+					if(elem){
+						var notifCount = +($("#friend-request-count").text());
+						$("#friend-request-count").html(notifCount+1);
+					}else{
+						$("#friend-request-notif").append('<span class="label label-success" id="friend-request-count">1</span>');
+					}
+				}
+			};
+			
+			$("#friend-request-icon").click(function() {
+                    $.ajax({
+                        type: "post",
+                        data: {"type" : "0"},
+                        url: "tools/protected/notif_utils.php",
+                        success: function (response) {
+                            if(response!=-1){
+								$("#friend-notif-data").html(response);
+							}
+                        }
+                    });
+			});
+			
+			
+			$(".logo").click(function() {
+                    $.ajax({
+                        type: "post",
+                        data: {"action" : "newFriendRequest", "to_user_id" : "2"},
+                        url: "tools/protected/friend_utils.php",
+                        success: function (response) {
+                            if(response == 1){
+								registerNotification(conn,"ebddd6b268d91849108444d7fc5c9941138e8ee0", "newFriendRequest");
+							}
+                        }
+                    });
+			});
+			
+		});
+		</script>
 <?PHP
 	
-	$friend_requests = array();
-	$messages = array();
-	$general_notifs = array();
+	$friend_requests = 0;
+	$messages = 0;
+	$general_notifs = 0;
 	
 	$friend_request_str='';
 				
-	if ($result = $mysqli->query("SELECT * FROM notification,activity,profile WHERE notification.activity_id=activity.id AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1)"))
+	if ($result = $mysqli->query("SELECT * FROM notification,activity WHERE notification.activity_id=activity.id AND notification.target_id=".$_SESSION["user_id"]))
             {
 				while($row = $result->fetch_assoc()){
 					if($row['type']==0){
 						if($row['seen']==0){
-						array_push($friend_requests, $row);
+							$friend_requests++;
 						}
-						$friend_request_str = generateNotifItems($row,$friend_request_str,0);
 					}else if($row['type']==1){
-						array_push($messages, $row);
+						if($row['seen']==0){
+							$messages++;
+						}
 					}else if($row['type']==2){
-						array_push($general_notifs, $row);
+						if($row['seen']==0){
+							$general_notifs++;
+						}
 					}
 				}
             }
-			
-	function generateNotifItems($row,$str,$type){
-		$item_str = '<li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="img/avatar.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-													<div style="width:60px;float:right">
-														<button class="btn btn-default btn-block btn-sm">Accept</button>
-													</div>'.
-                                                    $row["name"].' '.$row["surname"].'
-													<div class="pull-left">
-														<small><i class="fa fa-clock-o"></i><span data-livestamp='.$row["created_date"].' style="padding-left:3px"></span></small>
-													</div>
-													
-												</h4>
-                                            </a>
-                                        </li>';
-		
-		return $str.$item_str;
-	}
 ?>
 
 <!-- header logo: style can be found in header.less -->
         <header class="header">
         
-            <a href="index.php" class="logo">Commy</a>
+            <a class="logo">Commy</a>
             
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -66,19 +94,18 @@
                     <ul class="nav navbar-nav">
                     
                         <!-- Friend Request: style can be found in dropdown.less-->
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <li class="dropdown messages-menu" id="friend-request-icon">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="friend-request-notif">
                                 <i class="fa fa-users"></i>
 								<?PHP
-									$friend_notif_count = count($friend_requests);
-									if($friend_notif_count>0){
-										echo '<span class="label label-success">'.$friend_notif_count.'</span>';
+									if($friend_requests>0){
+										echo '<span class="label label-success" id="friend-request-count">'.$friend_requests.'</span>';
 									}
 								?>
                             </a>
 							<ul class="dropdown-menu">
 								<li class="header">
-									<?PHP if($friend_notif_count>0){
+									<?PHP if($friend_requests>0){
 											echo 'Friend Requests</li>';
 										}else{
 											echo 'No Friend Requests</li>';
@@ -86,10 +113,8 @@
 									?>
 								<li>
                                     <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <?PHP
-											echo $friend_request_str;
-										?>
+                                    <ul class="menu" id="friend-notif-data">
+                                        
                                     </ul>
                                 </li>
 							</ul>
@@ -97,12 +122,11 @@
                         
 						<!-- Messages: style can be found in dropdown.less-->
                         <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                                 <i class="fa fa-envelope"></i>
 								<?PHP
-									$messages_notif_count = count($messages);
-									if($messages_notif_count>0){
-										echo '<span class="label label-success">'.$messages_notif_count.'</span>';
+									if($messages>0){
+										echo '<span class="label label-success">'.$messages.'</span>';
 									}
 								?>
 							</a>
@@ -113,9 +137,8 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-globe"></i>
 								<?PHP
-									$general_notifs_count = count($general_notifs);
-									if($general_notifs_count>0){
-									echo '<span class="label label-success">'.$general_notifs_count.'</span>';
+									if($general_notifs>0){
+										echo '<span class="label label-success">'.$general_notifs.'</span>';
 									}
 								?>
 							</a>

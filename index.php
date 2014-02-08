@@ -69,7 +69,7 @@
                                     response = JSON.parse(response);
 
                                     if(response.exists == true) {
-                                        sessionStorage.setItem("user_id", response.id);
+                                        sessionStorage.setItem("user_hash", response.hash);
                                         window.location = "wall.php";
                                     }
                                 }
