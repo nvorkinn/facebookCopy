@@ -57,7 +57,7 @@ $(function() {
      * ---------------------------------------
      */
     $(".navbar .menu").slimscroll({
-        height: "200px",
+        height: "100%",
         alwaysVisible: false,
         size: "3px"
     }).css("width","100%");
@@ -73,7 +73,6 @@ $(function() {
             $(this).addClass("active");
             e.preventDefault();
         });
-
     });
 
     $("[data-widget='remove']").click(function() {

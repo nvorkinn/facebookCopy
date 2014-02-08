@@ -13,7 +13,7 @@
 						if($row['seen']==0){
 						array_push($friend_requests, $row);
 						}
-						$friend_request_str = generateNotifItems($row,$friend_request_str);
+						$friend_request_str = generateNotifItems($row,$friend_request_str,0);
 					}else if($row['type']==1){
 						array_push($messages, $row);
 					}else if($row['type']==2){
@@ -22,7 +22,7 @@
 				}
             }
 			
-	function generateNotifItems($row,$str){
+	function generateNotifItems($row,$str,$type){
 		$item_str = '<li>
                                             <a href="#">
                                                 <div class="pull-left">

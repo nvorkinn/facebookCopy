@@ -28,6 +28,7 @@
         <script src="js/global.js"></script>
 		<script src="js/moment.min.js"></script>
 		<script src="js/livestamp.min.js"></script>
+		<script src="js/notifClient.js"></script>
         <link href="css/global.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
