@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 04, 2014 at 08:13 PM
+-- Generation Time: Feb 09, 2014 at 01:27 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `facebookcopy`
 --
-CREATE DATABASE IF NOT EXISTS `facebookcopy` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `facebookcopy` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `facebookcopy`;
 
 -- --------------------------------------------------------
@@ -33,18 +33,13 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `from_user_id` int(11) NOT NULL,
   `to_user_id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
+  `sub_type` int(11) NOT NULL,
+  `object_id` int(11) NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `to_user_id` (`to_user_id`),
   KEY `from_user_id` (`from_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
-
---
--- Dumping data for table `activity`
---
-
-INSERT INTO `activity` (`id`, `from_user_id`, `to_user_id`, `type`, `created_date`) VALUES
-(14, 1, 2, 0, '2014-02-02 23:33:03');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 -- --------------------------------------------------------
 
@@ -68,10 +63,8 @@ CREATE TABLE IF NOT EXISTS `blog` (
 
 CREATE TABLE IF NOT EXISTS `circle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_user_id` int(11) NOT NULL,
   `name` varchar(512) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `owner_user_id` (`owner_user_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -114,22 +107,14 @@ CREATE TABLE IF NOT EXISTS `message` (
 --
 
 CREATE TABLE IF NOT EXISTS `notification` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `activity_id` int(11) NOT NULL,
   `target_id` int(11) NOT NULL,
   `seen` tinyint(1) NOT NULL,
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `target` (`target_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `notification`
---
-
-INSERT INTO `notification` (`id`, `activity_id`, `target_id`, `seen`, `created_date`) VALUES
-(0, 14, 2, 0, '2014-02-02 23:33:03');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -216,8 +201,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
 
 INSERT INTO `profile` (`id`, `type`, `privacy_setting_id`, `photo_code`, `name`, `surname`, `dob`, `email`, `password`) VALUES
 (2, 0, 1, -1, 'Jay', 'Nanavati', '0000-00-00', 'jaysnanavati@hotmail.co.uk', '3831e9216d0a7b6d80ae1c1d8866dde36feca921'),
-(3, 0, 1, -1, 'Hay', 'Nanavati', '0000-00-00', 'hay@hay.com', 'f995f026497542434f82879af2ed3c2b7bd44877'),
-(1, 0, 1, -1, 'Nikolai', 'Vorkinn', '1991-07-06', 'n.vorkinn@gmail.com', '2ed99f3bbeda017280bb9cbcfb8de4ee2886eb6b');
+(3, 0, 1, -1, 'Hay', 'Nanavati', '0000-00-00', 'hay@hay.com', 'b5853d3b1ce6ee58e7cfb13ddfbcc4587a6dc1b6');
 
 -- --------------------------------------------------------
 
@@ -226,10 +210,12 @@ INSERT INTO `profile` (`id`, `type`, `privacy_setting_id`, `photo_code`, `name`,
 --
 
 CREATE TABLE IF NOT EXISTS `relationship` (
+  `id` int(11) NOT NULL,
   `activity_id` int(11) NOT NULL,
   `to_entity_id` int(11) NOT NULL,
   `privacy_setting_id` int(11) NOT NULL,
   `since` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `privacy_settings_id` (`privacy_setting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -257,8 +243,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `profile_id`, `admin`, `verified`, `online`, `hash`) VALUES
-(1, 2, 0, 1, 1, '-1'),
-(2, 3, 0, 1, 1, '-1');
+(1, 2, 0, 1, 1, '8bfd13cad0bc4b2ac41d9e235951e72c9b62c2aa'),
+(2, 3, 0, 1, 1, 'ebddd6b268d91849108444d7fc5c9941138e8ee0');
 
 -- --------------------------------------------------------
 
@@ -295,12 +281,6 @@ ALTER TABLE `blog`
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `circle`
---
-ALTER TABLE `circle`
-  ADD CONSTRAINT `circle_ibfk_1` FOREIGN KEY (`owner_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `message`

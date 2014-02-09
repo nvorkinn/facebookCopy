@@ -9,7 +9,7 @@ if ($result = $mysqli->query($query)){
 		$str='';
 		while($row = $result->fetch_assoc()){
 			$str = generateNotifItems($row,$str,$type);
-		}
+		}	
 	echo $str;	
 }else{
 	echo -1;
