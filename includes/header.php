@@ -13,9 +13,46 @@
 					}else{
 						$("#friend-request-notif").append('<span class="label label-success" id="friend-request-count">1</span>');
 					}
+				}else if(e.data=="friendRequestAccepted"){
+					var elem = document.getElementById('general-notif-count');
+					if(elem){
+						var notifCount = +($("#general-notif-count").text());
+						$("#general-notif-count").html(notifCount+1);
+					}else{
+						$("#general-notif").append('<span class="label label-success" id="general-notif-count">1</span>');
+					}
 				}
 			};
 			
+			$(document.body).on( "click",".friend-notif-accept", function() {
+				var friend_hash = $(this).attr('id');
+				var activity_id = $(this).attr('data-activity-id');
+				$.ajax({
+                        type: "post",
+                        data: {"action" : "acceptFriendRequest","friend_hash":friend_hash,"activity_id":activity_id},
+                        url: "tools/protected/friend_utils.php",
+                        success: function (response) {
+							if(response==1){
+								registerNotification(conn,friend_hash, "friendRequestAccepted");
+							}
+                        }
+                    });
+
+			});
+	
+			$("#general-notif-icon").click(function() {
+                    $.ajax({
+                        type: "post",
+                        data: {"type" : "2"},
+                        url: "tools/protected/notif_utils.php",
+                        success: function (response) {
+                            if(response!=-1){
+								$("#general-notif-data").html(response);
+							}
+                        }
+                    });
+			});
+				
 			$("#friend-request-icon").click(function() {
                     $.ajax({
                         type: "post",
@@ -119,7 +156,7 @@
                                 </li>
 							</ul>
                         </li>
-                        
+						
 						<!-- Messages: style can be found in dropdown.less-->
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
@@ -130,19 +167,39 @@
 									}
 								?>
 							</a>
+							
                         </li>
                         
-                        <!-- Notifications: style can be found in dropdown.less -->
-                        <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<!-- General notifications: style can be found in dropdown.less-->
+                        <li class="dropdown messages-menu" id="general-notif-icon">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="general-notif">
                                 <i class="fa fa-globe"></i>
 								<?PHP
 									if($general_notifs>0){
-										echo '<span class="label label-success">'.$general_notifs.'</span>';
+										echo '<span class="label label-success" id="general-notif-count">'.$general_notifs.'</span>';
 									}
 								?>
-							</a>
+                            </a>
+							<ul class="dropdown-menu">
+								<li class="header">
+									<?PHP if($general_notifs>0){
+											echo 'Notifications</li>';
+										}else{
+											echo 'No Notifications</li>';
+										}
+									?>
+								<li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu" id="general-notif-data">
+                                        
+                                    </ul>
+                                </li>
+							</ul>
                         </li>
+                        
+						
+						
+						
                         
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">

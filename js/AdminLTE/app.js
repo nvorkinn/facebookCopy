@@ -61,7 +61,7 @@ $(function() {
         alwaysVisible: false,
         size: "3px"
     }).css("width","100%");
-
+	
     /*
      * INITIALIZE BUTTON TOGGLE
      * ------------------------
