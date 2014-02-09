@@ -1,6 +1,15 @@
-{
-    "require": {
-        "cboden/Ratchet": "0.3.*"
-    }
 	
+	{
+    "require": {
+        "microsoft/windowsazure": "*",
+		"cboden/Ratchet": "0.3.*"
+    },          
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
+    "minimum-stability": "dev"
 }
+	

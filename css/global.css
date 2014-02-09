@@ -28,3 +28,7 @@
     text-shadow: 2px 2px 3px #333333;
     margin-top: 10px;
 }
+
+.modal {
+    overflow-y: hidden;
+}

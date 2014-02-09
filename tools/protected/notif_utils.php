@@ -9,7 +9,9 @@ if ($result = $mysqli->query($query)){
 		$str='';
 		while($row = $result->fetch_assoc()){
 			$str = generateNotifItems($row,$str,$type);
-		}	
+			$mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=".$row["activity_id"]." AND target_id=".$_SESSION["user_id"];
+			$mysqli->query($mark_seen);
+		}
 	echo $str;	
 }else{
 	echo -1;
@@ -32,7 +34,7 @@ if ($result = $mysqli->query($query)){
 													</div>'.
                                                     $row["name"].' '.$row["surname"].'
 													<div class="pull-left">
-														<small><i class="fa fa-clock-o"></i><span data-livestamp='.$row["created_date"].' style="padding-left:3px"></span></small>
+														<small><i class="fa fa-clock-o"></i><span data-livestamp="'.$row["created_date"].'" style="padding-left:3px"></span></small>
 													</div>
 													
 												</h4>
@@ -50,7 +52,7 @@ if ($result = $mysqli->query($query)){
                                                     <img src="img/avatar.png" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4><div class="pull-right">
-														<small><i class="fa fa-clock-o"></i><span data-livestamp='.$row["created_date"].' style="padding-left:3px"></span></small>
+														<small><i class="fa fa-clock-o"></i><span data-livestamp="'.$row["created_date"].'" style="padding-left:3px"></span></small>
 													</div>'.
                                                     $row["name"].' '.$row["surname"].'
 												</h4>'.$message.'

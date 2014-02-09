@@ -48,6 +48,7 @@
                         success: function (response) {
                             if(response!=-1){
 								$("#general-notif-data").html(response);
+								$("#general-notif-count").html('');
 							}
                         }
                     });
@@ -61,6 +62,7 @@
                         success: function (response) {
                             if(response!=-1){
 								$("#friend-notif-data").html(response);
+								$("#friend-request-count").html('');
 							}
                         }
                     });

@@ -6,7 +6,8 @@
     
          <?PHP 
         
-            require("includes/html-includes.php"); 
+            require("includes/html-includes.php");
+            require("includes/Modals.php"); 			
             require("includes/php-includes.php"); 
             
             if(!isset($_SESSION["user_id"])){
@@ -103,7 +104,7 @@
                 
                     <div class="user-header cover">
                         <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-                        <p class="user-name">
+						<p class="user-name">
                             <?PHP
                 
                                 if (isset($profile)) {
@@ -112,6 +113,8 @@
                 
                             ?>
                         </p>
+						<button id="cover-photo-btn" class="btn btn-default" data-toggle="modal" data-target="#photoUploadModal">Change cover photo</button>
+						
                     </div>
                     
                 </div>
@@ -506,6 +509,7 @@
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <!-- AdminLTE App -->
         <script src="js/AdminLTE/app.js" type="text/javascript"></script>
+		
 
     </body>
 
