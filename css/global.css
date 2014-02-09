@@ -1,7 +1,30 @@
-@font-face {
+@font-face 
+{
   font-family: "Pirulen";
   src: url('../fonts/pirulen.eot');
   src: url('../fonts/pirulen.eot') format('embedded-opentype'), url('../fonts/pirulen.woff') format('woff'), url('../fonts/pirulen.ttf') format('truetype'), url('../fonts/pirulen.svg') format('svg');
   font-weight: normal;
   font-style: normal;
+}
+
+.centered 
+{
+    text-align: center;
+}
+
+.cover
+{
+    padding-top: 100px;
+    padding-bottom: 50px;
+    background: #3c8dbc;
+}
+
+.user-name
+{
+    z-index: 5;
+    color: #f9f9f9;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 17px;
+    text-shadow: 2px 2px 3px #333333;
+    margin-top: 10px;
 }

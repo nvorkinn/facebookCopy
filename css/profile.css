@@ -51,3 +51,60 @@ input
     color: black!important;
     margin-right: 10px;
 }
+
+.row
+{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+table .header
+{
+    width: 200px;
+    font-weight: bold;
+    height: 50px;
+}
+
+.friend
+{
+    margin: 20px 2%;
+    padding: 0px 3%;
+    display: inline-block;
+}
+
+table input
+{
+    width: 300px;
+}
+
+input
+{
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset, 0 -1px 0 rgba(0,0,0,0.05) inset;
+    transition: all 0.2s linear;
+    font-size: 13px;
+    color: #222222;
+    position: relative;
+    height: 36px;
+    width: 300px;
+    padding-left: 30px;
+    
+    &::-webkit-input-placeholder {
+       color: #999999;
+    }
+    
+    &:-moz-placeholder {
+       color: #999999;
+    }
+        
+    &:focus{
+        box-shadow: 0 1px 0 #2392F3 inset, 0 -1px 0 #2392F3 inset, 1px 0 0 #2392F3 inset, -1px 0 0 #2392F3 inset, 0 0 4px rgba(35,146,243,0.5);
+        outline: none;
+    }
+}
+
+.invalid-password
+{
+        box-shadow: 0 1px 0 red inset, 0 -1px 0 red inset, 1px 0 0 red inset, -1px 0 0 red inset, 0 0 4px rgba(255, 0, 0,0.5);    
+}

@@ -72,13 +72,13 @@
                             </a>
                         </li>
                         
-                        <li>
+                        <li class="active">
                             <a href="circles.php">
                                 <i class="fa"></i> <span>Circles</span>
                             </a>
                         </li>
                         
-                        <li class="active">
+                        <li>
                             <a href="profile.php">
                                 <i class="fa"></i> <span>Profile</span>
                             </a>

@@ -59,7 +59,7 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                     
-                        <li>
+                        <li class="active">
                             <a href="wall.php">
                                 <i class="fa"></i> <span>Wall</span>
                             </a>
@@ -77,7 +77,7 @@
                             </a>
                         </li>
                         
-                        <li class="active">
+                        <li>
                             <a href="profile.php">
                                 <i class="fa"></i> <span>Profile</span>
                             </a>

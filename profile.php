@@ -31,7 +31,9 @@
     
  
         <?PHP
+        
 			require("includes/header.php"); 
+            
         ?>    
         
         <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -97,156 +99,398 @@
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
             
+                <div class="row centered">
+                
+                    <div class="user-header cover">
+                        <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                        <p class="user-name">
+                            <?PHP
+                
+                                if (isset($profile)) {
+                                    echo $profile->name . " " . $profile->surname;
+                                }
+                
+                            ?>
+                        </p>
+                    </div>
+                    
+                </div>
+                
                 <div class="row">
-                    
-                    <div class="col-lg-4 centered" id="avatar">
-                    
-                        <img src="img/avatar3.png">
-                            
-                        <div class="spacer_small"></div>
+                
+                   <div class="nav-tabs-custom col-lg-12">
+                   
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#information" data-toggle="tab">Information</a></li>
+                            <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                            <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                        </ul>
                         
-                        <button type="button" class="edit_button" style="float: none">Edit</button>
+                        <div class="tab-content">
                         
-                    </div>
-                    
-                    <div class="col-lg-8">
-
-                        <div class="row profile-row">
-                    
-                            <div class="name col-lg-8">
+                            <div class="tab-pane active" id="information">
+                                
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Contact</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                            <table class="no-border">
+                                            
+                                                <tr>
+                                                    <td class="header">Website</td>
+                                                    <td>
+                                                        <?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "www.example.com";
+                                                            }
+                                                            
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">E-mail</td>
+                                                    <td>
+                                                        <?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo $profile->email;
+                                                            }
+                                                            
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">Mobile</td>
+                                                    <td>
+                                                        <?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "+1234567890";
+                                                            }
+                                                            
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">Location</td>
+                                                    <td>
+                                                        <?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "London, United Kingdom";
+                                                            }
+                                                            
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Personal information</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                            <table class="no-border">
+                                            
+                                                <tr>
+                                                    <td class="header">Date of birth</td>
+                                                    <td>
+                                                        <?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo $profile->dob;
+                                                            }
+                                                            
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Education</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Places lived</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                
+                            </div><!-- /.tab-pane -->
                             
-                                <h2>Name</h2>
+                            <div class="tab-pane" id="friends">
                             
-                                <h3>
-                                    <?PHP
-                                        
-                                        if (isset($profile))
+                                <?PHP
+                                
+                                    if ($result = $mysqli->query("SELECT name, surname FROM profile"))
+                                    {
+                                        for ($i = 0; $i < $result->num_rows; $i++)
                                         {
-                                            echo $profile->name;
+                                            $friend = $result->fetch_object();
+                                            
+                                            echo "
+                                            \n
+                                            <div class='small-box bg-green friend centered'>
+                                                <div class='inner'>
+                                                    <img src='img/avatar3.png' class='img-circle' alt='User Image' />
+                                                    <p class='user-name'>
+                                                        " . $friend->name . " " . $friend->surname . "
+                                                    </p>
+                                                </div>
+                                            </div>\n\n";
                                         }
                                         
-                                    ?>
-                                </h3>
+                                        $result->close();
+                                    }
                                 
-                            </div>
-                            
-                            <button type="button" class="edit_button" onclick="editName(this);">Edit</button>
-                            
-                        </div>
-                            
-                        <div class="spacer"></div>
-
-                        <div class="row profile-row">
-                    
-                            <div class="surname col-lg-8">
-                            
-                                <h2>Surname</h2>
-                            
-                                <h3>
-                                    <?PHP
-                                        
-                                        if (isset($profile))
-                                        {
-                                            echo $profile->surname;
-                                        }
-                                        
-                                    ?>
-                                </h3>
+                                ?>
                                 
-                            </div>
                             
-                            <button type="button" class="edit_button" onclick="editSurname(this);">Edit</button>
-                            
-                        </div>
-                            
-                        <div class="spacer"></div>
-
-                        <div class="row profile-row">
-                    
-                            <div class="dob col-lg-8">
-                            
-                                <h2>Date of birth</h2>
-                            
-                                <h3>
-                                    <?PHP
-                                        
-                                        if (isset($profile))
-                                        {
-                                            echo $profile->dob;
-                                        }
-                                        
-                                    ?>
-                                </h3>
                                 
-                            </div>
+                            </div><!-- /.tab-pane -->
                             
-                            <button type="button" class="edit_button" onclick="editDOB();">Edit</button>
-                            
-                        </div>
-                            
-                        <div class="spacer"></div>
-
-                        <div class="row profile-row">
-                    
-                            <div class="email col-lg-8">
-                            
-                                <h2>Email</h2>
-                            
-                                <h3>
-                                    <?PHP
+                            <div class="tab-pane" id="settings">
+                                    
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Name</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                    
+                                        <table class="no-border">
                                         
-                                        if (isset($profile))
-                                        {
-                                            echo $profile->email;
-                                        }
+                                            <tr>
+                                                <td class="header">Name</td>
+                                                <td>
+                                                    <input type="text" id="name" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo $profile->name;
+                                                            }
+                                                            
+                                                        ?>">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header">Surname</td>
+                                                <td>
+                                                    <input type="text" id="surname" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo $profile->surname;
+                                                            }
+                                                            
+                                                        ?>">
+                                                </td>
+                                            </tr>
+                                            
+                                        </table>
                                         
-                                    ?>
-                                </h3>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                    
+                                <div class="box box-primary">
                                 
-                            </div>
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Password</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                    
+                                        <table class="no-border">
+                                        
+                                            <tr>
+                                                <td class="header">Password</td>
+                                                <td>
+                                                    <input type="password" id="password">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header">Password confirmation</td>
+                                                <td>
+                                                    <input type="password" id="password_confirmation">
+                                                </td>
+                                            </tr>
+                                            
+                                        </table>
+                                        
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
                             
-                            <button type="button" class="edit_button" onclick="editEmail(this);">Edit</button>
-                            
-                        </div>
-                            
-                        <div class="spacer"></div>
-
-                        <div class="row profile-row">
-                    
-                            <div class="education col-lg-8">
-                            
-                                <h2>Education</h2>
-                            
-                                <h3>
-                                </h3>
+                                <div class="box box-primary">
                                 
-                            </div>
-                            
-                            <button type="button" class="edit_button" onclick="addEducation();">Add</button>
-                            
-                        </div>
-                            
-                        <div class="spacer"></div>
-
-                        <div class="row profile-row">
-                    
-                            <div class="places_lived col-lg-8">
-                            
-                                <h2>Places lived</h2>
-                            
-                                <h3>
-                                </h3>
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Contact</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                            <table class="no-border">
+                                            
+                                                <tr>
+                                                    <td class="header">Website</td>
+                                                    <td>
+                                                        <input type="text" id="website" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "www.example.com";
+                                                            }
+                                                            
+                                                        ?>">
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">E-mail</td>
+                                                    <td>
+                                                        <input type="email" id="email" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo $profile->email;
+                                                            }
+                                                            
+                                                        ?>">
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">Mobile</td>
+                                                    <td>
+                                                        <input type="text" id="mobile" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "+1234567890";
+                                                            }
+                                                            
+                                                        ?>">
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="header">Location</td>
+                                                    <td>
+                                                        <input type="text" id="location" value="<?PHP
+                                                        
+                                                            if (isset($profile))
+                                                            {
+                                                                echo "London, United Kingdom";
+                                                            }
+                                                            
+                                                        ?>">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                    <div class="box box-primary">
                                 
-                            </div>
+                                        <div class="box-header" data-toggle="tooltip" title="">
+                                            <h3 class="box-title">Personal information</h3>    
+                                        </div>
+                                        
+                                        <div class="box-body" style="display: block;">
+                                            <p>
+                                                <table class="no-border">
+                                                
+                                                    <tr>
+                                                        <td class="header">Date of birth</td>
+                                                        <td>
+                                                            <input type="date" id="dob">
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                </table>
+                                            </p>
+                                        </div><!-- /.box-body -->
+                                        
+                                    </div>
+                                    
+                                    <div class="box box-primary">
+                                    
+                                        <div class="box-header" data-toggle="tooltip" title="">
+                                            <h3 class="box-title">Education</h3>    
+                                        </div>
+                                        
+                                        <div class="box-body" style="display: block;">
+                                            <p>
+                                            </p>
+                                        </div><!-- /.box-body -->
+                                        
+                                    </div>
+                                    
+                                    <div class="box box-primary">
+                                    
+                                        <div class="box-header" data-toggle="tooltip" title="">
+                                            <h3 class="box-title">Places lived</h3>    
+                                        </div>
+                                        
+                                        <div class="box-body" style="display: block;">
+                                            <p>
+                                            </p>
+                                        </div><!-- /.box-body -->
+                                        
+                                    </div>
+                                    
+                                </div>
+                                
+                                <button type="button" class="btn btn-primary" onclick="saveSettings();">Save</button>
+                                
+                            </div><!-- /.tab-pane -->
                             
-                            <button type="button" class="edit_button" onclick="addPlacesLived();">Add</button>
-                            
-                        </div>
+                        </div><!-- /.tab-content -->
                         
-                        
-                    
-                    </div>
-                        
+                    </div><!-- nav-tabs-custom -->
+                
                 </div>
 
                 </section><!-- /.content -->

@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         
-                        <li>
+                        <li class="active">
                             <a href="messages.php">
                                 <i class="fa"></i> <span>Messages</span>
                             </a>
@@ -78,7 +78,7 @@
                             </a>
                         </li>
                         
-                        <li class="active">
+                        <li>
                             <a href="profile.php">
                                 <i class="fa"></i> <span>Profile</span>
                             </a>
