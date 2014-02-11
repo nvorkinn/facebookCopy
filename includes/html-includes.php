@@ -22,8 +22,8 @@
         <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
         
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-
+		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    
 		
         <script src="js/global.js"></script>
 		<script src="js/moment.min.js"></script>
@@ -106,7 +106,7 @@ $(function () {
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
         previewMaxWidth: 558,
-        previewMaxHeight: 350,
+        previewMaxHeight: 300,
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
         data.context = $('<div/>').appendTo('#files');
@@ -119,6 +119,7 @@ $(function () {
                     .append(uploadButton.clone(true).data(data));
             }
             node.appendTo(data.context);
+				
         });
     }).on('fileuploadprocessalways', function (e, data) {
         var index = data.index,
@@ -155,6 +156,9 @@ $(function () {
                     .prop('href', file.url);
                 $(data.context.children()[index])
                     .wrap(link);
+					setTimeout(function () {
+						location.reload();
+					}, 1000);
             } else if (file.error) {
                 var error = $('<span class="text-danger"/>').text(file.error);
                 $(data.context.children()[index])
@@ -172,5 +176,6 @@ $(function () {
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 });
+
 </script>
 		
