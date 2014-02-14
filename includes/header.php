@@ -25,6 +25,10 @@
 			};
 			
 			$(document.body).on( "click",".friend-notif-accept", function() {
+				$("#friend-request-response-modal").modal();
+			});
+			
+			$("#friend-request-accept").click(function() {
 				var friend_hash = $(this).attr('id');
 				var activity_id = $(this).attr('data-activity-id');
 				$.ajax({
@@ -37,6 +41,16 @@
 							}
                         }
                     });
+                $.ajax({
+                		type: "post",
+                		url: "tools/protected/get_circles.php",
+                		success: function (response) {
+                			if(response!=-1) {
+                				$("#existing_circles").html(response);
+                			}
+                		}
+                });
+                $("#friend-circle-modal").modal();
 
 			});
 	
@@ -53,6 +67,7 @@
                         }
                     });
 			});
+			
 				
 			$("#friend-request-icon").click(function() {
                     $.ajax({
@@ -80,6 +95,37 @@
 							}
                         }
                     });
+			});
+			
+			$("#new-circle-button").click(function() {
+				var circle_name = $("#new-circle-name").val();
+                $.ajax({
+                		type: "post",
+						data: {"hello":"abs"},
+                		url: "tools/protected/create_circle.php",
+                		success: function (response) {
+                			if(response!=-1) {
+                				$("#existing_circles").html(response);
+                			}
+                		}
+                });
+			});
+			
+			$("#existing_circles la a").click(function(){
+				alert("got in");
+				var value = $(this).text();
+				var friend = $(this).attr('id');
+				$("#existing_circles la a").on("add_to_circle", function(event, member_id){
+				    value = member_id;
+				});
+				$.ajax({
+					type: "post",
+					data: {"circle_name": value, "member_to_add": friend},
+					url: "tools/protected/add_to_circle.php",
+					success: function (response) {
+						//something
+					}
+				});
 			});
 			
 		});
@@ -244,4 +290,52 @@
                 
             </nav>
             
+            
         </header>
+        
+		<!-- Friend Request Response Modal -->
+		<div class="modal fade bs-modal-sm" id="friend-request-response-modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-sm">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Friend Request Response</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="btn-group btn-group-vertical btn-block">
+					<button type="button" class="btn btn-primary btn-lg" id="friend-request-accept" data-dismiss="modal" data-width="auto">Accept</button>
+					<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Ignore</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		
+		<!-- Add to Circle Modal -->
+		<div class="modal fade" id="friend-circle-modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-sm">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Add Friend to Circle?</h4>
+			  </div>
+			  <div class="modal-body">
+			  	<div class="btn-group btn-group-vertical btn-block">
+					<div class="input-group">
+						<input id="new-circle-name" type="text" class="form-control" placeholder="Create new circle">
+						<span class="input-group-btn">
+							<button class="btn btn-default" id="new-circle-button" data-dismiss="modal" type="button">Create!</button>
+						</span>
+					</div><!-- /input-group -->
+					<a class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" href="#">
+						or add to existing
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" id="existing_circles" data-dismiss="modal">
+						<!-- Here goes all existing circles -->
+					</ul>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
