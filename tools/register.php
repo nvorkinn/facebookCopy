@@ -2,17 +2,6 @@
 
 	require_once ($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
 
-	// Adding privacy_setting entry. This is required to make a profile
-	$privacy_setting_insert = "INSERT INTO privacy_setting (visible_to, name) VALUES (99, 'somename')";
-
-	if (!mysqli_query($mysqli, $privacy_setting_insert)) {
-		echo "Could not insert entry into the privacy_setting table";
-		die("Error: " . mysqli_error($mysqli));
-	}
-
-	// Get the auto-incremented value
-	$privacy_id = mysqli_insert_id($mysqli);
-
 	// Get and escape values of web page fields
 	$email = mysqli_real_escape_string($mysqli, $_POST["email"]);
 	$firstname = mysqli_real_escape_string($mysqli, $_POST["firstname"]);
@@ -21,7 +10,7 @@
 	$password = sha1(mysqli_real_escape_string($mysqli, $_POST["password"]));
 
 	// Use fields to create a new entry in the profile table
-	$profile_insert = "INSERT INTO profile (type, privacy_setting_id, photo_code, name, surname, dob, email, password) VALUES (99, $privacy_id, 99, '$firstname', '$lastname', '$birthdate', '$email', '$password') ";
+	$profile_insert = "INSERT INTO profile (type, privacy_setting_id, photo_code, name, surname, dob, email, password) VALUES (0, 1, -1, '$firstname', '$lastname', '$birthdate', '$email', '$password') ";
 	if (!mysqli_query($mysqli ,$profile_insert)) {
 		echo "Could not insert entry into the profile table";
 		die("Error: " . mysqli_error($mysqli));
@@ -29,10 +18,10 @@
 
 	// Get the auto-incremented value from the profile entry and create a random hash
 	$profile_id = mysqli_insert_id($mysqli);
-	$hash = md5(rand(0, 1000));
+	$hash = sha1(rand(0, 1000));
 
 	// Add a new user table entry with the hash and the profile_id
-	$user_insert = "INSERT INTO user (profile_id, admin, verified, online, hash) VALUES (" . $profile_id . ", 99, 0, 99, '". $hash ."')";
+	$user_insert = "INSERT INTO user (profile_id, admin, verified, online, hash) VALUES (" . $profile_id . ", 0, 0, 0, '". $hash ."')";
 	if (!mysqli_query($mysqli, $user_insert)) {
 		echo "Could not insert entry into user table";
 		die("Error: " . mysqli_error());
