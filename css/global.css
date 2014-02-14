@@ -32,3 +32,41 @@
 .modal {
     overflow-y: hidden;
 }
+
+.searchbox {
+    width: 30%;
+    margin: 8px auto;
+}
+
+.navbar-right {
+    display: inline-block;
+    margin-top: -50px;
+}
+
+#search_results{
+    background-color: white;
+    width: 30%;
+    margin: 8px auto;
+    position: absolute;
+    border: 1px solid #3c8dbc;
+}
+
+.search_result {
+    display: block;
+    color: black;
+}
+
+.search_result .img-circle {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+}
+
+.search_result:hover {
+    background-color: #f4f4f4;
+    color: black;
+}
+
+.search_result span {
+    font-weight: bold;
+}

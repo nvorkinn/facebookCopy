@@ -33,3 +33,29 @@ function newCircle(){
             }
     });
 }
+
+function findPeople(term){
+    $.ajax({
+        type: "POST",
+        data: {"term": term},
+        url: "tools/find_people.php",
+        success: function (people_json) {
+            console.log(people_json);
+            people = JSON.parse(people_json);
+            
+            var position = $("#search_box").offset();
+            
+            $("#search_results").empty();
+            $("#search_results").css({top: (position.top + 27) + "px", left: (position.left - 220) + "px"});
+            $("#search_results").show("fast");
+            
+            // people[id].photo_code for correct avatar
+            for (id in people) {
+                $("#search_results").append("<a class='search_result' href='view_profile.php?id=" + id + "'>\
+                <img src='img/avatar3.png' class='img-circle' alt='User Image'>\
+                <span>" + people[id].name + "</span>\
+                </a>");
+            }
+        }
+    });
+}

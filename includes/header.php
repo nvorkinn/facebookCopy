@@ -4,6 +4,7 @@
 		<script>
 		$( document ).ready(function() {
 			var conn = connectToNotifServer();
+            var thread = null;
 			
 			conn.onmessage = function(e) {
 				console.log(e.data);
@@ -105,7 +106,17 @@
                         }
                     });
 			});
+            
+            $('#search_box').keyup(function() {
+                clearTimeout(thread);
+                var searchbox = $(this);
+                thread = setTimeout(function() { findPeople(searchbox.val()); }, 200); 
+            });
 			
+            $("body > :not(#search_results)").click(function(e) {
+                $("#search_results").hide("slow");
+            });
+            $("#search_results").hide();
 		});
 		</script>
 <?PHP
@@ -151,6 +162,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
+                
+                <input type="text" autocomplete="off" name="q" id="search_box" class="form-control searchbox" placeholder="Search...">
+                <div id="search_results"></div>
                 
                 <div class="navbar-right">
                 
