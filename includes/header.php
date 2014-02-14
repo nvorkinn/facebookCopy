@@ -1,4 +1,6 @@
-
+<?PHP
+	    require_once("includes/Modals.php");
+?>
 		<script>
 		$( document ).ready(function() {
 			var conn = connectToNotifServer();
@@ -24,18 +26,25 @@
 				}
 			};
 			
-			$(document.body).on( "click",".friend-notif-accept", function() {
-				$("#friend-request-response-modal").modal();
-			});
-			
-			$("#friend-request-accept").click(function() {
+			$(document.body).on( "click",".friend-notif-respond", function() {
 				var friend_hash = $(this).attr('id');
 				var activity_id = $(this).attr('data-activity-id');
+				
+				$("#friend-request-response-modal").modal();
+				$("#friend-request-accept").attr("data-activity-hash",friend_hash);
+				$("#friend-request-accept").attr("data-activity-id",activity_id);
+			});
+			
+			$(document.body).on( "click","#friend-request-accept", function() {
+				var friend_hash = $(this).attr('data-activity-hash');
+				var activity_id = $(this).attr('data-activity-id');
+
 				$.ajax({
                         type: "post",
                         data: {"action" : "acceptFriendRequest","friend_hash":friend_hash,"activity_id":activity_id},
                         url: "tools/protected/friend_utils.php",
                         success: function (response) {
+							alert(response);
 							if(response==1){
 								registerNotification(conn,friend_hash, "friendRequestAccepted");
 							}
@@ -55,7 +64,8 @@
 			});
 	
 			$("#general-notif-icon").click(function() {
-                    $.ajax({
+                    $("#general-notif-count").html('');
+					$.ajax({
                         type: "post",
                         data: {"type" : "2"},
                         url: "tools/protected/notif_utils.php",
@@ -69,6 +79,7 @@
 			
 				
 			$("#friend-request-icon").click(function() {
+					$("#friend-request-count").html('');
                     $.ajax({
                         type: "post",
                         data: {"type" : "0"},
@@ -291,53 +302,3 @@
             
         </header>
         
-		<!-- Friend Request Response Modal -->
-		<div class="modal fade bs-modal-sm" id="friend-request-response-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="friendRequestResponseModalHeader">Friend Request Response</h4>
-					</div>
-					<div class="modal-body">
-						<div class="btn-group btn-group-vertical btn-block">
-							<button type="button" class="btn btn-primary btn-lg" id="friend-request-accept" data-dismiss="modal" data-width="auto">
-								Accept
-							</button>
-							<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">
-								Ignore
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!-- Add to Circle Modal -->
-		<div class="modal fade" id="friend-circle-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="friendCircleModalHeader">Add Friend to Circle?</h4>
-					</div>
-					<div class="modal-body">
-						<div class="btn-group btn-group-vertical btn-block">
-							<div class="input-group">
-								<input id="new-circle-name" type="text" class="form-control" placeholder="Create new circle">
-								<span class="input-group-btn">
-									<button class="btn btn-default" id="new-circle-button" data-dismiss="modal" type="button">Create!</button>
-								</span>
-							</div><!-- /input-group -->
-							<a class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" href="#">
-								or add to existing
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu" id="existing_circles" data-dismiss="modal">
-								<!-- Here goes all existing circles -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>

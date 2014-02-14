@@ -29,7 +29,7 @@ if ($result = $mysqli->query($query)){
                                                     <img src="img/avatar.png" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4>
-													<div style="width:60px;float:right" class="friend-notif-accept" id="'.$row["hash"].'" data-activity-id="'.$row["activity_id"].'">
+													<div style="width:60px;float:right" class="friend-notif-respond" id="'.$row["hash"].'" data-activity-id="'.$row["activity_id"].'">
 														<button class="btn btn-default btn-block btn-sm">Respond	</button>
 													</div>'.
                                                     $row["name"].' '.$row["surname"].'
