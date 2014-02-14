@@ -44,7 +44,6 @@
                         data: {"action" : "acceptFriendRequest","friend_hash":friend_hash,"activity_id":activity_id},
                         url: "tools/protected/friend_utils.php",
                         success: function (response) {
-							alert(response);
 							if(response==1){
 								registerNotification(conn,friend_hash, "friendRequestAccepted");
 							}

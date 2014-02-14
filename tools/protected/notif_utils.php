@@ -3,7 +3,7 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
 
 $type=$_POST["type"];
 
-$query = "SELECT * FROM activity,profile,user,notification WHERE notification.activity_id=activity.id AND activity.type='$type' AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1) AND user.id=activity.from_user_id LIMIT 1".(($type == 0) ? "AND notification.seen=0" : "");
+$query = "SELECT * FROM activity,profile,user,notification WHERE notification.activity_id=activity.id AND activity.type='$type' AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1) AND user.id=activity.from_user_id LIMIT 1";
 
 if ($result = $mysqli->query($query)){
 		$str='';
