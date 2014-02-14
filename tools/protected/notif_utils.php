@@ -30,7 +30,7 @@ if ($result = $mysqli->query($query)){
                                                 </div>
                                                 <h4>
 													<div style="width:60px;float:right" class="friend-notif-accept" id="'.$row["hash"].'" data-activity-id="'.$row["activity_id"].'">
-														<button class="btn btn-default btn-block btn-sm">Accept	</button>
+														<button class="btn btn-default btn-block btn-sm">Respond	</button>
 													</div>'.
                                                     $row["name"].' '.$row["surname"].'
 													<div class="pull-left">
