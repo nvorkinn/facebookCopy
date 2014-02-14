@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.4.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 09, 2014 at 01:27 AM
+-- Generation Time: Feb 14, 2014 at 10:25 PM
 -- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- PHP Version: 5.5.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -39,10 +39,7 @@ CREATE TABLE IF NOT EXISTS `activity` (
   PRIMARY KEY (`id`),
   KEY `to_user_id` (`to_user_id`),
   KEY `from_user_id` (`from_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
-
-INSERT INTO `activity` (`id`, `from_user_id`, `to_user_id`, `type`, `sub_type`, `object_id`) VALUES
-(1, 2, 3, 0, 0, 0);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=95 ;
 
 -- --------------------------------------------------------
 
@@ -68,8 +65,9 @@ CREATE TABLE IF NOT EXISTS `circle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner_user_id` int(11) NOT NULL,
   `name` varchar(512) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `circle_ibfk_1` (`owner_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -118,10 +116,7 @@ CREATE TABLE IF NOT EXISTS `notification` (
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `target` (`target_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
-
-INSERT INTO `notification` (`id`, `activity_id`, `target_id`, `seen`) VALUES
-	(1, 1, 3, 0);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=91 ;
 
 -- --------------------------------------------------------
 
@@ -160,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `privacy_settings_id` (`privacy_settings_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -173,14 +168,7 @@ CREATE TABLE IF NOT EXISTS `privacy_setting` (
   `visible_to` int(11) NOT NULL,
   `name` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `privacy_setting`
---
-
-INSERT INTO `privacy_setting` (`id`, `visible_to`, `name`) VALUES
-(1, 0, 'Public');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -200,16 +188,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `password` varchar(512) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `privacy_settings_id` (`privacy_setting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `profile`
---
-
-INSERT INTO `profile` (`id`, `type`, `privacy_setting_id`, `photo_code`, `name`, `surname`, `dob`, `email`, `password`) VALUES
-(2, 0, 1, -1, 'Jay', 'Nanavati', '0000-00-00', 'jaysnanavati@hotmail.co.uk', '3831e9216d0a7b6d80ae1c1d8866dde36feca921'),
-(3, 0, 1, -1, 'Hay', 'Nanavati', '0000-00-00', 'hay@hay.com', 'b5853d3b1ce6ee58e7cfb13ddfbcc4587a6dc1b6'),
-(4, 0, 1, -1, 'Nik', 'Vorkinn', '2001-01-02', 'n.vorkinn@gmail.com', 'd99b6f33ea54c8d27bb39cc6d126299afcb4a9c7');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -218,7 +197,7 @@ INSERT INTO `profile` (`id`, `type`, `privacy_setting_id`, `photo_code`, `name`,
 --
 
 CREATE TABLE IF NOT EXISTS `relationship` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `activity_id` int(11) NOT NULL,
   `to_entity_id` int(11) NOT NULL,
   `privacy_setting_id` int(11) NOT NULL,
@@ -226,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `relationship` (
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `privacy_settings_id` (`privacy_setting_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 -- --------------------------------------------------------
 
@@ -244,16 +223,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   KEY `profile_id` (`profile_id`),
   KEY `profile_id_2` (`profile_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `profile_id`, `admin`, `verified`, `online`, `hash`) VALUES
-(1, 2, 0, 1, 1, '8bfd13cad0bc4b2ac41d9e235951e72c9b62c2aa'),
-(2, 3, 0, 1, 1, 'ebddd6b268d91849108444d7fc5c9941138e8ee0'),
-(3, 4, 0, 1, 1, 'hallo');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -264,6 +234,7 @@ INSERT INTO `user` (`id`, `profile_id`, `admin`, `verified`, `online`, `hash`) V
 CREATE TABLE IF NOT EXISTS `user_circle` (
   `user_id` int(11) NOT NULL,
   `circle_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`circle_id`),
   KEY `circle_id` (`circle_id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

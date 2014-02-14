@@ -21,6 +21,9 @@
             
         ?>
 
+        <link href="css/wall.css" rel="stylesheet" type="text/css" />
+        <script src="js/wall.js"></script>
+        
     </head>
 
 
@@ -94,8 +97,52 @@
 
                 <!-- Main content -->
                 <section class="content">
-
-                
+                    
+                    <div class="col-md-4 col-md-offset-4">
+                        
+                        <div class="row">
+                        
+                            <!-- Default box -->
+                            <div class="box status_update_box">
+                            
+                                <div class="box-body">
+                                    <input type="text" id="status_update" placeholder="What's on your mind?">
+                                </div><!-- /.box-body -->
+                                
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" id="post_button" onclick="postStatusUpdate();">Post</button>
+                                </div><!-- /.box-footer-->
+                                
+                            </div><!-- /.box -->
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-4 col-md-offset-4" id="posts_container">
+                    
+                        <?PHP
+                        
+                            if ($result = $mysqli->query("SELECT * FROM post WHERE user_id = " . $_SESSION["user_id"] . " AND deleted = 0 LIMIT 100")) {
+                                for ($i = 0; $i < $result->num_rows; $i++) {
+                                    $post = $result->fetch_object();
+                                    
+                                    echo "<div class='row'>
+                                              <div class='box box-primary'>
+                                                  <div class='box-body'>
+                                                      <p>" . $post->content . "</p>
+                                                  </div><!-- /.box-body -->
+                                                  <div class='box-footer'>
+                                                      <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
+                                                  </div><!-- /.box-footer-->
+                                              </div><!-- /.box -->
+                                          </div>";
+                                }                                
+                            }                            
+                        
+                        ?>
+                    
+                    </div>
 
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->

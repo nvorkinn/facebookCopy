@@ -1,0 +1,14 @@
+#status_update {
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+}
+
+#post_button {
+    position: relative;
+    right: 0px;
+}
+
+.box-footer {
+    text-align: right;
+}
