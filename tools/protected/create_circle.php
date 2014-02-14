@@ -4,7 +4,7 @@
 	$owner_id = $_SESSION["user_id"];
 	$circle_name = $_POST["circle_name"];
 	
-	$query = "INSERT INTO circle (user_owner_id, name) VALUES ($owner_id, '$circle_name')";
+	$query = "INSERT INTO circle (owner_user_id, name) VALUES ($owner_id, '$circle_name')";
 	
 	if (!$mysqli->query($query)) {
 		echo -1;	

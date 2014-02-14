@@ -5,7 +5,7 @@
 	$owner_id = $_SESSION["user_id"];
 	$member_id = $_POST["member_to_add"];
 	
-	$query = "INSERT INTO user_circle (user_id, circle_id) SELECT $member_id, id FROM circle WHERE name = '$circle_name'";
+	$query = "INSERT INTO user_circle (user_id, circle_id) '$owner_id'";
 	
 	if (!$mysqli->query($query)) {
 		echo "DB Error, could not add member to circle\n";

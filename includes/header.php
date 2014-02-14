@@ -113,8 +113,8 @@
                 		url: "tools/protected/create_circle.php",
                 		success: function (response) {
                 			if(response!=-1) {
-                				alert("Could not create circle");
-                			}
+								
+							}
                 		}
                 });
 			});
@@ -247,16 +247,12 @@
 								<li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu" id="general-notif-data">
-                                        
+											
                                     </ul>
                                 </li>
 							</ul>
                         </li>
-                        
-						
-						
-						
-                        
+                            
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
