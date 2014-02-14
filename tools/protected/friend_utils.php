@@ -36,6 +36,7 @@ if($action=="newFriendRequest"){
                 if($mysqli->query($query_activity)){
 					$notif = new Notification($mysqli->insert_id, $from, $to_entity_id);
                     $notif->save();
+					
 					echo 1;	
 				}else{
 					echo -1;

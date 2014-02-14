@@ -170,7 +170,7 @@
 <!-- header logo: style can be found in header.less -->
         <header class="header">
         
-            <a class="logo">Commy</a>
+            <a class="logo" href="#">Commy</a>
             
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
