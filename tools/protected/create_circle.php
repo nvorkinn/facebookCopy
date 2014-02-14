@@ -6,7 +6,11 @@
 	
 	$query = "INSERT INTO circle (owner_user_id, name) VALUES ($owner_id, '$circle_name')";
 	
-	if (!$mysqli->query($query)) {
-		echo -1;	
+	if ($mysqli->query($query)) {
+		echo $mysqli->insert_id;
 	}
+    else {
+        echo -1;
+    }
+    
 ?>

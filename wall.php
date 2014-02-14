@@ -6,13 +6,13 @@
     
          <?PHP 
         
-            require("includes/html-includes.php"); 
             require("includes/php-includes.php"); 
             
             if(!isset($_SESSION["user_id"])){
                 header("location: index.php");
             }
-            
+        
+            require("includes/html-includes.php");     
             
             if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = " . $_SESSION["user_id"] . ") LIMIT 1"))
             {

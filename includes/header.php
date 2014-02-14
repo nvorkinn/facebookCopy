@@ -59,6 +59,7 @@
                 		}
                 });
                 $("#friend-circle-modal").modal();
+				$("#friend-circle-modal").attr("data-activity-hash",friend_hash);
 
 			});
 	
@@ -103,37 +104,6 @@
 							}
                         }
                     });
-			});
-			
-			$("#new-circle-button").click(function() {
-				var circle_name = $("#new-circle-name").val();
-                $.ajax({
-                		type: "post",
-						data: {"circle_name":circle_name},
-                		url: "tools/protected/create_circle.php",
-                		success: function (response) {
-                			if(response!=-1) {
-								
-							}
-                		}
-                });
-			});
-			
-			$("#existing_circles la a").click(function(){
-				alert("got in");
-				var value = $(this).text();
-				var friend = $(this).attr('id');
-				$("#existing_circles la a").on("add_to_circle", function(event, member_id){
-				    value = member_id;
-				});
-				$.ajax({
-					type: "post",
-					data: {"circle_name": value, "member_to_add": friend},
-					url: "tools/protected/add_to_circle.php",
-					success: function (response) {
-						//something
-					}
-				});
 			});
 			
 		});

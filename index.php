@@ -6,12 +6,13 @@
     
          <?PHP 
      
-            require("includes/html-includes.php"); 
             require("includes/php-includes.php"); 
             
             if(isset($_SESSION["user_id"])){
                 header("location: wall.php");
             }
+            
+            require("includes/html-includes.php"); 
             
         ?>
 

@@ -1,7 +1,7 @@
 <?PHP
 	require_once($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
 	
-	$query = "SELECT name FROM circle WHERE owner_user_id=".$_SESSION["user_id"];
+	$query = "SELECT id, name FROM circle WHERE owner_user_id=".$_SESSION["user_id"];
 	
 	if ($result = $mysqli->query($query)) {
 		$str='';
@@ -18,7 +18,7 @@
 	function generateNotifItems($row,$str){
 		
 		$option = '';
-		$option = '<li><a tabindex="-1" href="#">'.$row["name"].'</a></li>';
+		$option = '<li><a tabindex="-1" href="#" onclick="addToCircle(' . $row["id"] . ');">' . $row["name"] . '</a></li>';
 		
 		return $str.$option;
 	}
