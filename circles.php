@@ -113,7 +113,7 @@
 						alert("Could not create new circle!");
 					}
 					else {
-						var newCircle = $("<div class='panel panel-primary' style='display:none;'><div class='panel-heading'>"+circleName+"<button type='button' class='close' aria-hidden='true'>&times;</button></div><div class='panel-body container circle' id="+response+"></div></div>");
+						var newCircle = $("<div class='panel panel-primary' style='display:none;'><div class='panel-heading'>"+circleName+"<button type='button' class='close delete-circle' aria-hidden='true'>&times;</button></div><div class='panel-body container circle' id="+response+"></div></div>");
 						newCircle.appendTo("#circles");
 						$(".container").trigger("ss-rearrange");
 						newCircle.slideDown("slow");
@@ -122,7 +122,7 @@
 			});
 		});
 	
-		$(".close").click(function(e) {
+		$(".delete-circle").click(function(e) {
 			var parentPanel = $(this).parent().parent();
 			var circle = parentPanel.find(".circle").eq(0);
 			var circleId = circle.attr("id");
@@ -311,7 +311,7 @@
 								<!-- Initiate Circles -->
 								<?PHP
 								$circle_query = "SELECT id, name FROM circle WHERE owner_user_id = $user_id";
-	
+								$circles = array();
 								if ($circle_result = $mysqli->query($circle_query)) {
 									while ($row = $circle_result->fetch_assoc()) {
 										$circles[] = array("circle_id" => $row["id"], "circle_name" => $row["name"]);
@@ -323,7 +323,7 @@
 										echo "<div class='panel panel-primary'>";
 										echo "<div class='panel-heading'>";
 										echo $circle_name;
-										echo "<button type='button' class='close' aria-hidden='true'>&times;</button>";
+										echo "<button type='button' class='close delete-circle' aria-hidden='true'>&times;</button>";
 										echo "</div><div class='panel-body container circle' id='$circle_id'>";
 										$member_query = "SELECT hash, name, surname FROM user, profile, user_circle WHERE user_circle.circle_id = $circle_id AND user.id = user_circle.user_id AND user.profile_id = profile.id";
 										if ($member_result = $mysqli->query($member_query)) {
