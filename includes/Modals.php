@@ -69,7 +69,20 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" id="existing_circles" data-dismiss="modal">
-                        <!-- Here goes all existing circles -->
+                        <!-- Here goes all existing circles -->	
+						<?PHP
+						$user_id = $_SESSION["user_id"];
+						$circle_query = "SELECT id, name FROM circle WHERE owner_user_id = $user_id";
+						if ($circle_result = $mysqli->query($circle_query)) {
+							while ($row = $circle_result->fetch_assoc()) {
+								echo "<li>";
+								echo "<a tabindex='-1' href='#' onclick='addToCircle(".$row["id"].");'>";
+								echo $row["name"];
+								echo "</a>";
+								echo "</li>";
+							}
+						}
+						?>				
                     </ul>
                 </div>
             </div>

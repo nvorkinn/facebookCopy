@@ -41,24 +41,15 @@
 				var activity_id = $(this).attr('data-activity-id');
 
 				$.ajax({
-                        type: "post",
-                        data: {"action" : "acceptFriendRequest","friend_hash":friend_hash,"activity_id":activity_id},
-                        url: "tools/protected/friend_utils.php",
-                        success: function (response) {
-							if(response==1){
-								registerNotification(conn,friend_hash, "friendRequestAccepted");
-							}
-                        }
-                    });
-                $.ajax({
-                		type: "post",
-                		url: "tools/protected/get_circles.php",
-                		success: function (response) {
-                			if(response!=-1) {
-                				$("#existing_circles").html(response);
-                			}
-                		}
-                });
+					type: "post",
+					data: {"action" : "acceptFriendRequest","friend_hash":friend_hash,"activity_id":activity_id},
+					url: "tools/protected/friend_utils.php",
+					success: function (response) {
+						if(response==1){
+							registerNotification(conn,friend_hash, "friendRequestAccepted");
+						}
+					}
+				});
                 $("#friend-circle-modal").modal();
 				$("#friend-circle-modal").attr("data-activity-hash",friend_hash);
 
