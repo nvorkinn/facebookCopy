@@ -14,8 +14,7 @@
             
             require("includes/html-includes.php");
             require("includes/Modals.php"); 	
-            
-            
+			
             if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = " . $_SESSION["user_id"] . ") LIMIT 1"))
             {
                 $profile = $result->fetch_object();
@@ -25,7 +24,8 @@
         
         <link href="css/profile.css" rel="stylesheet" type="text/css" />
         <script src="js/profile.js"></script>
-
+		<script>
+		</script>
     </head>
 
 
@@ -103,20 +103,28 @@
             
                 <div class="row centered">
                 
-                    <div class="user-header cover">
+					<?PHP
+					$cover_url="url('";
+					if($profile->cover_photo_id!=NULL){
+							if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->cover_photo_id LIMIT 1")){
+								$row= $result->fetch_assoc();
+								$cover_url=$cover_url.$row['photo_url']."')";
+							}
+						}
+					
+                    echo '<div class="user-header cover" style="background:'.$cover_url.';background-size:100% auto">
                         <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-						<p class="user-name">
-                            <?PHP
+						<p class="user-name">';
                 
                                 if (isset($profile)) {
                                     echo $profile->name . " " . $profile->surname;
                                 }
-                
-                            ?>
-                        </p>
+               
+                      echo '</p>
 						<button id="cover-photo-btn" class="btn btn-default" data-toggle="modal" data-target="#photoUploadModal">Change cover photo</button>
 						
-                    </div>
+                    </div>';
+					?>
                     
                 </div>
                 

@@ -23,7 +23,7 @@
 
         <div class="form-box" id="login-box">
         
-            <div class="header">Sign In</div>
+            <div class="header">Register</div>
             
             <form action="#" method="post" id="registration-form">
             
@@ -36,11 +36,7 @@
                     <div class="form-group">
                         <input type="text" name="lastname" class="form-control" placeholder="Surname"/>
                     </div>
-                    
-                    <div class="form-group">
-                        <input type="text" name="email" id="email" class="form-control" placeholder="E-mail"/>
-                    </div>
-                    
+                                        
                     <div class="form-group">
                         <input type="text" name="email" id="reenteremail" class="form-control" placeholder="E-mail"/>
                     </div>
@@ -94,8 +90,8 @@
                                 type: "POST",
                                 url: "tools/register.php",
                                 data: $("#registration-form").serialize(),
-                                success: function () {
-                                    window.location = "index.php";
+                                success: function (data) {
+									window.location = "index.php";
                                 }
                             });
                             

@@ -9,7 +9,7 @@
 			<span class="btn btn-success fileinput-button" id="addFiles">
                <i class="glyphicon glyphicon-plus"></i>
                <span>Add files...</span>
-               <input id="fileupload" type="file" name="files[]" multiple>
+               <input id="fileupload" type="file" name="files[]" data-photoType="cover-photo" multiple>
             </span>
             <br>
             <br>

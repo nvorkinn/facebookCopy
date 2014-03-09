@@ -156,16 +156,28 @@ $(function () {
                     .prop('href', file.url);
                 $(data.context.children()[index])
                     .wrap(link);
-					setTimeout(function () {
-						location.reload();
-					}, 1000);
+								
             } else if (file.error) {
                 var error = $('<span class="text-danger"/>').text(file.error);
                 $(data.context.children()[index])
                     .append('<br>')
                     .append(error);
             }
-        });
+        });		
+		//Record file
+				$.ajax({
+                                type: "POST",
+                                url: "tools/protected/record_file.php",
+                                data: {"photo-type": $('#fileupload').attr("data-photoType"),"files":data.result.files},
+                                success: function (response) {
+									alert(response);
+                                    console.log(response);
+                                }
+                            });
+
+		setTimeout(function () {
+						location.reload();
+					}, 1000);
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index, file) {
             var error = $('<span class="text-danger"/>').text('File upload failed.');

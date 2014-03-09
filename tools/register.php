@@ -1,16 +1,17 @@
 <?PHP
-
+	
 	require_once ($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
-
+	require_once ($_SERVER['DOCUMENT_ROOT'].'/tools/protected/AzureStorageService.php');
+			
 	// Get and escape values of web page fields
 	$email = mysqli_real_escape_string($mysqli, $_POST["email"]);
 	$firstname = mysqli_real_escape_string($mysqli, $_POST["firstname"]);
 	$lastname = mysqli_real_escape_string($mysqli, $_POST["lastname"]);
 	$birthdate = mysqli_real_escape_string($mysqli, $_POST["birthdate"]);
 	$password = sha1(mysqli_real_escape_string($mysqli, $_POST["password"]));
-
+	
 	// Use fields to create a new entry in the profile table
-	$profile_insert = "INSERT INTO profile (type, privacy_setting_id, photo_code, name, surname, dob, email, password) VALUES (0, 1, -1, '$firstname', '$lastname', '$birthdate', '$email', '$password') ";
+	$profile_insert = "INSERT INTO profile (type, privacy_setting_id, name, surname, dob, email, password) VALUES (0, 1,'$firstname', '$lastname', '$birthdate', '$email', '$password') ";
 	if (!mysqli_query($mysqli ,$profile_insert)) {
 		echo "Could not insert entry into the profile table";
 		die("Error: " . mysqli_error($mysqli));
@@ -26,7 +27,11 @@
 		echo "Could not insert entry into user table";
 		die("Error: " . mysqli_error());
 	}
-
+	
+	//Create a new Azure container for the user
+	$azure_ss = new AzureStorageService();
+	$azure_ss->create_user_container($hash);
+	
 	// Send email verification message to user with hash
 	$subject = "FacebookCopy | Profile Verification";
 	$message = "

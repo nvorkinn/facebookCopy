@@ -1,0 +1,1 @@
+INSERT INTO photo (user_id,photo_url,privacy_setting_id) VALUES (7, 'http://fbcopymedia.blob.core.windows.net/49e3d046636e06b2d82ee046db8e6eb9a2e11e16/WIN_20140107_143834 (51).JPG',1)
