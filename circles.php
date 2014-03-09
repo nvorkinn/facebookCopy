@@ -272,6 +272,8 @@
 										OR to_user_id = $user_id
 									)
 								)";
+								
+								$friends = array();
 								if ($friend_result = $mysqli->query($friend_query)) {
 									while ($row = $friend_result->fetch_assoc()) {
 										$friends[] = array("hash" => $row["hash"], "name" => $row["name"], "surname" => $row["surname"]);
@@ -288,7 +290,7 @@
 									}
 								}
 								else {
-									echo "Members not available";
+									echo "Oops! it looks like you don't have any friends yet...";
 								}
 								?>
 							</div>

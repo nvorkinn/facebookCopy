@@ -92,3 +92,11 @@ input {
         outline: none;
     }
 }
+
+.message-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left:56px;
+  margin-top:-10px;
+}
