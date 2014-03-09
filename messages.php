@@ -126,7 +126,7 @@
                                     </div><!-- /.item -->
                                     <!-- chat item -->
                                     <div class="item">
-                                        <img src="img/avatar2.png" alt="user image" class="offline"/>
+                                        <img src="img/avatar2.png" alt="user image" class="offline" style="opacity:0.5"/>
                                         <p class="message">
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
@@ -142,7 +142,7 @@
                                     <!-- chat item -->
                                     <div class="item" >
 									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
+                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
                                         <p class="message">
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
@@ -159,7 +159,7 @@
 								<div class="item">
 									
 									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
+                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
                                         <p class="message">
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
@@ -176,7 +176,7 @@
 								<div class="item">
 									
 									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
+                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
                                         <p class="message">
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
@@ -306,13 +306,9 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-comments-o"></i> Chat</h3>
                                     <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                                        <div class="btn-group" data-toggle="btn-toggle" >
-                                            <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>                                            
-                                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="box-body chat" id="chat-box">
+                                <div class="box-body chat" id="chat-box" style="height:445px;overflow-x:hidden;">
                                     <!-- chat item -->
                                     <div class="item">
                                         <img src="img/avatar.png" alt="user image" class="online"/>
@@ -342,6 +338,32 @@
                                             <a href="#" class="name">
                                                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
                                                 Jane Doe
+                                            </a>
+                                            I would like to meet you to discuss the latest news about
+                                            the arrival of the new theme. They say it is going to be one the
+                                            best themes on the market
+                                        </p>
+                                    </div><!-- /.item -->
+                                    <!-- chat item -->
+                                    <div class="item">
+                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
+                                        <p class="message">
+                                            <a href="#" class="name">
+                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
+                                                Susan Doe
+                                            </a>
+                                            I would like to meet you to discuss the latest news about
+                                            the arrival of the new theme. They say it is going to be one the
+                                            best themes on the market
+                                        </p>
+                                    </div><!-- /.item -->
+                                    <!-- chat item -->
+                                    <div class="item">
+                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
+                                        <p class="message">
+                                            <a href="#" class="name">
+                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
+                                                Susan Doe
                                             </a>
                                             I would like to meet you to discuss the latest news about
                                             the arrival of the new theme. They say it is going to be one the
