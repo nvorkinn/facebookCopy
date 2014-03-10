@@ -6,13 +6,13 @@
     
          <?PHP 
         
-            require("includes/php-includes.php"); 
+            require_once("includes/php-includes.php"); 
             
             if(!isset($_SESSION["user_id"])){
                 header("location: index.php");
             }
             
-            require("includes/html-includes.php"); 
+            require_once("includes/html-includes.php");
             
 			$user_id=$_SESSION["user_id"];
 			
@@ -61,7 +61,6 @@
 										echo $row["name"];
 									}
 								}
-            
         ?>
 
     </head>
@@ -275,7 +274,7 @@
          <div class="modal-body" id="modalbody" style="padding-bottom:50px;">
 			<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-group"></i></span>
-                <input type="text" class="form-control" placeholder="send a private message , group message or message to an entire circle">
+                <input type="text" id="message_recipients" class="form-control" placeholder="send a private message , group message or message to an entire circle">
             </div>
 			 <div class="form-group" style="margin-top:8px;">
               <label>Message:</label>
@@ -289,7 +288,121 @@
    </div>
 </div>
 
+
 		
+	<script>
+                        
+                $( document ).ready(function() {
+					
+                    $(function () {
+					
+						function split( val ) {
+							return val.split( /,\s*/ );
+						}
+						function extractLast( term ) {
+							return split( term ).pop();
+						
+						}
+						
+						//Get all the friends if they exist
+							 $.ajax({
+										type: "post",
+										url: "tools/protected/circle_utils.php",
+										data: {"action":"get_all_friends_from_all_circles"},
+										success: function (response) {
+											if(response!=-1) {
+											var friends = $.parseJSON(response);
+											for(var i=0; i<friends.length; i++){
+												friends[i]["label"]=friends[i]["name"]+" "+friends[i]["surname"];
+												friends[i]["category"]="Friends";
+											}
+											
+														
+									//Get all circles if they exist
+                            $.ajax({
+								type: "post",
+								url: "tools/protected/circle_utils.php",
+								data: {"action":"get_all_circles"},
+								success: function (response) {
+									if(response!=-1) {
+									response = response.split("\"circle_name\":").join("\"label\":");
+									var circles = $.parseJSON(response);
+									
+									for(var i=0; i<circles.length; i++){
+										circles[i]["category"]="Circles";
+									}
+									
+									var data= friends.concat(circles);
+									
+									$.widget( "custom.catcomplete", $.	ui.autocomplete, {
+										_renderMenu: function( ul, items ) {
+										  var that = this,
+											currentCategory = "";
+										  $.each( items, function( index, item ) {
+											if ( item.category != currentCategory ) {
+											  ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+											  currentCategory = item.category;
+											}
+											that._renderItemData( ul, item );
+										  });
+										}
+									  });
+									
+									
+									 // don't navigate away from the field on tab when selecting an item
+									  $( "#message_recipients" ).bind( "keydown", function( event ) {
+										if ( event.keyCode === $.ui.keyCode.TAB &&
+											$( this ).data( "ui-autocomplete" ).menu.active ) {
+										  event.preventDefault();
+										}
+									  }).catcomplete({
+										 delay: 0,
+										 source: function( request, response ) {
+											  // delegate back to autocomplete, but extract the last term
+											  response( $.ui.autocomplete.filter(
+												data, extractLast( request.term ) ) );
+											},
+											 focus: function() {
+												// prevent value inserted on focus
+												return false;
+											},
+											select: function( event, ui ) {
+												  var terms = split( this.value );
+												  // remove the current input
+												  terms.pop();
+												  // add the selected item
+												  terms.push( ui.item.value );
+												  // add placeholder to get the comma-and-space at the end
+												  terms.push( "" );
+												  this.value = terms.join( ", " );
+												  return false;
+												},
+											change: function (ev, ui) {
+													if (!ui.item) {
+														$(this).val('');
+													}else{
+														this.value= this.value.substring(0, this.value.length-2);
+													}
+												}
+
+									});
+									$( "#message_recipients" ).catcomplete( "option", "appendTo", ".eventInsForm" );
+									}
+								}
+							});
+											}
+										}
+									});
+
+                    });
+                });
+                
+            </script>
+		
+		<style>
+		.ui-helper-hidden-accessible { display:none;}
+		</style>
+
     </body>
 
 

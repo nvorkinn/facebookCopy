@@ -59,6 +59,50 @@
 		else {
 			echo -1;
 		}
+	}else if($action== "get_all_circles"){
+
+			$circle_query = "SELECT id, name FROM circle WHERE owner_user_id = $owner_id";
+								$circles = array();
+								if ($circle_result = $mysqli->query($circle_query)) {
+									while ($row = $circle_result->fetch_assoc()) {
+										$circles[] = array("circle_name" => $row["name"],"circle_id" => $row["id"]);
+									}
+								}		
+								if(count($circles)!=0){
+									echo json_encode($circles);
+								}else{
+									echo -1;
+								}
+	}else if($action=="get_all_friends_from_all_circles"){
+		$friend_query = "SELECT DISTINCT hash, name, surname 
+									FROM user, profile
+								WHERE user.profile_id = profile.id
+								AND user.id
+								IN (
+									SELECT 
+									CASE WHEN  from_user_id = $owner_id
+									THEN  to_user_id 
+									ELSE  from_user_id 
+									END 
+									FROM activity, relationship
+									WHERE relationship.activity_id = activity.id
+									AND (
+										from_user_id = $owner_id
+										OR to_user_id = $owner_id
+									)
+								)";
+								
+								$friends = array();
+								if ($friends_result = $mysqli->query($friend_query)) {
+									while ($row = $friends_result->fetch_assoc()) {
+										$friends[] = array("name" => $row["name"], "surname" => $row["surname"],"hash" => $row["hash"]);
+									}
+								}		
+								if(count($friends)!=0){
+									echo json_encode($friends);
+								}else{
+									echo -1;
+								}
 	}
 
 ?>
