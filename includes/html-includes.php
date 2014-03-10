@@ -170,7 +170,6 @@ $(function () {
                                 url: "tools/protected/record_file.php",
                                 data: {"photo-type": $('#fileupload').attr("data-photoType"),"files":data.result.files},
                                 success: function (response) {
-									alert(response);
                                     console.log(response);
                                 }
                             });

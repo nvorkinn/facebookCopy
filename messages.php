@@ -14,11 +14,53 @@
             
             require("includes/html-includes.php"); 
             
-            
-            if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = " . $_SESSION["user_id"] . ") LIMIT 1"))
+			$user_id=$_SESSION["user_id"];
+			
+            if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id =$user_id) LIMIT 1"))
             {
                 $profile = $result->fetch_object();
             }
+			
+			//Get all messages
+								
+								$message_query = "SELECT DISTINCT hash,user.id, name, surname 
+									FROM user, profile,message
+								WHERE user.profile_id = profile.id
+								AND user.id
+								IN (
+									SELECT 
+									CASE WHEN  from_user_id = $user_id
+									THEN  to_user_id 
+									ELSE  from_user_id 
+									END 
+									FROM activity, message
+									WHERE message.activity_id = activity.id
+									AND (
+										from_user_id = $user_id
+										OR to_user_id = $user_id
+									)
+								)";
+								$message_count=0;
+								$message_string;
+							
+								if ($result = $mysqli->query($message_query)) {
+									while ($row = $result->fetch_assoc()) {
+										$message_count=$message_count+1;
+										$from_name=$row=['name'];
+										$from_surname=$row['surname'];
+										$message_string=$message_string.'<div class="item">
+                                        <img src="img/avatar2.png" alt="user image" class="offline"/>
+                                        <p class="message">
+                                            <a href="#" class="name">
+                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
+												'.$from_name.' '.$from_surname.'
+                                            </a>'.
+											$message_text.'
+                                        </p>
+                                    </div>';
+										echo $row["name"];
+									}
+								}
             
         ?>
 
@@ -105,196 +147,17 @@
                             <div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-envelope"></i> Messages</h3>
-									
+									<a class="btn btn-app" style="float:right;" data-toggle="modal" data-target="#messageModal">
+                                        <i class="fa fa-plus"></i> New message
+                                    </a>		
 								</div>
                                 <div class="box-body chat" id="chat-box" style="max-height:500px;overflow-x:hidden;">
-                                    
-								<!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar.png" alt="user image" class="online"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                                Mike Doe
-                                            </a>
-											<div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>                                      
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar2.png" alt="user image" class="offline" style="opacity:0.5"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                                Jane Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item" >
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline" style="opacity:0.5"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-								<div class="item">
-									
-									
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            <div class="message-text">
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-											</div>
-                                        </p>
-                                    </div><!-- /.item -->
-                                
-                                
-                                
-								
+                                    <?PHP if($message_count==0){
+										echo '<span style="text-align:center"><p>You have no messages</p></span>';
+									}else{
+										echo $message_string;
+									}
+									?>
 								</div><!-- /.chat -->
                                 
                             </div><!-- /.box (chat box) -->
@@ -400,6 +263,33 @@
             
         </div><!-- ./wrapper -->
 
+		
+
+		<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModal" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Send a new message</h4>
+         </div>
+         <div class="modal-body" id="modalbody" style="padding-bottom:50px;">
+			<div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-group"></i></span>
+                <input type="text" class="form-control" placeholder="send a private message , group message or message to an entire circle">
+            </div>
+			 <div class="form-group" style="margin-top:8px;">
+              <label>Message:</label>
+              <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+             </div>
+         </div>
+         <div class="modal-footer" style="margin-top:-45px;">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveButton">Send</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+		
     </body>
 
 

@@ -88,20 +88,20 @@
 			$(".logo").click(function() {
                     $.ajax({
                         type: "post",
-                        data: {"action" : "newFriendRequest", "to_user_id" : "2"},
+                        data: {"action" : "newFriendRequest", "to_user_id" : "8"},
                         url: "tools/protected/friend_utils.php",
                         success: function (response) {
                             if(response == 1){
-								registerNotification(conn,"ebddd6b268d91849108444d7fc5c9941138e8ee0", "newFriendRequest");
+								registerNotification(conn,"f04b1d726c615672552fa5116aa5b958d8d41676", "newFriendRequest");
 							}
                         }
                     });
 			});
             
             $('#search_box').keyup(function() {
-                clearTimeout(thread);
+				clearTimeout(thread);
                 var searchbox = $(this);
-                thread = setTimeout(function() { findPeople(searchbox.val()); }, 200); 
+                thread = setTimeout(function() { 	(searchbox.val()); }, 200); 
             });
 			
             $("body > :not(#search_results)").click(function(e) {
@@ -146,15 +146,8 @@
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
             
-                <!-- Sidebar toggle button-->
-                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
                 
-                <input type="text" autocomplete="off" name="q" id="search_box" class="form-control searchbox" placeholder="Search...">
+                <input type="text" autocomplete="off" name="q" id="search_box" class="form-control searchbox"  placeholder="Search..." style="margin-left:16px;">
                 <div id="search_results"></div>
                 
                 <div class="navbar-right">
