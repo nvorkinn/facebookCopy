@@ -65,7 +65,7 @@
 								$circles = array();
 								if ($circle_result = $mysqli->query($circle_query)) {
 									while ($row = $circle_result->fetch_assoc()) {
-										$circles[] = array("circle_name" => $row["name"],"circle_id" => $row["id"]);
+										$circles[] = array("id" => $row["id"],"name" => $row["name"]);
 									}
 								}		
 								if(count($circles)!=0){
@@ -74,7 +74,7 @@
 									echo -1;
 								}
 	}else if($action=="get_all_friends_from_all_circles"){
-		$friend_query = "SELECT DISTINCT hash, name, surname 
+		$friend_query = "SELECT DISTINCT user.id,hash, name, surname 
 									FROM user, profile
 								WHERE user.profile_id = profile.id
 								AND user.id
@@ -95,7 +95,7 @@
 								$friends = array();
 								if ($friends_result = $mysqli->query($friend_query)) {
 									while ($row = $friends_result->fetch_assoc()) {
-										$friends[] = array("name" => $row["name"], "surname" => $row["surname"],"hash" => $row["hash"]);
+										$friends[] = array( "id" => $row["id"],"hash" => $row["hash"],"name" => $row["name"],"surname" => $row["surname"]);
 									}
 								}		
 								if(count($friends)!=0){

@@ -3,7 +3,7 @@
 
 
     <head>
-    
+	
          <?PHP 
         
             require_once("includes/php-includes.php"); 
@@ -62,7 +62,9 @@
 									}
 								}
         ?>
-
+ 	<script type="text/javascript" src="js/jquery.tokeninput.js"></script>
+	<link rel="stylesheet" href="css/token-input-facebook.css" type="text/css" />
+	<link rel="stylesheet" href="css/token-input.css" type="text/css" />
     </head>
 
 
@@ -146,7 +148,7 @@
                             <div class="box box-primary">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-envelope"></i> Messages</h3>
-									<a class="btn btn-app" style="float:right;" data-toggle="modal" data-target="#messageModal">
+									<a class="btn btn-app" style="float:right;" id="new_message_btn">
                                         <i class="fa fa-plus"></i> New message
                                     </a>		
 								</div>
@@ -166,85 +168,14 @@
 							<!-- Chat box -->
                             <div class="box box-success">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-comments-o"></i> Chat</h3>
-                                    <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                                    </div>
+                                    <h3 class="box-title" style="width:100%"><i class="fa fa-comments-o"></i><span id="chat-box-title"> Chat</span></h3>
+                                    
+									<div class="input-group" id="message_recipients" style="margin-left:10px">
+										<span class="input-group-addon"><i class="fa fa-group"></i></span>
+										<input type="text" id="recipients_entry" class="form-control">
+									</div>							
                                 </div>
-                                <div class="box-body chat" id="chat-box" style="height:445px;overflow-x:hidden;">
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar.png" alt="user image" class="online"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                                Mike Doe
-                                            </a>
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-                                        </p>
-                                        <div class="attachment">
-                                            <h4>Attachments:</h4>
-                                            <p class="filename">
-                                                Theme-thumbnail-image.jpg
-                                            </p>
-                                            <div class="pull-right">
-                                                <button class="btn btn-primary btn-sm btn-flat">Open</button>
-                                            </div>
-                                        </div><!-- /.attachment -->
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar2.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                                Jane Doe
-                                            </a>
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-                                        </p>
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-                                        </p>
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-                                        </p>
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Susan Doe
-                                            </a>
-                                            I would like to meet you to discuss the latest news about
-                                            the arrival of the new theme. They say it is going to be one the
-                                            best themes on the market
-                                        </p>
-                                    </div><!-- /.item -->
+                                <div class="box-body chat" id="chat-box" style="height:445px;overflow-x:hidden;">		
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
@@ -256,36 +187,9 @@
                                 </div>
                             </div><!-- /.box (chat box) -->
 						</div>
-
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
-            
         </div><!-- ./wrapper -->
-
-		
-
-		<!-- Modal -->
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModal" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Send a new message</h4>
-         </div>
-         <div class="modal-body" id="modalbody" style="padding-bottom:50px;">
-			<div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-group"></i></span>
-                <input type="text" id="message_recipients" class="form-control" placeholder="send a private message , group message or message to an entire circle">
-            </div>
-			 <div class="form-group" style="margin-top:8px;">
-              <label>Message:</label>
-              <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-             </div>
-         </div>
-         <div class="modal-footer" style="margin-top:-45px;">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveButton">Send</button>
-         </div>
-      </div>
-   </div>
 </div>
 
 
@@ -293,116 +197,91 @@
 	<script>
                         
                 $( document ).ready(function() {
+					var friends_list=[];
+					var circles_list=[];
+											
+					$("#message_recipients").hide();
+					
+					$("#new_message_btn").click(function() {
+						$("#chat-box-title").html(" New message");
+						$("#message_recipients").show();
+					});
 					
                     $(function () {
-					
-						function split( val ) {
-							return val.split( /,\s*/ );
-						}
-						function extractLast( term ) {
-							return split( term ).pop();
-						
-						}
-						
-						//Get all the friends if they exist
+								
+							 //Get all the friends if they exist
 							 $.ajax({
 										type: "post",
 										url: "tools/protected/circle_utils.php",
 										data: {"action":"get_all_friends_from_all_circles"},
 										success: function (response) {
-											if(response!=-1) {
-											var friends = $.parseJSON(response);
-											for(var i=0; i<friends.length; i++){
-												friends[i]["label"]=friends[i]["name"]+" "+friends[i]["surname"];
-												friends[i]["category"]="Friends";
+											if(response==-1) {
+												return;
 											}
 											
-														
-									//Get all circles if they exist
-                            $.ajax({
-								type: "post",
-								url: "tools/protected/circle_utils.php",
-								data: {"action":"get_all_circles"},
-								success: function (response) {
-									if(response!=-1) {
-									response = response.split("\"circle_name\":").join("\"label\":");
-									var circles = $.parseJSON(response);
-									
-									for(var i=0; i<circles.length; i++){
-										circles[i]["category"]="Circles";
-									}
-									
-									var data= friends.concat(circles);
-									
-									$.widget( "custom.catcomplete", $.	ui.autocomplete, {
-										_renderMenu: function( ul, items ) {
-										  var that = this,
-											currentCategory = "";
-										  $.each( items, function( index, item ) {
-											if ( item.category != currentCategory ) {
-											  ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-											  currentCategory = item.category;
-											}
-											that._renderItemData( ul, item );
-										  });
-										}
-									  });
-									
-									
-									 // don't navigate away from the field on tab when selecting an item
-									  $( "#message_recipients" ).bind( "keydown", function( event ) {
-										if ( event.keyCode === $.ui.keyCode.TAB &&
-											$( this ).data( "ui-autocomplete" ).menu.active ) {
-										  event.preventDefault();
-										}
-									  }).catcomplete({
-										 delay: 0,
-										 source: function( request, response ) {
-											  // delegate back to autocomplete, but extract the last term
-											  response( $.ui.autocomplete.filter(
-												data, extractLast( request.term ) ) );
-											},
-											 focus: function() {
-												// prevent value inserted on focus
-												return false;
-											},
-											select: function( event, ui ) {
-												  var terms = split( this.value );
-												  // remove the current input
-												  terms.pop();
-												  // add the selected item
-												  terms.push( ui.item.value );
-												  // add placeholder to get the comma-and-space at the end
-												  terms.push( "" );
-												  this.value = terms.join( ", " );
-												  return false;
-												},
-											change: function (ev, ui) {
-													if (!ui.item) {
-														$(this).val('');
-													}else{
-														this.value= this.value.substring(0, this.value.length-2);
+											var friends = $.parseJSON(response);
+											for(var i=0; i<friends.length; i++){	
+												friends[i]["first_name"]=friends[i]["name"];
+												friends[i]["name"]=friends[i]["name"]+" "+friends[i]["surname"];
+												friends[i]["category"]="friends";
+											}	
+												
+											//Get all circles if they exist
+												$.ajax({
+													type: "post",
+													url: "tools/protected/circle_utils.php",
+													data: {"action":"get_all_circles"},
+													success: function(data){
+														var circles = $.parseJSON(data);
+														for(var i=0; i<circles.length; i++){
+															circles[i]["name"]="Circle: "+circles[i]["name"];														
+															circles[i]["category"]="circles";
+														}
+														var result = friends.concat(circles);	
+														data_show(result);
+													} 
+												});
+																								
+											
+											function data_show (data) {		
+												
+												$("#recipients_entry").tokenInput(data, {
+													searchDelay: 0,
+													theme: "facebook",
+													hintText: "send a private message , group message or message to an entire circle",
+													noResultsText: "No matches",
+													searchingText: "Searching...",
+													preventDuplicates: true,
+													animateDropdown: false,
+													onAdd: function (item) {
+														if(item.category=="friends"){
+															friends_list.push(item);
+														}else if(item.category=="circles"){
+															circles_list.push(item);
+														}
+													},
+													onDelete: function (item) {
+														if(item.category=="friends"){
+															var index= friends_list.indexOf(item);															 
+															if (index != -1) {
+																friends_list.splice(index, 1);		
+															}
+														}
+														else if(item.category=="circles"){
+															var index= circles_list.indexOf(item);															 
+															if (index != -1) {
+																circles_list.splice(index, 1);		
+															}
+														}
 													}
-												}
-
-									});
-									$( "#message_recipients" ).catcomplete( "option", "appendTo", ".eventInsForm" );
-									}
-								}
-							});
+												});
 											}
 										}
-									});
-
+								});
+							});
                     });
-                });
-                
             </script>
-		
-		<style>
-		.ui-helper-hidden-accessible { display:none;}
-		</style>
-
+	
     </body>
 
 
