@@ -13,5 +13,13 @@
     if($mysqli->connect_errno > 0) {
         die("Unable to connect to database [" . $mysqli->connect_error . "]");
     }
+	
+	//Register a shutdown function to turn autocommit on after each script
+	function shutdown()
+	{
+		global $mysqli;
+		$mysqli->autocommit(TRUE);
+	}
+	register_shutdown_function('shutdown');
 
 ?>

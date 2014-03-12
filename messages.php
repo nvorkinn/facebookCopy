@@ -179,9 +179,9 @@
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
-                                        <input class="form-control" placeholder="Type message..."/>
+                                        <input class="form-control" id="message_text" placeholder="Type message..."/>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                            <button class="btn btn-success" id="message_send_btn"><i class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -207,6 +207,29 @@
 						$("#message_recipients").show();
 					});
 					
+					     $('#message_send_btn').attr('disabled','disabled');
+						 $('#message_text').keyup(function() {
+							if($(this).val() != '' && (friends_list.length!=0 || circles_list.length!=0)) {
+							   $('#message_send_btn').removeAttr('disabled');
+							}else{
+								$('#message_send_btn').attr('disabled','disabled');
+							}
+						 });
+					
+					
+					$("#message_send_btn").click(function() {
+						var message_text = $("#message_text").val();
+						var friends_str = JSON.stringify(friends_list);
+						var circles_str = JSON.stringify(circles_list);
+						$.ajax({
+							type: "post",
+							url: "tools/protected/message_utils.php",
+							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text},
+							success: function(data){
+									
+							} 
+						});							
+					});
                     $(function () {
 								
 							 //Get all the friends if they exist
@@ -259,6 +282,7 @@
 														}else if(item.category=="circles"){
 															circles_list.push(item);
 														}
+														$('#message_send_btn').removeAttr('disabled');
 													},
 													onDelete: function (item) {
 														if(item.category=="friends"){
@@ -272,6 +296,11 @@
 															if (index != -1) {
 																circles_list.splice(index, 1);		
 															}
+														}
+														if(friends_list.length==0 && circles_list.length==0){
+															$('#message_send_btn').attr('disabled','disabled');
+														}else{
+															$('#message_send_btn').removeAttr('disabled');
 														}
 													}
 												});
