@@ -1,6 +1,6 @@
 <?PHP
 
-    require ($_SERVER["DOCUMENT_ROOT"] . "/vendor/autoload.php");
+    require ("vendor/autoload.php");
     require_once("NotificationManager.php");
 
     use Ratchet\Server\IoServer;

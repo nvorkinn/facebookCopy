@@ -1,6 +1,6 @@
 <?PHP
 
-    require_once($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
+    require_once("../includes/php-includes.php");
 
     $data = array();
     $data["exists"] = false;

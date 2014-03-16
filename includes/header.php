@@ -101,7 +101,7 @@
             $('#search_box').keyup(function() {
 				clearTimeout(thread);
                 var searchbox = $(this);
-                thread = setTimeout(function() { 	(searchbox.val()); }, 200); 
+                thread = setTimeout(function() { 	findPeople(searchbox.val()); }, 200); 
             });
 			
             $("body > :not(#search_results)").click(function(e) {

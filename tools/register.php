@@ -1,7 +1,7 @@
 <?PHP
 	
-	require_once ($_SERVER["DOCUMENT_ROOT"] . "/includes/php-includes.php");
-	require_once ($_SERVER['DOCUMENT_ROOT'].'/tools/protected/AzureStorageService.php');
+    require_once("../includes/php-includes.php");
+	require_once ("protected/AzureStorageService.php");
 			
 	// Get and escape values of web page fields
 	$email = mysqli_real_escape_string($mysqli, $_POST["email"]);
