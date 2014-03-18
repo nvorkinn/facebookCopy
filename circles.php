@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html>
 
-
 <head>
 
 	<?PHP 
@@ -23,86 +22,221 @@
 	}
             
 	?>
-	<script type="text/javascript" src="js/plugins/shapeshift/core/jquery.shapeshift.js"></script>
+
 	<style>
-	.container {
-		position: relative;
-		width: 100%;
+	
+	#friends {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		width: 450px;
 	}
-
-	.container > div {
+	
+	#friends li {
+		margin: 3px 3px 3px 0;
+		padding: 1px;
+		float: left;
+		width: 150px;
 		height: 140px;
-		position: absolute;
-		width: 130px;
-		padding: 15px;
-		border: 1px dashed #ccc;
-		border-radius: 5px;
+		text-align: center;
 	}
 	
-	.container > div[data-ss-colspan='2'] { width: 170px; }
-
-	.container .ss-placeholder-child {
-		background: transparent;
-		border: 1px dashed red;
-	}
-	
-	.friends-container {
-		position: relative;
+	.thumbnail {
 		width: 100%;
-	}
-
-	.friends-container > div {
-		height: 140px;
-		position: absolute;
-		width: 130px;
-		padding: 15px;
-		border: 1px dashed #ccc;
-		border-radius: 5px;
+		height: 100%;
 	}
 	
-	.friends-container > div[data-ss-colspan='2'] { width: 170px; }
-
-	.friends-container .ss-placeholder-child {
-		background: transparent;
-		border: 1px dashed red;
+	.thumbnail .caption {
+		padding: 5px;
 	}
+	
+	#circles {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.outer-circle {
+		margin: 10px 10px 10px 0;
+		border-radius:100px;
+		-moz-border-radius:100px;
+		-webkit-border-radius:100px;
+		background: #ececec;
+		width: 125px;
+		height: 125px;
+		border:1px solid #b8b8b8;
+		text-align: center;
+		position: relative;
+		float: left;
+	}
+	
+	.circle {
+		border-radius:100px;
+		-moz-border-radius:100px;
+		-webkit-border-radius:100px;
+		margin:auto;
+		margin-top: 11.5px;
+		background: #428bca;
+		width: 100px;
+		height: 100px;
+		border: 1px solid #35719b;
+		-moz-box-shadow: inset -1px 1px -1px #3f87b9;
+		-webkit-box-shadow: inset -1px 1px -1px #3f87b9;
+		box-shadow: inset -1px 1px -1px #3f87b9;
+		line-height: 200px;
+	    color:#eee;
+	    text-align:center;
+	}
+	
+	.circle-label {
+		font: 13px arial;
+		margin: 0 auto;
+		display: table-cell;
+		vertical-align: middle;
+		width: 100px;
+		height: 100px;
+		text-align: center;
+		color: #fff;
+ 
+	}
+	
+	.circle-label .member-no {
+		font-size: 20px;
+	}
+	
+	.circle-label-rotate {
+		-webkit-animation-name: spin;
+		-moz-animation-name: spin;
+		-ms-animation-name: spin;
+		-o-animation-name: spin;
+		animation-name: spin;
+		
+		-webkit-animation-duration: 2s;
+		-moz-animation-duration: 2s;
+		-ms-animation-duration: 2s;
+		-o-animation-duration: 2s;
+		animation-duration: 2s;
+  
+		-webkit-animation-iteration-count: infinite;
+		-moz-animation-iteration-count: infinite;
+		-ms-animation-iteration-count: infinite;
+		-o-animation-iteration-count: infinite;
+		animation-iteration-count: infinite;
+		
+		
+		-webkit-animation-timing-function:ease-in;
+		-moz-animation-timing-function:ease-in;
+		-ms-animation-timing-function:ease-in;
+		-o-animation-timing-function:ease-in;
+		animation-timing-function:ease-in;
+	}
+	
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@-moz-keyframes spin {
+	  0% { -moz-transform: rotate(0deg); }
+	  100% { -moz-transform: rotate(360deg); }
+	}
+
+	@-ms-keyframes spin {
+	  0% { -ms-transform: rotate(0deg); }
+	  100% { -ms-transform: rotate(360deg); }
+	}
+
+	@-o-keyframes spin {
+	  0% { -o-transform: rotate(0deg); }
+	  100% { -o-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}  
+	
+	.popover {
+		width: 300px;
+	}
+	
+	.circle-buttons {
+		padding: 0 0 0 0;
+	}
+	
+	.form-control {
+	  padding-right: 30px;
+	}
+
+	.form-control + .glyphicon {
+	  position: absolute;
+	  right: 0;
+	  padding: 8px 40px;
+	}
+	
 	</style>
 
-	<script type="text/javascript" >
+	<script type="text/javascript">
 
-	$(document).ready(function() {
-	
-		$(".container").shapeshift({animateOnInit:true, colWidth:130});
-		$(".friends-container").shapeshift({animateOnInit:true, dragClone:true, enableCrossDrop:false});
+	$(function() {
 		
-		$(".circle").on("ss-added", function(e, selected) {
-			var userHash = $(selected).attr("id");
-			if ($(this).children("#"+userHash).length > 1) {
-				$(selected).remove();
-				$(".container").trigger("ss-rearrange");
+		$(".friend").draggable({
+			helper: "clone",
+			stack: ".friend",
+			revert: function(droppable) {
+				// Revert if not dropped in droppable area
+				if (!droppable) {
+					return true;
+				}
+				// Revert if friend is already in circle
+				else if (droppable.find("li#" + $(this).attr("id")).length > 0) {
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
-			else {
-				$.ajax({
-					type: "post",
-					url: "tools/protected/circle_utils.php",
-					data: {"action":"add_to_circle", "circle_id":$(this).attr("id"), "member_to_add":userHash},
-					success: function (response) {
-						if(response==-1) {
-							alert("Could not add member to circle!");
-							alert(response);
-						}
+		});
+		
+		$(".outer-circle").droppable();
+		
+		$("body").on("drop", ".outer-circle", function(event, ui) {
+			var circle = $(this);
+			$.ajax({
+				type: "post",
+				url: "tools/protected/circle_utils.php",
+				data: {"action":"add_to_circle", "circle_id":circle.attr("id"), "member_to_add":$(ui.draggable).attr("id")},
+				success: function (response) {
+					if (response == 1) {
+						var list = circle.find("ul.list-group");
+						var userHash = $(ui.draggable).attr("id");
+						var userName = $(ui.draggable).text();
+						circle.find(".member-no").fadeOut(200, function() {
+							$(this).text(parseInt(circle.find(".member-no").text()) + 1);
+							$(this).fadeIn(200);
+						});
+						list.append("<li class='list-group-item friend' id='"+userHash+"'>"+userName+"<button type='button' class='close delete-user' aria-hidden='true'>&times;</button></li>");
 					}
-				});
-			}
+					else {
+						alert("Could not add member to circle!");
+						alert(response);
+					}
+						
+				}
+			});
 		});
 		
-		$(".circle").on("ss-removed", function(e, selected) {
-			var circleId = $(this).attr("id");
-			var userHash = $(selected).attr("id");
-			deleteUserFromCircle(circleId, userHash);
-		});
+		$("#circles").popover({
+			html: true,
+			placement: "top",
+			selector: ".outer-circle",
+			content: function() {
+				return $(this).children(".hidden").html();
+			}
+		});	
 	
-		$("#new_circle").click(function(e){
+		$("#new-circle").click(function(e){
+			e.preventDefault();
 			var circleName = $("#new_circle_name").val();
 			$.ajax({
 				type: "post",
@@ -113,53 +247,95 @@
 						alert("Could not create new circle!");
 					}
 					else {
-						var newCircle = $("<div class='panel panel-primary' style='display:none;'><div class='panel-heading'>"+circleName+"<button type='button' class='close delete-circle' aria-hidden='true'>&times;</button></div><div class='panel-body container circle' id="+response+"></div></div>");
-						newCircle.appendTo("#circles");
-						$(".container").trigger("ss-rearrange");
-						newCircle.slideDown("slow");
+						$("<li style='display: none;' class='outer-circle' id="+response+" data-placement='above' title='Circle Members'><div class='hidden' style='display:none;'><div class='hidden-content' id="+response+"><ul class='list-group'></ul><div class='btn-group btn-group-justified'><div class='btn-group'><button class='btn btn-primary rename-circle' type='button'>Rename</button></div><div class='btn-group'><button class='btn btn-danger delete-circle' type='button'>Delete</button></div></div><div class='input-group' style='display:none'><input type='text' class='form-control rename-name' placeholder='New circle name...'><span class='input-group-btn'><button class='btn btn-default rename-button' type='button'>Rename</button></span></div></div></div><div class='circle'><div class='circle-label'><div class='member-no'>0</div><br>"+circleName+"</div></div></li>").appendTo($("#circles")).show("slide", {direction: "left"}, 600);
+						$(".outer-circle").droppable();
 					}
 				}
 			});
 		});
-	
-		$(".delete-circle").click(function(e) {
-			var parentPanel = $(this).parent().parent();
-			var circle = parentPanel.find(".circle").eq(0);
-			var circleId = circle.attr("id");
+
+		$("body").on("click", ".delete-circle", function() {
+			$(this).closest(".popover").toggle().remove();
+			var circleId = $(this).closest("div.hidden-content").attr("id");
 			$.ajax({
 				type: "post",
 				url: "tools/protected/circle_utils.php",
 				data: {"action":"delete_circle", "circle_id":circleId}
 			});
-			parentPanel.hide("slow", function() {parentPanel.remove();});
+			var circle = $("body").find("li.outer-circle#"+circleId);
+			circle.find(".circle-label").addClass("circle-label-rotate");
+			circle.animate({"bottom":"50px"},200).animate({"bottom":"0px"}, 150, function(){
+				circle.animate({"opacity":"0","left":"510px"}, 1000, "easeInQuad", function() {
+					circle.animate({width: "0px"}, 600, function() {
+						circle.remove();
+					});
+				});
+			});
+		});
+		
+		$("body").on("click", ".rename-circle", function() {
+			$(this).closest("div.hidden-content").children("div.input-group").show("slide", {direction: "up"}, 600);
+		});
+		
+		$("body").on("click", ".rename-button", function() {
+			var circleId = $(this).closest("div.hidden-content").attr("id");
+			var newCircleName = $(this).closest(".input-group").find(".rename-name").val();
+			$.ajax({
+				type: "post",
+				url: "tools/protected/circle_utils.php",
+				data: {"action": "rename_circle", "circle_id": circleId, "new_circle_name": newCircleName}
+			});
+			$("#circles").find("li.outer-circle#" + circleId).find(".circle-name").fadeOut(200, function() {
+				$(this).text(newCircleName);
+				$(this).fadeIn(200);
+			});
+			$(this).closest("div.input-group").hide("slide", {direction: "up"}, 600);
+		});
+		
+		$("body").on("click", ".delete-user", function() {
+			var circleId = $(this).closest("div.hidden-content").attr("id");
+			var friend = $(this).closest(".friend");
+			var userHash = friend.attr("id");
+			$.ajax({
+				type: "post",
+				url: "tools/protected/circle_utils.php",
+				data: {"action":"delete_user_from_circle", "circle_id": circleId, "member_to_delete": userHash},
+				success: function(response) {
+					if (response == 1) {
+						friend.hide("slide", {direction: "left"}, 500, function() {
+							$(this).remove();
+						});
+						var circle = $("body").find(".outer-circle#" + circleId);
+						circle.find(".friend#" + userHash).remove();
+						circle.find(".member-no").fadeOut(200, function() {
+							$(this).text(parseInt($(this).text()) - 1);
+							$(this).fadeIn(200);
+						});
+					}
+				}
+			});
 		});
 		
 		$("#search").on("input", function(ev) {
-			ev.preventDefault();
-			var regex = new RegExp($(this).val(), "i");
-			$("#friends").find(".friend").each(function() {
-				if ($(this).find("b").first().text().search(regex) < 0) {
-					$(this).hide();
-				}
-				else {
-					$(this).show();
-				}
-			});
-			$(".friends-container").trigger("ss-rearrange");
+			var filter = $(this).val();
+			if (filter) {
+				var regex = new RegExp(filter, "i");
+				$("#friends").children("li").each(function() {
+					if (regex.test($(this).text())) {
+						$(this).fadeIn(200);
+					}
+					else {
+						$(this).fadeOut(200);
+					}
+				});
+			}
+			else {
+				$("#friends li").fadeIn(200);
+			}
 		});
-		
-		$("#reset").click(function() {
-			$("#search").val("");
-		});
+
 	});
 
-	function deleteUserFromCircle(circleId, userHash) {
-		$.ajax({
-			type: "post",
-			url: "tools/protected/circle_utils.php",
-			data: {"action":"delete_user_from_circle", "circle_id":circleId, "member_to_delete":userHash}
-		});
-	}
 	</script>
 </head>
 
@@ -240,19 +416,12 @@
 							<div class="panel-heading clearfix">
 								<h3 class="panel-title pull-left" style="padding-top: 7.5px;">Friends</h3>
 								<div class="col-sm-3 col-md-3 pull-right">
-									<form class="form" role="search">
-										<div class="input-group">
-											<input type="search" class="form-control" placeholder="Search" id="search">
-											<div class="input-group-btn" id="reset">
-												<button class="btn btn-default" type="submit">
-													<i class="glyphicon glyphicon-remove"></i>
-												</button>
-											</div>
-										</div>
-									</form>
+									<input type="search" class="form-control" placeholder="Search" id='search' />
+									<span class="glyphicon glyphicon-search"></span>
 								</div>
 							</div>
-							<div class="panel-body friends-container" id="friends">
+							<div class="panel-body" id="friends-panel">
+								<ul id="friends">
 								<!-- Initiate members -->
 								<?PHP
 								$friend_query = "SELECT DISTINCT hash, name, surname 
@@ -280,19 +449,21 @@
 									}
 								}
 								if($friends) {
-								
 									foreach($friends as $friend) {
 										extract($friend);
-										echo "<div class='friend text-center' id='$hash'>";
+										echo "<li class='friend' id='$hash' data-id='$hash'>";
+										echo "<div class='thumbnail text-center'>";
 										echo "<img class='img' src='img/user.jpg' id='img$hash' draggable='false'>";
-										echo "<div class='caption'><b>".ucwords($name." ".$surname)."</b></div>";
+										echo "<div class='caption'><strong>".ucwords($name." ".$surname)."</strong></div>";
 										echo "</div>";
+										echo "</li>";
 									}
 								}
 								else {
 									echo "Oops! it looks like you don't have any friends yet...";
 								}
 								?>
+								</ul>
 							</div>
 						</div>
 						<div class="panel panel-default">
@@ -303,13 +474,14 @@
 										<div class="input-group">
 											<input type="text" class="form-control" placeholder="Circle Name" id="new_circle_name">
 											<div class="input-group-btn">
-												<button class="btn btn-primary" type="submit" id="new_circle">Add Circle</button>
+												<button class="btn btn-primary" type="submit" id="new-circle">Add Circle</button>
 											</div>
 										</div>
 									</form>
 								</div>
 							</div>
-							<div class="panel-body" id="circles">
+							<div class="panel-body">
+								<ul id="circles">
 								<!-- Initiate Circles -->
 								<?PHP
 								$circle_query = "SELECT id, name FROM circle WHERE owner_user_id = $user_id";
@@ -322,23 +494,43 @@
 								if ($circles) {
 									foreach ($circles as $circle) {
 										extract($circle);
-										echo "<div class='panel panel-primary'>";
-										echo "<div class='panel-heading'>";
-										echo $circle_name;
-										echo "<button type='button' class='close delete-circle' aria-hidden='true'>&times;</button>";
-										echo "</div><div class='panel-body container circle' id='$circle_id'>";
 										$member_query = "SELECT hash, name, surname FROM user, profile, user_circle WHERE user_circle.circle_id = $circle_id AND user.id = user_circle.user_id AND user.profile_id = profile.id";
 										if ($member_result = $mysqli->query($member_query)) {
+											echo "<li class='outer-circle' id='$circle_id' data-placement='above' title='Circle Members'>";
+											echo "<div class='hidden' style='display:none;'>";
+											echo "<div class='hidden-content' id='$circle_id'>";
+											echo "<ul class='list-group'>";
+											$member_no = 0;
 											while ($row = $member_result->fetch_assoc()) {
+												$member_no++;
 												extract($row);
-												echo "<div class='text-center' id='$hash'>";
-												echo "<img class='img' src='img/user.jpg' id='img$hash' draggable='false'>";
-												echo "<div class='caption'><b>".ucwords($name." ".$surname)."</b></div>";
-												echo "</div>";
+												echo "<li class='list-group-item list-group-item-info friend' id='$hash'>";
+												echo ucwords($name." ".$surname);
+												echo "<button type='button' class='close delete-user' aria-hidden='true'>&times;</button>";
+												echo "</li>";
 											}
+											echo "</ul>";
+											echo "<div class='btn-group btn-group-justified'>";
+											echo "<div class='btn-group'>";
+											echo "<button class='btn btn-primary rename-circle' type='button'>Rename</button>";
+											echo "</div>";
+											echo "<div class='btn-group'>";
+											echo "<button class='btn btn-danger delete-circle' type='button'>Delete</button>";
+											echo "</div>";
+											echo "</div>";
+						                    echo "<div class='input-group' style='display:none'>";
+											echo "<input type='text' class='form-control rename-name' placeholder='New circle name...'>";
+											echo "<span class='input-group-btn'>";
+											echo "<button class='btn btn-default rename-button' type='button'>";
+											echo "Rename";
+											echo "</button></span></div>";
+											echo "</div>";
+											echo "</div>";
+											echo "<div class='circle'><div class='circle-label'>";
+											echo "<div class='member-no'>".$member_no."</div><br>";
+											echo "<span class='circle-name'>".$circle_name."</span></div></div>";
+											echo "</li>";
 										}
-										echo "</div>"; //Panel body
-										echo "</div>"; //Panel
 									}
 								}
 								?>
