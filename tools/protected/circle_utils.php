@@ -31,6 +31,20 @@
 			echo -1;
 		}
 	}
+	else if ($action == "rename_circle") {
+		
+		$circle_id = $_POST["circle_id"];
+		$new_circle_name = $_POST["new_circle_name"];
+		
+		$query = "UPDATE circle SET name='$new_circle_name' WHERE id = $circle_id";
+		
+		if ($mysqli->query($query)) {
+			echo 1;	
+		}
+		else {
+			echo -1;
+		}
+	}
 	else if ($action == "add_to_circle") {
 	
 		$circle_id = $_POST["circle_id"];
