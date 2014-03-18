@@ -91,6 +91,12 @@
                                 <i class="fa"></i> <span>Profile</span>
                             </a>
                         </li>
+                        
+                        <li>
+                            <a href="activity.php">
+                                <i class="fa"></i> <span>Activity log</span>
+                            </a>
+                        </li>
                     </ul>
                     
                 </section>
