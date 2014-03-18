@@ -1,9 +1,9 @@
 <?PHP
-	    require_once("includes/Modals.php");
+	    require_once("Modals.php");
 ?>
 		<script>
 		$( document ).ready(function() {
-			var conn = connectToNotifServer();
+			conn = connectToNotifServer();
             var thread = null;
 			
 			conn.onmessage = function(e) {
@@ -84,19 +84,6 @@
                     });
 			});
 			
-			
-			$(".logo").click(function() {
-                    $.ajax({
-                        type: "post",
-                        data: {"action" : "newFriendRequest", "to_user_id" : "8"},
-                        url: "tools/protected/friend_utils.php",
-                        success: function (response) {
-                            if(response == 1){
-								registerNotification(conn,"f04b1d726c615672552fa5116aa5b958d8d41676", "newFriendRequest");
-							}
-                        }
-                    });
-			});
             
             $('#search_box').keyup(function() {
 				clearTimeout(thread);

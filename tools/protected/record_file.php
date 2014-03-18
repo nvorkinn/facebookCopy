@@ -1,6 +1,6 @@
 <?php
-    require_once("../includes/php-includes.php");
-    require_once ("protected/AzureStorageService.php");
+    require_once("../../includes/php-includes.php");
+    require_once ("AzureStorageService.php");
 
     $photo_type= $_POST["photo-type"];
     $files = $_POST["files"];

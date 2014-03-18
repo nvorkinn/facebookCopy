@@ -26,10 +26,14 @@
                 $user_profile = $result->fetch_object();
             }
             
+            $currentUserId = $mysqli->real_escape_string($_GET["id"]);
+            
         ?>
         
         <link href="css/profile.css" rel="stylesheet" type="text/css" />
-        <script src="js/profile.js"></script>
+        <script src="js/view_profile.js"></script>
+        
+        <script>var currentUserId = <?PHP echo $currentUserId; ?>;</script>
 
     </head>
 
@@ -119,7 +123,33 @@
                 
                             ?>
                         </p>
-						
+                        
+                        <?PHP
+                        
+                            // Check relationship status between logged in user and current user
+                            $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
+                            
+                            if ($result->num_rows != 0) // Friends already
+                            {
+                                echo "<button id='add-friend-btn' class='btn btn-default' disabled>Already your friend!</button>";
+                            }
+                            else
+                            {
+                                // Check if request sent but not answered
+                                $result = $mysqli->query("SELECT * FROM activity WHERE type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
+                                
+                                if ($result->num_rows != 0)
+                                {
+                                    echo "<button id='add-friend-btn' class='btn btn-default' disabled>Friend request sent!</button>";
+                                }
+                                else
+                                {
+                                    echo "<button id='add-friend-btn' class='btn btn-default'>Add as friend</button>";
+                                }
+                            }
+                            
+                        ?>
+                        
                     </div>
                     
                 </div>
@@ -269,25 +299,53 @@
                             
                                 <?PHP
                                 
-                                    if ($result = $mysqli->query("SELECT name, surname FROM profile"))
+                                    $friends = array();
+                                    
+                                    // Get friending activities that already caused a relationship
+                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0");
+                                    
+                                    // For every friending in which the user was involved, add the other person to the array
+                                    for ($i = 0; $i < $result->num_rows; $i++)
                                     {
-                                        for ($i = 0; $i < $result->num_rows; $i++)
-                                        {
-                                            $friend = $result->fetch_object();
-                                            
-                                            echo "
-                                            \n
-                                            <div class='small-box bg-green friend centered'>
-                                                <div class='inner'>
-                                                    <img src='img/avatar3.png' class='img-circle' alt='User Image' />
-                                                    <p class='user-name'>
-                                                        " . $friend->name . " " . $friend->surname . "
-                                                    </p>
-                                                </div>
-                                            </div>\n\n";
-                                        }
+                                        $activity = $result->fetch_object();
                                         
-                                        $result->close();
+                                        if ($activity->from_user_id == $currentUserId)
+                                        {
+                                            array_push($friends, $activity->to_user_id);
+                                        }
+                                        else
+                                        if ($activity->to_user_id == $currentUserId)
+                                        {
+                                            array_push($friends, $activity->from_user_id);
+                                        }
+                                    }
+                                    
+                                    // Make sure there are no duplicates
+                                    $friends = array_unique($friends);
+                                    $keys = array_keys($friends);
+                                    
+                                    // Create a card for each friend
+                                    for ($i = 0; $i < count($keys); $i++)
+                                    {
+                                        $friend = $mysqli->query("SELECT * FROM user WHERE id = " . $friends[$keys[$i]] . " LIMIT 1")->fetch_object();
+                                        
+                                        $profile = $mysqli->query("SELECT * FROM profile WHERE id = $friend->profile_id LIMIT 1")->fetch_object();
+                                        
+                                        echo "
+                                        \n
+                                        <div class='small-box bg-green friend centered'>
+                                            <div class='inner'>
+                                                <img src='img/avatar3.png' class='img-circle' alt='User Image' />
+                                                <a class='user-name' href='view_profile.php?id=$friend->id'>
+                                                    " . $profile->name . " " . $profile->surname . "
+                                                </a>
+                                            </div>
+                                        </div>\n\n";
+                                    }
+                                    
+                                    if (count($keys) == 0)
+                                    {
+                                        echo "Here is where you friends would be. If you had any that is.";
                                     }
                                 
                                 ?>

@@ -1,6 +1,6 @@
 <?PHP
 
-    require_once("../includes/php-includes.php");
+    require_once("../../includes/php-includes.php");
 	
 	$owner_id = $_SESSION["user_id"];
 	$action = $_POST["action"];

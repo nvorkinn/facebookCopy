@@ -1,6 +1,6 @@
 <?PHP
 
-    require_once("../includes/php-includes.php");
+    require_once("../../includes/php-includes.php");
 
     $friends_to=json_decode($_POST["friends_to"]);
     $circles_to=json_decode($_POST["circles_to"]);

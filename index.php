@@ -35,10 +35,6 @@
                     
                     <div class="form-group">
                         <input type="password" name="login-password" class="form-control" placeholder="Password"/>
-                    </div>          
-                    
-                    <div class="form-group">
-                        <input type="checkbox" name="remember_me"/> Remember me
                     </div>
                     
                 </div>

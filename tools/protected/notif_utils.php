@@ -1,5 +1,5 @@
 <?PHP
-    require_once("../includes/php-includes.php");
+    require_once("../../includes/php-includes.php");
 
     $type=$_POST["type"];
 

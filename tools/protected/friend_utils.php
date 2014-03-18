@@ -1,5 +1,5 @@
 <?PHP
-    require_once("../includes/php-includes.php");
+    require_once("../../includes/php-includes.php");
     require_once("Notification.php");
       
     $action= $_POST["action"];

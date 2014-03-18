@@ -104,26 +104,26 @@
                 <div class="row centered">
                 
 					<?PHP
-					$cover_url="url('";
-					if($profile->cover_photo_id!=NULL){
-							if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->cover_photo_id LIMIT 1")){
-								$row= $result->fetch_assoc();
-								$cover_url=$cover_url.$row['photo_url']."')";
-							}
-						}
-					
-                    echo '<div class="user-header cover" style="background:'.$cover_url.';background-size:100% auto">
-                        <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-						<p class="user-name">';
-                
-                                if (isset($profile)) {
-                                    echo $profile->name . " " . $profile->surname;
+                        $cover_url="url('";
+                        if($profile->cover_photo_id!=NULL){
+                                if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->cover_photo_id LIMIT 1")){
+                                    $row= $result->fetch_assoc();
+                                    $cover_url=$cover_url.$row['photo_url']."')";
                                 }
-               
-                      echo '</p>
-						<button id="cover-photo-btn" class="btn btn-default" data-toggle="modal" data-target="#photoUploadModal">Change cover photo</button>
-						
-                    </div>';
+                            }
+                        
+                        echo '<div class="user-header cover" style="background:'.$cover_url.';background-size:100% auto">
+                            <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                            <p class="user-name">';
+                    
+                                    if (isset($profile)) {
+                                        echo $profile->name . " " . $profile->surname;
+                                    }
+                   
+                          echo '</p>
+                            <button id="cover-photo-btn" class="btn btn-default" data-toggle="modal" data-target="#photoUploadModal">Change cover photo</button>
+                            
+                        </div>';
 					?>
                     
                 </div>
@@ -274,25 +274,53 @@
                             
                                 <?PHP
                                 
-                                    if ($result = $mysqli->query("SELECT name, surname FROM profile"))
+                                    $friends = array();
+                                    
+                                    // Get friending activities that already caused a relationship
+                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0");
+                                    
+                                    // For every friending in which the user was involved, add the other person to the array
+                                    for ($i = 0; $i < $result->num_rows; $i++)
                                     {
-                                        for ($i = 0; $i < $result->num_rows; $i++)
-                                        {
-                                            $friend = $result->fetch_object();
-                                            
-                                            echo "
-                                            \n
-                                            <div class='small-box bg-green friend centered'>
-                                                <div class='inner'>
-                                                    <img src='img/avatar3.png' class='img-circle' alt='User Image' />
-                                                    <p class='user-name'>
-                                                        " . $friend->name . " " . $friend->surname . "
-                                                    </p>
-                                                </div>
-                                            </div>\n\n";
-                                        }
+                                        $activity = $result->fetch_object();
                                         
-                                        $result->close();
+                                        if ($activity->from_user_id == $_SESSION["user_id"])
+                                        {
+                                            array_push($friends, $activity->to_user_id);
+                                        }
+                                        else
+                                        if ($activity->to_user_id == $_SESSION["user_id"])
+                                        {
+                                            array_push($friends, $activity->from_user_id);
+                                        }
+                                    }
+                                    
+                                    // Make sure there are no duplicates
+                                    $friends = array_unique($friends);
+                                    $keys = array_keys($friends);
+                                    
+                                    // Create a card for each friend
+                                    for ($i = 0; $i < count($keys); $i++)
+                                    {
+                                        $friend = $mysqli->query("SELECT * FROM user WHERE id = " . $friends[$keys[$i]] . " LIMIT 1")->fetch_object();
+                                        
+                                        $profile = $mysqli->query("SELECT * FROM profile WHERE id = $friend->profile_id LIMIT 1")->fetch_object();
+                                        
+                                        echo "
+                                        \n
+                                        <div class='small-box bg-green friend centered'>
+                                            <div class='inner'>
+                                                <img src='img/avatar3.png' class='img-circle' alt='User Image' />
+                                                <a class='user-name' href='view_profile.php?id=$friend->id'>
+                                                    " . $profile->name . " " . $profile->surname . "
+                                                </a>
+                                            </div>
+                                        </div>\n\n";
+                                    }
+                                    
+                                    if (count($keys) == 0)
+                                    {
+                                        echo "Here is where you friends would be. If you had any that is.";
                                     }
                                 
                                 ?>

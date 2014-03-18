@@ -4,6 +4,12 @@
 	margin-right:23px;
 }
 
+#add-friend-btn
+{
+	float:right;
+	margin-right:23px;
+}
+
 #avatar
 {
     margin-top: 50px;
@@ -86,4 +92,9 @@ table input
 .invalid-password
 {
         box-shadow: 0 1px 0 red inset, 0 -1px 0 red inset, 1px 0 0 red inset, -1px 0 0 red inset, 0 0 4px rgba(255, 0, 0,0.5);    
+}
+
+.user-name
+{
+    display: block;
 }
