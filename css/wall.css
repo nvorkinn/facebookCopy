@@ -12,3 +12,22 @@
 .box-footer {
     text-align: right;
 }
+
+li {
+    list-style-type: none;
+}
+
+#privacy-select
+{
+    width: 20%;
+    float: right;
+    margin: 0.5em;
+}
+
+#privacy-setting-span
+{
+    text-weight: bold;
+    margin-top: 1.0em;
+    margin-right: 1.0em;
+    float: right;
+}

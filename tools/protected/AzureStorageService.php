@@ -1,14 +1,14 @@
 <?php
 
-    require_once ("../../vendor/autoload.php");
-     
+    require_once ("../vendor/autoload.php");
+    
     use WindowsAzure\Common\ServicesBuilder;
     use WindowsAzure\Blob\Models\CreateContainerOptions;
     use WindowsAzure\Blob\Models\CreateBlobOptions;
     use WindowsAzure\Blob\Models\PublicAccessType;
     use WindowsAzure\Common\ServiceException;
 
-    //Each user has their own "container" in the azuew storate. There are infinite containers and user_hash acts as the unique container identifier
+    //Each user has their own "container" in the azure storage. There are infinite containers and user_hash acts as the unique container identifier
 
     class AzureStorageService
     {

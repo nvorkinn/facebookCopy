@@ -283,7 +283,7 @@
                                     $friends = array();
                                     
                                     // Get friending activities that already caused a relationship
-                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0");
+                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0");
                                     
                                     // For every friending in which the user was involved, add the other person to the array
                                     for ($i = 0; $i < $result->num_rows; $i++)

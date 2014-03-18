@@ -133,7 +133,7 @@
                         <?PHP
                         
                             // Check relationship status between logged in user and current user
-                            $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
+                            $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
                             
                             if ($result->num_rows != 0) // Friends already
                             {
@@ -142,7 +142,7 @@
                             else
                             {
                                 // Check if request sent but not answered
-                                $result = $mysqli->query("SELECT * FROM activity WHERE type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
+                                $result = $mysqli->query("SELECT * FROM activity WHERE main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $currentUserId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $currentUserId))");
                                 
                                 if ($result->num_rows != 0)
                                 {
@@ -167,6 +167,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#information" data-toggle="tab">Information</a></li>
                             <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                            <li><a href="#posts" data-toggle="tab">Posts</a></li>
                         </ul>
                         
                         <div class="tab-content">
@@ -308,7 +309,7 @@
                                     $friends = array();
                                     
                                     // Get friending activities that already caused a relationship
-                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND type = 0 AND sub_type = 0");
+                                    $result = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0");
                                     
                                     // For every friending in which the user was involved, add the other person to the array
                                     for ($i = 0; $i < $result->num_rows; $i++)
@@ -357,6 +358,137 @@
                                 ?>
                                 
                             
+                                
+                            </div><!-- /.tab-pane -->
+                            
+                            <div class="tab-pane" id="posts">
+                            
+                                <div class="col-md-8 col-md-offset-2" id="posts_container">
+                                
+                                    <?PHP
+                                    
+                                        if ($result = $mysqli->query("SELECT * FROM post WHERE user_id = " . $currentUserId . " AND deleted = 0 ORDER BY date DESC LIMIT 100")) {
+                                            for ($i = 0; $i < $result->num_rows; $i++) {
+                                                $post = $result->fetch_object();
+                                                
+                                                // Obey privacy setting
+                                                $privacySetting = $mysqli->query("SELECT * FROM privacy_setting WHERE id = $post->privacy_setting_id LIMIT 1")->fetch_object()->id;
+                                                
+                                                $canShow = false;
+                                                
+                                                // Public
+                                                if ($privacySetting == 1)
+                                                {
+                                                    $canShow = true;
+                                                }
+                                                else
+                                                // Friends
+                                                if ($privacySetting == 2)
+                                                {
+                                                    $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $post->user_id) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $post->user_id)) LIMIT 1");
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        $canShow = false;
+                                                    }
+                                                }
+                                                else
+                                                // Friends of friends
+                                                if ($privacySetting == 3)
+                                                {
+                                                    // Check if friend first
+                                                    $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $post->user_id) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $post->user_id)) LIMIT 1");
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {   
+                                                        $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((to_user_id = $post->user_id) OR (from_user_id = $post->user_id))");
+                                                        
+                                                        if ($result2->num_rows == 0)
+                                                        {
+                                                            $canShow = false;
+                                                        }
+                                                        else
+                                                        {
+                                                            // For each friend look through their friends
+                                                            $found = false;
+                                                            for ($j = 0; $j < $result2->num_rows && !$found; $j++)
+                                                            {
+                                                                $activity = $result2->fetch_object();
+                                                                
+                                                                if ($activity->from_user_id == $post->user_id)
+                                                                {
+                                                                    $friendId = $activity->to_user_id;
+                                                                }
+                                                                else
+                                                                {
+                                                                    $friendId = $activity->from_user_id;
+                                                                }
+                                                                
+                                                                // Look through this friend's friends
+                                                                $result3 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $friendId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $friendId)) LIMIT 1");
+                                                                
+                                                                if ($result2->num_rows != 0)
+                                                                {
+                                                                    $canShow = true;
+                                                                    $found = true;
+                                                                }
+                                                            }
+                                                            
+                                                            // Haven't found user through friends of friends
+                                                            if (!$found)
+                                                            {
+                                                                $canShow = false;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                // Check if user is in circle
+                                                {
+                                                    $circle = $mysqli->query("SELECT * FROM circle WHERE id = $privacySetting->circle_id LIMIT 1")->fetch_object();
+                                                    
+                                                    $result2 = $mysqli->query("SELECT * FROM user_circle WHERE circle_id = $circle->id AND user_id = " . $_SESSION["user_id"] . " LIMIT 1");
+                                                    
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        $canShow = false;
+                                                    }
+                                                }
+                                                
+                                                if ($canShow == true)
+                                                {
+                                                    echo "<div class='row'>
+                                                              <div data-id=$post->id class='box box-primary'>
+                                                                  <div class='box-body'>
+                                                                      <p>" . $post->content . "</p>
+                                                                  </div><!-- /.box-body -->
+                                                                  <div class='box-footer'>
+                                                                      <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
+                                                                  </div><!-- /.box-footer-->
+                                                              </div><!-- /.box -->
+                                                          </div>";
+                                                }
+                                            }   
+
+                                            if ($result->num_rows == 0)
+                                            {
+                                                echo "<p>This user has made no posts.</p>";
+                                            }
+                                        }                            
+                                    
+                                    ?>
+                                
+                                </div>
                                 
                             </div><!-- /.tab-pane -->
                             

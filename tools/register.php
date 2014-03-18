@@ -11,7 +11,7 @@
 	$password = sha1(mysqli_real_escape_string($mysqli, $_POST["password"]));
 	
 	// Use fields to create a new entry in the profile table
-	$profile_insert = "INSERT INTO profile (type, privacy_setting_id, name, surname, dob, email, password) VALUES (0, 1,'$firstname', '$lastname', '$birthdate', '$email', '$password') ";
+	$profile_insert = "INSERT INTO profile (main_type, name, surname, dob, email, password) VALUES (0, '$firstname', '$lastname', '$birthdate', '$email', '$password') ";
 	if (!mysqli_query($mysqli ,$profile_insert)) {
 		echo "Could not insert entry into the profile table";
 		die("Error: " . mysqli_error($mysqli));

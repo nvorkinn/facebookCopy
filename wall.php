@@ -111,6 +111,34 @@
                             <!-- Default box -->
                             <div class="box status_update_box">
                             
+                                <div class="box-header">
+                                
+                                    <i class="fa fa-envelope"></i>
+                                    <h3 class="box-title">Post something!</h3>
+                                    
+                                    <select class="form-control" id="privacy-select">
+                                    
+                                        <option>Public</option>
+                                        <option>Friends</option>
+                                        <option>Friends of friends</option>
+                                        
+                                        <?PHP
+                                        
+                                            if ($result = $mysqli->query("SELECT * FROM circle WHERE owner_user_id = " . $_SESSION["user_id"])) {
+                                                for ($i = 0; $i < $result->num_rows; $i++) {
+                                                    $circle = $result->fetch_object();
+                                                    
+                                                    echo "<option value=$circle->id>$circle->name</option>";
+                                                }                                
+                                            }                            
+                                        
+                                        ?>
+                                            
+                                    </select>
+                                    
+                                    <span id="privacy-setting-span">Privacy setting</span>
+                                </div>
+                                
                                 <div class="box-body">
                                     <input type="text" id="status_update" placeholder="What's on your mind?">
                                 </div><!-- /.box-body -->
@@ -129,16 +157,17 @@
                     
                         <?PHP
                         
-                            if ($result = $mysqli->query("SELECT * FROM post WHERE user_id = " . $_SESSION["user_id"] . " AND deleted = 0 LIMIT 100")) {
+                            if ($result = $mysqli->query("SELECT * FROM post WHERE user_id = " . $_SESSION["user_id"] . " AND deleted = 0 ORDER BY date DESC LIMIT 100")) {
                                 for ($i = 0; $i < $result->num_rows; $i++) {
                                     $post = $result->fetch_object();
                                     
                                     echo "<div class='row'>
-                                              <div class='box box-primary'>
+                                              <div data-id=$post->id class='box box-primary'>
                                                   <div class='box-body'>
                                                       <p>" . $post->content . "</p>
                                                   </div><!-- /.box-body -->
                                                   <div class='box-footer'>
+                                                      <button class='btn btn-danger' class='delete_button' onclick='deletePost(this);'>Delete</button>
                                                       <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
                                                   </div><!-- /.box-footer-->
                                               </div><!-- /.box -->

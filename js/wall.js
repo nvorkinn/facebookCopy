@@ -2,10 +2,21 @@ function postStatusUpdate() {
     $.ajax({
         type: "POST",
         url: "tools/post.php",
-        data: {content: $("#status_update").val()},
-        success: function() {
-            addPost();
+        data: {content: $("#status_update").val(), privacy: $("#privacy-select").val()},
+        success: function(id) {
+            addPost(id);
             $("#status_update").val("");
+        }
+    });
+}
+
+function deletePost(element) {
+    $.ajax({
+        type: "POST",
+        url: "tools/delete_post.php",
+        data: {id: $(element).parent().parent().attr("data-id")},
+        success: function() {
+            $(element).parent().parent().remove();
         }
     });
 }
@@ -24,14 +35,15 @@ function unlike(element) {
     $(element).parent().parent().addClass("box-primary");
 }
 
-function addPost() {
+function addPost(id) {
     var content = $("#status_update").val();
     $("#posts_container").prepend("<div class='row'>\
-                                       <div class='box box-primary'>\
+                                       <div data-id=" + id + " class='box box-primary'>\
                                            <div class='box-body'>\
                                                <p>" + content + "</p>\
                                            </div><!-- /.box-body -->\
                                            <div class='box-footer'>\
+                                               <button class='btn btn-danger' class='delete_button' onclick='deletePost(this);'>Delete</button>\
                                                <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>\
                                            </div><!-- /.box-footer-->\
                                        </div><!-- /.box -->\

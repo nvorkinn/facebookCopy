@@ -104,86 +104,101 @@
                 <!-- Main content -->
                 <section class="content">
                     
-                    <div class="col-md-8 col-md-offset-2">
-                        
-                        <?PHP
-                        
-                            if ($result = $mysqli->query("SELECT * FROM activity WHERE from_user_id = " . $_SESSION["user_id"] . " OR to_user_id = " . $_SESSION["user_id"]))
-                            {
-                                for ($i = 0; $i < $result->num_rows; $i++)
-                                {
-                                    $activity = $result->fetch_object();
-                                    
-                                    echo "<div class='row'>
-                                              <div class='box box-primary'>
-                                                  <div class='box-body'>
-                                                      <p>";
-                                                      
-                                    if ($activity->type == 0)
-                                    {
-                                        if ($activity->sub_type == 0)
-                                        {
-                                            // Friend request
-                                            if ($activity->from_user_id == $_SESSION["user_id"])
-                                            {
-                                                $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->to_user_id LIMIT 1) LIMIT 1")->fetch_object();
-                                                
-                                                echo "You requested <a href='view_profile.php?id=$activity->to_user_id'>$otherPerson->name $otherPerson->surname</a>'s friendship on <b>" . date("l, d M Y @ H:i:s", strtotime($activity->created_date)) . "</b>";
-                                            }
-                                            else
-                                            if ($activity->to_user_id == $_SESSION["user_id"])
-                                            {
-                                                $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->from_user_id LIMIT 1) LIMIT 1")->fetch_object();
-                                                
-                                                echo "<a href='view_profile.php?id=$activity->from_user_id'>$otherPerson->name $otherPerson->surname</a> requested your friendship on <b>" . date("l, d M Y @ H:i:s", strtotime($activity->created_date)) . "</b>";
-                                            }
-                                        }
-                                    }
-                                    else
-                                    if ($activity->type == 2)
-                                    {
-                                        if ($activity->sub_type == 1)
-                                        {
-                                            // Friend request acception
-                                            if ($activity->from_user_id == $_SESSION["user_id"])
-                                            {
-                                                $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->to_user_id LIMIT 1) LIMIT 1")->fetch_object();
-                                                
-                                                echo "You accepted <a href='view_profile.php?id=$activity->to_user_id'>$otherPerson->name $otherPerson->surname</a>'s friendship request on <b>" . date("l, d M Y @ H:i:s", strtotime($activity->created_date)) . "</b>";
-                                            }
-                                            else
-                                            if ($activity->to_user_id == $_SESSION["user_id"])
-                                            {
-                                                $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->from_user_id LIMIT 1) LIMIT 1")->fetch_object();
-                                                
-                                                echo "<a href='view_profile.php?id=$activity->from_user_id'>$otherPerson->name $otherPerson->surname</a> accepted your friendship request on <b>" . date("l, d M Y @ H:i:s", strtotime($activity->created_date)) . "</b>";
-                                            }
-                                        }
-                                    }
-                                    else
-                                    if ($activity->type == 3)
-                                    {
-                                        if ($activity->sub_type == 0)
-                                        {
-                                            // Post
-                                            $post = $mysqli->query("SELECT * FROM post WHERE id = $activity->object_id LIMIT 1")->fetch_object();
-                                            
-                                            echo "You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b> on <b>" . date("l, d M Y @ H:i:s", strtotime($activity->created_date)) . "</b>";
-                                        }
-                                    }
-                                    
-                                    echo "            </p>
-                                                  </div>
-                                              </div>
-                                          </div>";
-                                }
-                            }
-                            
-                        ?>
-                        
-                    </div>
+                    <div class="row">
                     
-
+                        <div class="col-md-12">
+                    
+                            <ul class="timeline">
+                                
+                                <?PHP
+                                
+                                    if ($result = $mysqli->query("SELECT * FROM activity WHERE from_user_id = " . $_SESSION["user_id"] . " OR to_user_id = " . $_SESSION["user_id"] . " ORDER BY created_date ASC"))
+                                    {
+                                        $currentDate = 0;
+                                        for ($i = 0; $i < $result->num_rows; $i++)
+                                        {
+                                            $activity = $result->fetch_object();
+                                            
+                                            $date = floor(strtotime($activity->created_date) / 86400);
+                                            if ($date != $currentDate)
+                                            {
+                                                $currentDate = $date;
+                                                
+                                                echo "<!-- timeline time label -->
+                                                        <li class='time-label'>
+                                                            <span class='bg-red'>
+                                                                " . date("d M Y", strtotime($activity->created_date)). "
+                                                            </span>
+                                                        </li>
+                                                        <!-- /.timeline-label -->";
+                                            }
+                                            
+                                            echo "<li>";
+                                                              
+                                            if ($activity->type == 0)
+                                            {
+                                                if ($activity->sub_type == 0)
+                                                {
+                                                    // Friend request
+                                                    if ($activity->from_user_id == $_SESSION["user_id"])
+                                                    {
+                                                        $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->to_user_id LIMIT 1) LIMIT 1")->fetch_object();
+                                                        
+                                                        echo "<i class='fa fa-user bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You requested <a href='view_profile.php?id=$activity->to_user_id'>$otherPerson->name $otherPerson->surname</a>'s friendship</div></div>";
+                                                    }
+                                                    else
+                                                    if ($activity->to_user_id == $_SESSION["user_id"])
+                                                    {
+                                                        $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->from_user_id LIMIT 1) LIMIT 1")->fetch_object();
+                                                        
+                                                        echo "<i class='fa fa-user bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'><a href='view_profile.php?id=$activity->from_user_id'>$otherPerson->name $otherPerson->surname</a> requested your friendship</div></div>";
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            if ($activity->type == 2)
+                                            {
+                                                if ($activity->sub_type == 1)
+                                                {
+                                                    // Friend request acception
+                                                    if ($activity->from_user_id == $_SESSION["user_id"])
+                                                    {
+                                                        $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->to_user_id LIMIT 1) LIMIT 1")->fetch_object();
+                                                        
+                                                        echo "<i class='fa fa-user bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You accepted <a href='view_profile.php?id=$activity->to_user_id'>$otherPerson->name $otherPerson->surname</a>'s friendship request</div></div>";
+                                                    }
+                                                    else
+                                                    if ($activity->to_user_id == $_SESSION["user_id"])
+                                                    {
+                                                        $otherPerson = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = $activity->from_user_id LIMIT 1) LIMIT 1")->fetch_object();
+                                                        
+                                                        echo "<i class='fa fa-user bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'><a href='view_profile.php?id=$activity->from_user_id'>$otherPerson->name $otherPerson->surname</a> accepted your friendship request</div></div>";
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            if ($activity->type == 3)
+                                            {
+                                                if ($activity->sub_type == 0)
+                                                {
+                                                    // Post
+                                                    $post = $mysqli->query("SELECT * FROM post WHERE id = $activity->object_id LIMIT 1")->fetch_object();
+                                                    echo "<i class='fa fa-envelope bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
+                                                }
+                                            }
+                                            
+                                            echo "</li>";
+                                        }
+                                    }
+                                    
+                                ?>
+                                
+                            </ul>
+                        
+                        </div>
+                    
+                    </div>
+                        
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
             
