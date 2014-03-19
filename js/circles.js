@@ -57,7 +57,7 @@ $(function() {
 
 	$("#new-circle").click(function(e){
 		e.preventDefault();
-		var circleName = $("#new_circle_name").val();
+		var circleName = $("#new-circle-name").val();
 		$.ajax({
 			type: "post",
 			url: "tools/protected/circle_utils.php",

@@ -160,7 +160,7 @@
 								<div class="col-sm-3 col-md-3 pull-right">
 									<form class="form">
 										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Circle Name" id="new_circle_name">
+											<input type="text" class="form-control" placeholder="Circle Name" id="new-circle-name">
 											<div class="input-group-btn">
 												<button class="btn btn-primary" type="submit" id="new-circle">Add Circle</button>
 											</div>
