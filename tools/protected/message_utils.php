@@ -21,9 +21,7 @@
             $friend_id=$friend->id;
             $insert_subscription = "INSERT INTO message_subscriptions(message_id,to_user_id) VALUES($message_id,$friend_id)";
             
-            if ($result= $mysqli->query($insert_subscription)) {
-                echo 1;
-            }else{
+            if (!$result= $mysqli->query($insert_subscription)) {
                 $mysqli->rollback();
                 echo -1;
                 exit;
@@ -31,6 +29,7 @@
         }
         /* commit insert */
         $mysqli->commit();
+		 echo json_encode(array("creation_date"=>$creation_date));
     }else {
         $mysqli->rollback();
         echo -1;

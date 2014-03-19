@@ -22,7 +22,15 @@
             }
 			
 			//Get all messages
+							
+								$conversations_query = "SELECT * FROM `message_subscriptions`,`message` WHERE (to_user_id=$user_id OR from_user_id=$user_id) AND message_id=message.id GROUP BY message.id";
 								
+								if ($result = $mysqli->query($conversations_query)) {
+									while ($row = $result->fetch_assoc()) {
+										
+									}
+								}
+							
 								$message_query = "SELECT DISTINCT hash,user.id, name, surname 
 									FROM user, profile,message_subscriptions
 								WHERE user.profile_id = profile.id
@@ -52,8 +60,6 @@
                                     </div>';
 										echo $row["name"];
 									}
-								}else{
-									echo "could not get messages";
 								}
         ?>
  	<script type="text/javascript" src="js/jquery.tokeninput.js"></script>
@@ -85,7 +91,7 @@
 							<!-- Friends -->
                             <div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-envelope"></i> Messages</h3>
+                                    <h3 class="box-title"><i class="fa fa-envelope"></i> Conversations</h3>
 									<a class="btn btn-app" style="float:right;" id="new_message_btn">
                                         <i class="fa fa-plus"></i> New message
                                     </a>		
@@ -106,14 +112,14 @@
 							<!-- Chat box -->
                             <div class="box box-success">
                                 <div class="box-header">
-                                    <h3 class="box-title" style="width:100%"><i class="fa fa-comments-o"></i><span id="chat-box-title"> Chat</span></h3>
+                                    <h3 class="box-title" style="width:100%"><i class="fa fa-comments-o"></i><span id="chat-box-title"> </span></h3>
                                     
 									<div class="input-group" id="message_recipients" style="margin-left:10px">
 										<span class="input-group-addon"><i class="fa fa-group"></i></span>
 										<input type="text" id="recipients_entry" class="form-control">
 									</div>							
                                 </div>
-                                <div class="box-body chat" id="chat-box" style="height:350px;overflow-x:hidden;">		
+                                <div class="box-body chat" id="instance-chat-box" style="height:350px;overflow-x:hidden;">		
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
@@ -141,6 +147,7 @@
 					$("#message_recipients").hide();
 					
 					$("#new_message_btn").click(function() {
+						
 						$("#chat-box-title").html(" New message");
 						$("#message_recipients").show();
 					});
@@ -156,15 +163,33 @@
 					
 					
 					$("#message_send_btn").click(function() {
+					
 						var message_text = $("#message_text").val();
+						$("#message_text").val("");
 						var friends_str = JSON.stringify(friends_list);
 						var circles_str = JSON.stringify(circles_list);
+						$( "#message_recipients" ).fadeTo( "slow" , 0.7,function(){
+								$('#message_recipients :input').attr('disabled','disabled');
+								$('#message_recipients :input').css({'opacity':'0'});
+						});
+						
+						
+	
 						$.ajax({
 							type: "post",
 							url: "tools/protected/message_utils.php",
 							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text},
 							success: function(data){
-								console.log(data);
+								if(data!=-1){
+									var response = $.parseJSON(data);
+									var nameSurname = '<?PHP echo $profile->name . " " . $profile->surname; ?>';
+									var chat_item = $.parseHTML('<div class="item"><img src="img/avatar2.png" alt="user image" class="online"/> <p class="message"><a href="#" class="name"> <small class="text-muted pull-right"><i class="fa fa-clock-o" style="margin-right:3px"></i><span data-livestamp="'+response.creation_date+'"></span></small>'+nameSurname+'</a>'+message_text+'</p></div>');
+                                    
+									$(chat_item).hide();
+									$("#instance-chat-box").append(chat_item);
+									$(chat_item).fadeIn("slow");
+									
+								}
 							} 
 						});							
 					});

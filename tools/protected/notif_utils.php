@@ -9,9 +9,8 @@
             $str='';
             while($row = $result->fetch_assoc()){
                 
-				if(!($main_type==0 && $row["seen"]==1)){
 					$str = generateNotifItems($row,$str,$main_type);	
-				}
+				
 				if($main_type!=0){
 				$mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=".$row["activity_id"]." AND target_id=".$_SESSION["user_id"];
                 $mysqli->query($mark_seen);
