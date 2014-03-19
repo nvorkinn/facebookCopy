@@ -43,8 +43,8 @@ function addPost(id) {
                                                <p>" + content + "</p>\
                                            </div><!-- /.box-body -->\
                                            <div class='box-footer'>\
-                                               <button class='btn btn-danger' class='delete_button' onclick='deletePost(this);'>Delete</button>\
-                                               <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>\
+                                               <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>\
+                                               <button class='btn btn-success like_button' onclick='like(this);'>Like</button>\
                                            </div><!-- /.box-footer-->\
                                        </div><!-- /.box -->\
                                    </div>");

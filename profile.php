@@ -97,6 +97,12 @@
                                 <i class="fa"></i> <span>Activity log</span>
                             </a>
                         </li>
+                        
+                        <li>
+                            <a href="blog.php">
+                                <i class="fa"></i> <span>Blog</span>
+                            </a>
+                        </li>
                     </ul>
                     
                 </section>

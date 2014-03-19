@@ -20,13 +20,10 @@
             {
                 $profile = $result->fetch_object();
             }
-                        
-            $postId = $mysqli->real_escape_string($_GET["id"]);
+            
+            $blogId = $mysqli->real_escape_string($_GET["id"]);
             
         ?>
-
-        <link href="css/wall.css" rel="stylesheet" type="text/css" />
-        <script src="js/wall.js"></script>
         
 
     </head>
@@ -120,18 +117,18 @@
                     
                     <?PHP
                     
-                        if ($result = $mysqli->query("SELECT * FROM post WHERE id = $postId LIMIT 1"))
+                        if ($result = $mysqli->query("SELECT * FROM blog WHERE id = $blogId LIMIT 1"))
                         {
-                            $post = $result->fetch_object();
+                            $blog = $result->fetch_object();
                             
                             echo "<div class='row'>
                                       <div class='box box-primary'>
+                                          <div class='box-header'>
+                                              <h3 class='box-title'><b>" . $blog->title . "</b> from " . date("d M Y H:i:s", strtotime($blog->date)) . "</h3>
+                                          </div>
                                           <div class='box-body'>
-                                              <p>" . $post->content . "</p>
+                                              <p>" . $blog->content . "</p>
                                           </div><!-- /.box-body -->
-                                          <div class='box-footer'>
-                                              <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
-                                          </div><!-- /.box-footer-->
                                       </div><!-- /.box -->
                                   </div>";
                         }                            

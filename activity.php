@@ -91,6 +91,12 @@
                                 <i class="fa"></i> <span>Activity log</span>
                             </a>
                         </li>
+                        
+                        <li>
+                            <a href="blog.php">
+                                <i class="fa"></i> <span>Blog</span>
+                            </a>
+                        </li>
                     </ul>
                     
                 </section>
@@ -135,7 +141,7 @@
                                             
                                             echo "<li>";
                                                               
-                                            if ($activity->type == 0)
+                                            if ($activity->main_type == 0)
                                             {
                                                 if ($activity->sub_type == 0)
                                                 {
@@ -156,7 +162,7 @@
                                                 }
                                             }
                                             else
-                                            if ($activity->type == 2)
+                                            if ($activity->main_type == 2)
                                             {
                                                 if ($activity->sub_type == 1)
                                                 {
@@ -177,13 +183,23 @@
                                                 }
                                             }
                                             else
-                                            if ($activity->type == 3)
+                                            if ($activity->main_type == 3)
                                             {
                                                 if ($activity->sub_type == 0)
                                                 {
                                                     // Post
                                                     $post = $mysqli->query("SELECT * FROM post WHERE id = $activity->object_id LIMIT 1")->fetch_object();
                                                     echo "<i class='fa fa-envelope bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
+                                                }
+                                            }
+                                            else
+                                            if ($activity->main_type == 4)
+                                            {
+                                                if ($activity->sub_type == 0)
+                                                {
+                                                    // Blog
+                                                    $blog = $mysqli->query("SELECT * FROM blog WHERE id = $activity->object_id LIMIT 1")->fetch_object();
+                                                    echo "<i class='fa fa-file-text-o bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You made a blog entry titled <a href='view_blog.php?id=$blog->id'>$blog->title</a></div></div>";
                                                 }
                                             }
                                             

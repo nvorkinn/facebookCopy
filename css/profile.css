@@ -98,3 +98,23 @@ table input
 {
     display: block;
 }
+
+.blog-entry
+{
+    width: 30%;
+    margin: 1%;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.blog-entry a
+{
+    color: white;
+    font-weight: bold;
+}
+
+.blog-entry a:hover
+{
+    opacity: 0.8;
+}
+

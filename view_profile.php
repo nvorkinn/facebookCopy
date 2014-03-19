@@ -106,6 +106,12 @@
                                 <i class="fa"></i> <span>Activity log</span>
                             </a>
                         </li>
+                        
+                        <li>
+                            <a href="blog.php">
+                                <i class="fa"></i> <span>Blog</span>
+                            </a>
+                        </li>
                     </ul>
                     
                 </section>
@@ -168,6 +174,7 @@
                             <li class="active"><a href="#information" data-toggle="tab">Information</a></li>
                             <li><a href="#friends" data-toggle="tab">Friends</a></li>
                             <li><a href="#posts" data-toggle="tab">Posts</a></li>
+                            <li><a href="#blog" data-toggle="tab">Blog</a></li>
                         </ul>
                         
                         <div class="tab-content">
@@ -433,7 +440,7 @@
                                                                 // Look through this friend's friends
                                                                 $result3 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $friendId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $friendId)) LIMIT 1");
                                                                 
-                                                                if ($result2->num_rows != 0)
+                                                                if ($result3->num_rows != 0)
                                                                 {
                                                                     $canShow = true;
                                                                     $found = true;
@@ -483,6 +490,136 @@
                                             if ($result->num_rows == 0)
                                             {
                                                 echo "<p>This user has made no posts.</p>";
+                                            }
+                                        }                            
+                                    
+                                    ?>
+                                
+                                </div>
+                                
+                            </div><!-- /.tab-pane -->
+                            
+                            <div class="tab-pane" id="blog">
+                            
+                                <div class="col-md-8 col-md-offset-2" id="blog_container">
+                                
+                                    <?PHP
+                                    
+                                        if ($result = $mysqli->query("SELECT * FROM blog WHERE user_id = " . $currentUserId . " ORDER BY date DESC LIMIT 100")) {
+                                            for ($i = 0; $i < $result->num_rows; $i++) {
+                                                $blog = $result->fetch_object();
+                                                
+                                                // Obey privacy setting
+                                                $privacySetting = $mysqli->query("SELECT * FROM privacy_setting WHERE id = $blog->privacy_setting_id LIMIT 1")->fetch_object()->id;
+                                                
+                                                $canShow = false;
+                                                
+                                                // Public
+                                                if ($privacySetting == 1)
+                                                {
+                                                    $canShow = true;
+                                                }
+                                                else
+                                                // Friends
+                                                if ($privacySetting == 2)
+                                                {
+                                                    $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $blog->user_id) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $blog->user_id)) LIMIT 1");
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        $canShow = false;
+                                                    }
+                                                }
+                                                else
+                                                // Friends of friends
+                                                if ($privacySetting == 3)
+                                                {
+                                                    // Check if friend first
+                                                    $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $blog->user_id) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $blog->user_id)) LIMIT 1");
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {   
+                                                        $result2 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((to_user_id = $blog->user_id) OR (from_user_id = $blog->user_id))");
+                                                        
+                                                        if ($result2->num_rows == 0)
+                                                        {
+                                                            $canShow = false;
+                                                        }
+                                                        else
+                                                        {
+                                                            // For each friend look through their friends
+                                                            $found = false;
+                                                            for ($j = 0; $j < $result2->num_rows && !$found; $j++)
+                                                            {
+                                                                $activity = $result2->fetch_object();
+                                                                
+                                                                if ($activity->from_user_id == $blog->user_id)
+                                                                {
+                                                                    $friendId = $activity->to_user_id;
+                                                                }
+                                                                else
+                                                                {
+                                                                    $friendId = $activity->from_user_id;
+                                                                }
+                                                                
+                                                                // Look through this friend's friends
+                                                                $result3 = $mysqli->query("SELECT * FROM activity WHERE id IN (SELECT activity_id FROM relationship) AND main_type = 0 AND sub_type = 0 AND ((from_user_id = " . $_SESSION["user_id"] . " AND to_user_id = $friendId) OR (to_user_id = " . $_SESSION["user_id"] . " AND from_user_id = $friendId)) LIMIT 1");
+                                                                
+                                                                if ($result3->num_rows != 0)
+                                                                {
+                                                                    $canShow = true;
+                                                                    $found = true;
+                                                                }
+                                                            }
+                                                            
+                                                            // Haven't found user through friends of friends
+                                                            if (!$found)
+                                                            {
+                                                                $canShow = false;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                // Check if user is in circle
+                                                {
+                                                    $circle = $mysqli->query("SELECT * FROM circle WHERE id = $privacySetting->circle_id LIMIT 1")->fetch_object();
+                                                    
+                                                    $result2 = $mysqli->query("SELECT * FROM user_circle WHERE circle_id = $circle->id AND user_id = " . $_SESSION["user_id"] . " LIMIT 1");
+                                                    
+                                                    if ($result2->num_rows != 0)
+                                                    {
+                                                        $canShow = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        $canShow = false;
+                                                    }
+                                                }
+                                                
+                                                if ($canShow == true)
+                                                {                                    
+                                                    echo "
+                                                    \n
+                                                    <div class='small-box bg-green blog-entry centered'>
+                                                        <div class='inner'>
+                                                            <a href='view_blog.php?id=$blog->id'>
+                                                                " . $blog->title . " from " . date("d M Y H:i:s", strtotime($blog->date)) . "
+                                                            </a>
+                                                        </div>
+                                                    </div>\n\n";
+                                                }
+                                            }   
+
+                                            if ($result->num_rows == 0)
+                                            {
+                                                echo "<p>This user has made no blog entries.</p>";
                                             }
                                         }                            
                                     

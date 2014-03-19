@@ -1,0 +1,57 @@
+#blog-entry-title
+{
+    margin: 0.5em;
+    font-size: 1.5em;
+    height: 2.0em;
+    width: 50%;
+}
+
+.save_button
+{
+    float: right;
+}
+
+#blog .box-footer
+{
+    height: 4.0em;
+}
+
+.blog-entry
+{
+    width: 30%;
+    margin: 1%;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.blog-entry a
+{
+    color: white;
+    font-weight: bold;
+}
+
+.blog-entry a:hover
+{
+    opacity: 0.8;
+}
+
+#privacy-select
+{
+    width: 20%;
+    float: right;
+    margin: 0.5em;
+}
+
+#privacy-setting-span
+{
+    text-weight: bold;
+    margin-top: 1.0em;
+    margin-right: 1.0em;
+    float: right;
+}
+
+.delete_button
+{
+    float: right;
+    margin: 0.5em;
+}

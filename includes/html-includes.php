@@ -29,6 +29,7 @@
 		<script src="js/moment.min.js"></script>
 		<script src="js/livestamp.min.js"></script>
 		<script src="js/notifClient.js"></script>
+		<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 		<script src="js/AdminLTE/app.js"></script>
         <link href="css/global.css" rel="stylesheet" type="text/css" />
 		
