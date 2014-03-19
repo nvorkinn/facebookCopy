@@ -9,12 +9,15 @@
             $profile = $result->fetch_object();
             if ($result2 = $mysqli->query("SELECT * FROM user WHERE profile_id = " . $profile->id . " LIMIT 1")){
                 $user = $result2->fetch_object();
+				if($user->id==$_SESSION["user_id"]){
+					continue;
+				}
                 
 				$output[$user->id] = Array("name" => $profile->name . " " . $profile->surname);
 				
 				if ($result3 = $mysqli->query("SELECT * FROM photo WHERE user_id = $user->id AND photo.id=$profile->profile_photo_id LIMIT 1")){
 					$photo = $result3->fetch_object();						
-					$output["photo_url"]= $photo->photo_url;
+					$output[$user->id]["photo_url"]= $photo->photo_url;
 				}	
 				$result2->close();
             }

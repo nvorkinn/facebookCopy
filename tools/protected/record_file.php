@@ -20,24 +20,29 @@
                 die("Error: " . mysqli_error($mysqli));
             }
             
-        if($photo_type=="cover-photo"){
-            $photo_id = mysqli_insert_id($mysqli);
-            $user_select="SELECT profile_id FROM user WHERE id=".$_SESSION['user_id']." LIMIT 1";
-            
-            if ($result = $mysqli->query($user_select)){
+		$photo_id = mysqli_insert_id($mysqli);
+        $user_select="SELECT profile_id FROM user WHERE id=".$_SESSION['user_id']." LIMIT 1";
+		$profile_id=0;
+        if ($result = $mysqli->query($user_select)){
                 $row= $result->fetch_assoc();
                 $profile_id=$row['profile_id'];
-                
+        }else{
+                echo 'Could not run query: ' . mysql_error();
+                exit;
+        }
+				
+        if($photo_type=="cover-photo"){
                 $photo_update="UPDATE profile SET cover_photo_id=$photo_id WHERE profile.id=$profile_id";
                 if (!$result = $mysqli->query($photo_update)){
                     echo 'Could not update profile' . mysql_error();
                     exit;
                 }
-            }else{
-                echo 'Could not run query: ' . mysql_error();
-                exit;
-            }
-            return;
-        }
+        }else if($photo_type=="profile-photo"){
+				$photo_update="UPDATE profile SET profile_photo_id=$photo_id WHERE profile.id=$profile_id";
+                if (!$result = $mysqli->query($photo_update)){
+                    echo 'Could not update profile' . mysql_error();
+                    exit;
+                }
+		}	
     }
 ?>

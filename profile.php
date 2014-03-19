@@ -13,11 +13,24 @@
             }
             
             require("includes/html-includes.php");
-            require("includes/Modals.php"); 	
-			
+      	
+			$profile_photo_url=NULL;
+                        
+		
             if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = " . $_SESSION["user_id"] . ") LIMIT 1"))
             {
                 $profile = $result->fetch_object();
+				
+				
+						if($profile->profile_photo_id!=NULL){
+                                if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->profile_photo_id LIMIT 1")){
+                                    $row= $result->fetch_assoc();
+                                    $profile_photo_url=$row['photo_url'];
+                                }
+                        }else{
+							$profile_photo_url="img/avatar3.png";
+						}
+				
             }
             
         ?>
@@ -50,8 +63,10 @@
                     <div class="user-panel">
                     
                         <div class="pull-left image">
-                            <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-                        </div>
+							<?PHP
+                            echo '<img src="'.$profile_photo_url.'" class="img-circle" alt="User Image" />';
+							?>
+						</div>
                         
                         <div class="pull-left info">
                             <p><?PHP
@@ -124,10 +139,14 @@
                                 }
                             }
                         
+                        
+						
                         echo '<div class="user-header cover" style="background:'.$cover_url.';background-size:100% auto">
-                            <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                            <img src="'.$profile_photo_url.'" class="profile-pic img-circle" alt="User Image" />
                             <p class="user-name">';
                     
+						
+					
                                     if (isset($profile)) {
                                         echo $profile->name . " " . $profile->surname;
                                     }
@@ -139,6 +158,7 @@
 					?>
                     
                 </div>
+				
                 
                 <div class="row">
                 
@@ -153,7 +173,21 @@
                         <div class="tab-content">
                         
                             <div class="tab-pane active" id="information">
+                               
+							<div class="box box-primary">
                                 
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Profile picture</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+										<button id="profile-photo-btn" class="btn btn-primary" data-toggle="modal" data-target="#photoUploadModal">Change profile photo</button>	
+									
+									</div><!-- /.box-body -->
+                                    
+                                </div>
+                                
+							   
                                 <div class="box box-primary">
                                 
                                     <div class="box-header" data-toggle="tooltip" title="">
@@ -317,12 +351,23 @@
                                         $friend = $mysqli->query("SELECT * FROM user WHERE id = " . $friends[$keys[$i]] . " LIMIT 1")->fetch_object();
                                         
                                         $profile = $mysqli->query("SELECT * FROM profile WHERE id = $friend->profile_id LIMIT 1")->fetch_object();
-                                        
+                        
+										$user_dp=NULL;
+											if($profile->profile_photo_id!=NULL){
+												if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->profile_photo_id LIMIT 1")){
+													$row= $result->fetch_assoc();
+													$user_dp=$row['photo_url'];
+												}
+											}else{
+												$user_dp="img/avatar3.png";
+											}
+						
                                         echo "
                                         \n
                                         <div class='small-box bg-green friend centered'>
                                             <div class='inner'>
-                                                <img src='img/avatar3.png' class='img-circle' alt='User Image' />
+											
+											    <img src='$user_dp' class='img-circle' alt='User Image' />
                                                 <a class='user-name' href='view_profile.php?id=$friend->id'>
                                                     " . $profile->name . " " . $profile->surname . "
                                                 </a>
@@ -553,4 +598,47 @@
    
     </body>
 
+	
+				
+				
+<script>
+
+$( document ).ready(function() {
+    $( "#cover-photo-btn" ).click(function() {
+		$( "#fileupload" ).attr("data-photoType","cover-photo");
+	});
+	$( "#profile-photo-btn" ).click(function() {
+		$( "#fileupload" ).attr("data-photoType","profile-photo");
+	});
+});
+</script>
+	
+	<!-- Modal -->
+<div class="modal fade" id="photoUploadModal" tabindex="-1" role="dialog" aria-labelledby="photoUploadModal" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Change cover photo</h4>
+         </div>
+         <div class="modal-body" id="modalbody">
+			<span class="btn btn-success fileinput-button" id="addFiles">
+               <i class="glyphicon glyphicon-plus"></i>
+               <span>Add files...</span>
+               <input id="fileupload" type="file" name="files[]"  multiple>
+            </span>
+            <br>
+            <br>
+            <div id="progress" class="progress progress-striped">
+               <div class="progress-bar progress-bar-info"></div>
+            </div>
+            <div id="files" class="files"></div>
+            <br>
+         </div>
+         <div class="modal-footer" style="margin-top:-45px;">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveButton">Save changes</button>
+         </div>
+      </div>
+   </div>
+</div>
+	
 </html>

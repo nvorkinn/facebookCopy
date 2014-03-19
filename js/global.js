@@ -54,8 +54,10 @@ function findPeople(term){
             
             // people[id].photo_code for correct avatar
             for (id in people) {
+				var pic = people[id].photo_url!=null?people[id].photo_url : "img/avatar3.png";
+				console.log(people[id].photo_url);
                 $("#search_results").append("<a class='search_result' href='view_profile.php?id=" + id + "'>\
-                <img src='img/avatar3.png' class='img-circle' alt='User Image'>\
+                <img src='"+pic+"' class='img-circle' alt='User Image'>\
                 <span>" + people[id].name + "</span>\
                 </a>");
             }
