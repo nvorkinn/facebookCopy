@@ -20,7 +20,7 @@
 			if(!array_key_exists($obj->user_hash,$this->clients) && $obj->message=="INIT_MESSAGE"){
 				$this->clients[$obj->user_hash]=$from;
 				$from->send("INIT_SUCCESSFUL ".$obj->user_hash);
-			}else{
+			}else if(isset($obj->target_hash) && isset($this->clients[$obj->target_hash]) ){
 				$target = $this->clients[$obj->target_hash];
 				if(isset($target)){
 					$target->send($obj->message);

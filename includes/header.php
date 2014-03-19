@@ -47,12 +47,12 @@
 					success: function (response) {
 						if(response==1){
 							registerNotification(conn,friend_hash, "friendRequestAccepted");
+							$("#friend-circle-modal").modal();
+							$("#friend-circle-modal").attr("data-activity-hash",friend_hash);
 						}
 					}
 				});
-                $("#friend-circle-modal").modal();
-				$("#friend-circle-modal").attr("data-activity-hash",friend_hash);
-
+                
 			});
 	
 			$("#general-notif-icon").click(function() {

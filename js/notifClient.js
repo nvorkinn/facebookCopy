@@ -16,5 +16,6 @@ return conn;
 }
 
 function registerNotification(conn,to,msg){
+	console.log("to: "+to+" msg:"+msg); 
 	conn.send(JSON.stringify({user_hash: sessionStorage.getItem("user_hash"),target_hash:to,message:msg}));
 }

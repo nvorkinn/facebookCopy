@@ -5,6 +5,7 @@
     $action= $_POST["action"];
     $from=$_SESSION["user_id"];
     $created_date = date("Y-m-d H:i:s");
+	
     if($action=="newFriendRequest"){
         $to=$_POST["to_user_id"];
         $if_friend_request = "SELECT from_user_id, to_user_id, main_type FROM activity WHERE from_user_id = '$from' AND to_user_id = '$to' AND main_type = '0' LIMIT 1";
@@ -16,10 +17,14 @@
                         echo $mysqli->error;
                         $notif = new Notification($mysqli->insert_id, $from, $to);
                         $notif->save();
-                        echo 1;
+                        if ($result = $mysqli->query("SELECT * FROM user WHERE id =$to LIMIT 1"))
+						{
+						$user = $result->fetch_object();
+						echo json_encode(array("to_hash"=>$user->hash));
+						}
                     }
                 }
-				
+            		
     }else if($action=="acceptFriendRequest"){
         $friend_hash=$_POST["friend_hash"];
         $activity_id=$_POST["activity_id"];	

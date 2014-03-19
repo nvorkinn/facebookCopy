@@ -27,13 +27,17 @@
             }
             
             $currentUserId = $mysqli->real_escape_string($_GET["id"]);
+		
             
         ?>
         
         <link href="css/profile.css" rel="stylesheet" type="text/css" />
         <script src="js/view_profile.js"></script>
         
-        <script>var currentUserId = <?PHP echo $currentUserId; ?>;</script>
+        <script>
+		var currentUserId = <?PHP echo $currentUserId; ?>;
+		
+		</script>
 
     </head>
 

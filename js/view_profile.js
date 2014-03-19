@@ -8,10 +8,15 @@ $(document).ready(function ()
             url: "../../tools/protected/friend_utils.php",
             success: function (response) {
 				
-                if(response == 1)
+                if(response !=-1)
                 {
-                    registerNotification(conn, "f04b1d726c615672552fa5116aa5b958d8d41676", "newFriendRequest");
-                    
+					alert(response);
+					
+					var json = $.parseJSON(response);
+					if(json.to_hash){
+						registerNotification(conn,json.to_hash, "newFriendRequest");
+                    }
+					
                     $("#add-friend-btn").html("Friend request sent!");
                     $("#add-friend-btn").attr("disabled", "true");
                 }
