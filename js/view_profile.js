@@ -5,7 +5,7 @@ $(document).ready(function ()
         $.ajax({
             type: "post",
             data: {"action" : "newFriendRequest", "to_user_id" : currentUserId},
-            url: "../../tools/protected/friend_utils.php",
+            url: "tools/protected/friend_utils.php",
             success: function (response) {
 				
                 if(response !=-1)
@@ -27,3 +27,25 @@ $(document).ready(function ()
         });
     });
 });
+
+function deleteBlog(element) {
+    $.ajax({
+        type: "POST",
+        url: "tools/delete_blog.php",
+        data: {id: $(element).parent().parent().attr("data-id")},
+        success: function() {
+            $(element).parent().parent().remove();
+        }
+    });
+}
+
+function deletePost(element) {
+    $.ajax({
+        type: "POST",
+        url: "tools/delete_post.php",
+        data: {id: $(element).parent().parent().attr("data-id")},
+        success: function() {
+            $(element).parent().parent().remove();
+        }
+    });
+}

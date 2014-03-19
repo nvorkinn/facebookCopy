@@ -6,8 +6,8 @@
     
     $query = "DELETE FROM post WHERE id = $id LIMIT 1";
     $mysqli->query($query);
-    
-    $query = "DELETE FROM activity WHERE main_type = 3 AND sub_type = 0 AND object_id = $id LIMIT 1";
+        
+    $query = "INSERT INTO activity (from_user_id, main_type, sub_type, object_id) VALUES (" . $_SESSION["user_id"] . ", 3, 1, -1)";
     $mysqli->query($query);
     
 ?>

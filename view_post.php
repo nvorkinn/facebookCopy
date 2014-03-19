@@ -26,7 +26,7 @@
         ?>
 
         <link href="css/wall.css" rel="stylesheet" type="text/css" />
-        <script src="js/wall.js"></script>
+        <script src="js/view_post.js"></script>
         
 
     </head>
@@ -43,75 +43,7 @@
         
         <div class="wrapper row-offcanvas row-offcanvas-left">
         
-            <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">           
-            
-                <!-- sidebar: style can be found in sidebar.less -->
-                <section class="sidebar">
-                
-                    <!-- Sidebar user panel -->
-                    <div class="user-panel">
-                    
-                        <div class="pull-left image">
-                            <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-                        </div>
-                        
-                        <div class="pull-left info">
-                            <p><?PHP
-                            
-                                if (isset($profile)) {
-                                    echo $profile->name . " " . $profile->surname;
-                                }
-                            
-                            ?></p>
-                        </div>
-                        
-                    </div>
-                    
-                    <!-- sidebar menu: : style can be found in sidebar.less -->
-                    <ul class="sidebar-menu">
-                    
-                        <li>
-                            <a href="wall.php">
-                                <i class="fa"></i> <span>Wall</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="messages.php">
-                                <i class="fa"></i> <span>Messages</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="circles.php">
-                                <i class="fa"></i> <span>Circles</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="profile.php">
-                                <i class="fa"></i> <span>Profile</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="activity.php">
-                                <i class="fa"></i> <span>Activity log</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="blog.php">
-                                <i class="fa"></i> <span>Blog</span>
-                            </a>
-                        </li>
-                    </ul>
-                    
-                </section>
-                <!-- /.sidebar -->
-                
-            </aside>
+            <?PHP include_once('includes/sidebar.php'); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -125,13 +57,18 @@
                             $post = $result->fetch_object();
                             
                             echo "<div class='row'>
-                                      <div class='box box-primary'>
+                                      <div data-id=$post->id class='box box-primary'>
                                           <div class='box-body'>
                                               <p>" . $post->content . "</p>
-                                          </div><!-- /.box-body -->
-                                          <div class='box-footer'>
-                                              <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
-                                          </div><!-- /.box-footer-->
+                                          </div><!-- /.box-body -->";                                          
+                            if ($_SESSION["admin"] == 1 || $post->user_id == $_SESSION["user_id"])
+                            {
+                                echo "
+                                <div class='box-footer'>
+                                    <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>
+                                </div>";
+                            }
+                            echo "
                                       </div><!-- /.box -->
                                   </div>";
                         }                            

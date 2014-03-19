@@ -1,4 +1,4 @@
-<!-- Left side column. contains the logo and sidebar -->
+            <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">           
             
                 <!-- sidebar: style can be found in sidebar.less -->
@@ -28,37 +28,37 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                     
-                        <li>
+                        <li id="wall_menu">
                             <a href="wall.php">
                                 <i class="fa"></i> <span>Wall</span>
                             </a>
                         </li>
                         
-                        <li>
+                        <li id="messages_menu">
                             <a href="messages.php">
                                 <i class="fa"></i> <span>Messages</span>
                             </a>
                         </li>
                         
-                        <li>
+                        <li id="circles_menu">
                             <a href="circles.php">
                                 <i class="fa"></i> <span>Circles</span>
                             </a>
                         </li>
                         
-                        <li class="active">
+                        <li id="profile_menu">
                             <a href="profile.php">
                                 <i class="fa"></i> <span>Profile</span>
                             </a>
                         </li>
                         
-                        <li>
+                        <li id="activity_menu">
                             <a href="activity.php">
                                 <i class="fa"></i> <span>Activity log</span>
                             </a>
                         </li>
                         
-                        <li>
+                        <li id="blog_menu">
                             <a href="blog.php">
                                 <i class="fa"></i> <span>Blog</span>
                             </a>

@@ -378,6 +378,7 @@
                                 
                                     <?PHP
                                     
+                                        $atLeastOne = false;
                                         if ($result = $mysqli->query("SELECT * FROM post WHERE user_id = " . $currentUserId . " AND deleted = 0 ORDER BY date DESC LIMIT 100")) {
                                             for ($i = 0; $i < $result->num_rows; $i++) {
                                                 $post = $result->fetch_object();
@@ -387,6 +388,12 @@
                                                 
                                                 $canShow = false;
                                                 
+                                                // Admin
+                                                if ($_SESSION["admin"] == 1)
+                                                {
+                                                    $canShow = true;
+                                                }
+                                                else
                                                 // Public
                                                 if ($privacySetting == 1)
                                                 {
@@ -478,22 +485,27 @@
                                                 
                                                 if ($canShow == true)
                                                 {
+                                                    $atLeastOne = true;
                                                     echo "<div class='row'>
                                                               <div data-id=$post->id class='box box-primary'>
                                                                   <div class='box-body'>
                                                                       <p>" . $post->content . "</p>
-                                                                  </div><!-- /.box-body -->
-                                                                  <div class='box-footer'>
-                                                                      <button class='btn btn-success' class='like_button' onclick='like(this);'>Like</button>
-                                                                  </div><!-- /.box-footer-->
-                                                              </div><!-- /.box -->
+                                                                  </div><!-- /.box-body -->";
+                                                    if ($_SESSION["admin"] == 1)
+                                                    {
+                                                                  echo "<div class='box-footer'>
+                                                                      <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>
+                                                                  </div><!-- /.box-footer-->";
+                                                    }
+                                                    
+                                                    echo "          </div><!-- /.box -->
                                                           </div>";
                                                 }
                                             }   
 
-                                            if ($result->num_rows == 0)
+                                            if ($atLeastOne == false)
                                             {
-                                                echo "<p>This user has made no posts.</p>";
+                                                echo "<p>This user has made no posts that you can view.</p>";
                                             }
                                         }                            
                                     
@@ -509,6 +521,7 @@
                                 
                                     <?PHP
                                     
+                                        $atLeastOne = false;
                                         if ($result = $mysqli->query("SELECT * FROM blog WHERE user_id = " . $currentUserId . " ORDER BY date DESC LIMIT 100")) {
                                             for ($i = 0; $i < $result->num_rows; $i++) {
                                                 $blog = $result->fetch_object();
@@ -518,6 +531,12 @@
                                                 
                                                 $canShow = false;
                                                 
+                                                // Admin
+                                                if ($_SESSION["admin"] == 1)
+                                                {
+                                                    $canShow = true;
+                                                }
+                                                else
                                                 // Public
                                                 if ($privacySetting == 1)
                                                 {
@@ -608,7 +627,8 @@
                                                 }
                                                 
                                                 if ($canShow == true)
-                                                {                                    
+                                                {        
+                                                    $atLeastOne = true;                            
                                                     echo "
                                                     \n
                                                     <div class='small-box bg-green blog-entry centered'>
@@ -616,14 +636,22 @@
                                                             <a href='view_blog.php?id=$blog->id'>
                                                                 " . $blog->title . " from " . date("d M Y H:i:s", strtotime($blog->date)) . "
                                                             </a>
-                                                        </div>
-                                                    </div>\n\n";
+                                                        </div>";
+                                                    if ($_SESSION["admin"] == 1)
+                                                    {
+                                                        echo "
+                                                        <div class='box-footer'>
+                                                            <button class='btn btn-danger delete_button' onclick='deleteBlog(this);'>Delete</button>
+                                                        </div>";
+                                                    }
+                                                    
+                                                    echo "</div>\n\n";
                                                 }
                                             }   
 
-                                            if ($result->num_rows == 0)
+                                            if ($atLeastOne == false)
                                             {
-                                                echo "<p>This user has made no blog entries.</p>";
+                                                echo "<p>This user has made no blog entries that you can view.</p>";
                                             }
                                         }                            
                                     

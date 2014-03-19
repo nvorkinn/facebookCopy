@@ -36,6 +36,7 @@
         
 
             <?PHP include_once('includes/sidebar.php'); ?>
+            <script>$(document).ready(function () {$("#wall_menu").addClass("active");});</script>
 			
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -107,7 +108,6 @@
                                                   </div><!-- /.box-body -->
                                                   <div class='box-footer'>
                                                       <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>
-                                                      <button class='btn btn-success like_button' onclick='like(this);'>Like</button>
                                                   </div><!-- /.box-footer-->
                                               </div><!-- /.box -->
                                           </div>";

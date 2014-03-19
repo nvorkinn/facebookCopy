@@ -12,7 +12,7 @@ function addToCircle(circleId){
     var friend = $("#friend-circle-modal").attr('data-activity-hash');
 	$.ajax({
 		type: "post",
-		url: "../tools/protected/circle_utils.php",
+		url: "tools/protected/circle_utils.php",
 		data: {"action":"add_to_circle", "circle_id": circleId, "member_to_add": friend},
 
     });
@@ -22,7 +22,7 @@ function newCircle(){
     var circleName = $("#new-circle-name").val();
 	$.ajax({
 		type: "post",
-		url: "../tools/protected/circle_utils.php",
+		url: "tools/protected/circle_utils.php",
 		data: {"action":"create_circle", "circle_name":circleName},
             success: function (id) {
 				console.log("got somewhere");

@@ -54,6 +54,7 @@
         <div class="wrapper row-offcanvas row-offcanvas-left">
         
             <?PHP include_once('includes/sidebar.php'); ?>
+            <script>$(document).ready(function () {$("#profile_menu").addClass("active");});</script>
 			
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -111,7 +112,7 @@
                                     </div>
                                     
                                     <div class="box-body" style="display: block;">
-										<button id="profile-photo-btn" class="btn btn-primary" data-toggle="modal" data-target="#photoUploadModal">Change profile photo</button>	
+										<button id="profile-photo-btn" class="btn btn-primary" data-toggle="modal" data-target="#photoUploadModal">Change profile photo</button>
 									
 									</div><!-- /.box-body -->
                                     
@@ -218,6 +219,7 @@
                                     
                                 </div>
                                 
+                                <!--
                                 <div class="box box-primary">
                                 
                                     <div class="box-header" data-toggle="tooltip" title="">
@@ -227,7 +229,7 @@
                                     <div class="box-body" style="display: block;">
                                         <p>
                                         </p>
-                                    </div><!-- /.box-body -->
+                                    </div>
                                     
                                 </div>
                                 
@@ -240,9 +242,10 @@
                                     <div class="box-body" style="display: block;">
                                         <p>
                                         </p>
-                                    </div><!-- /.box-body -->
+                                    </div>
                                     
                                 </div>
+                                !-->
                                 
                             </div><!-- /.tab-pane -->
                             
@@ -459,56 +462,58 @@
                                         </p>
                                     </div><!-- /.box-body -->
                                     
-                                    <div class="box box-primary">
-                                
-                                        <div class="box-header" data-toggle="tooltip" title="">
-                                            <h3 class="box-title">Personal information</h3>    
-                                        </div>
-                                        
-                                        <div class="box-body" style="display: block;">
-                                            <p>
-                                                <table class="no-border">
+                                </div>
+                                    
+                                <div class="box box-primary">
+                            
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Personal information</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                            <table class="no-border">
+                                            
+                                                <tr>
+                                                    <td class="header">Date of birth</td>
+                                                    <td>
+                                                        <input type="date" id="dob">
+                                                    </td>
+                                                </tr>
                                                 
-                                                    <tr>
-                                                        <td class="header">Date of birth</td>
-                                                        <td>
-                                                            <input type="date" id="dob">
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                </table>
-                                            </p>
-                                        </div><!-- /.box-body -->
-                                        
+                                            </table>
+                                        </p>
+                                    </div><!-- /.box-body -->
+                                    
+                                </div>
+                                <!--
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Education</h3>    
                                     </div>
                                     
-                                    <div class="box box-primary">
-                                    
-                                        <div class="box-header" data-toggle="tooltip" title="">
-                                            <h3 class="box-title">Education</h3>    
-                                        </div>
-                                        
-                                        <div class="box-body" style="display: block;">
-                                            <p>
-                                            </p>
-                                        </div><!-- /.box-body -->
-                                        
-                                    </div>
-                                    
-                                    <div class="box box-primary">
-                                    
-                                        <div class="box-header" data-toggle="tooltip" title="">
-                                            <h3 class="box-title">Places lived</h3>    
-                                        </div>
-                                        
-                                        <div class="box-body" style="display: block;">
-                                            <p>
-                                            </p>
-                                        </div><!-- /.box-body -->
-                                        
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                        </p>
                                     </div>
                                     
                                 </div>
+                                
+                                <div class="box box-primary">
+                                
+                                    <div class="box-header" data-toggle="tooltip" title="">
+                                        <h3 class="box-title">Places lived</h3>    
+                                    </div>
+                                    
+                                    <div class="box-body" style="display: block;">
+                                        <p>
+                                        </p>
+                                    </div>
+                                    
+                                </div>
+                                !-->
+                                <button onClick="getXML();" class="btn btn-primary">Download user data as XML</button>
                                 
                                 <button type="button" class="btn btn-primary" onclick="saveSettings();">Save</button>
                                 
