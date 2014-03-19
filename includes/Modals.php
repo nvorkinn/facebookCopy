@@ -57,11 +57,12 @@
                 <h4 class="modal-title" id="friendCircleModalHeader">Add Friend to Circle?</h4>
             </div>
             <div class="modal-body">
+				<div id="alert-placeholder"></div>
                 <div class="btn-group btn-group-vertical btn-block">
                     <div class="input-group">
                         <input id="new-circle-name" type="text" class="form-control" placeholder="Create new circle">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" id="new-circle-button" data-dismiss="modal" type="button" onclick="newCircle();">Create!</button>
+                            <button class="btn btn-default" id="new-circle-button" type="button" onclick="newCircle();">Create!</button>
                         </span>
                     </div><!-- /input-group -->
                     <a class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" href="#">

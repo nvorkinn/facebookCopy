@@ -8,28 +8,31 @@ function signOut(){
     });
 }
 
-function addToCircle(circle_id){
+function addToCircle(circleId){
     var friend = $("#friend-circle-modal").attr('data-activity-hash');
-    
-    $.ajax({
-        type: "post",
-        data: {"circle_id": circle_id, "member_to_add": friend},
-        url: "tools/protected/add_to_circle.php",
-        success: function (response) {
-        }
+	$.ajax({
+		type: "post",
+		url: "../tools/protected/circle_utils.php",
+		data: {"action":"add_to_circle", "circle_id": circleId, "member_to_add": friend},
+
     });
 }
 
 function newCircle(){	
-    var circle_name = $("#new-circle-name").val();
-    $.ajax({
-            type: "post",
-            data: {"circle_name":circle_name},
-            url: "tools/protected/create_circle.php",
+    var circleName = $("#new-circle-name").val();
+	$.ajax({
+		type: "post",
+		url: "../tools/protected/circle_utils.php",
+		data: {"action":"create_circle", "circle_name":circleName},
             success: function (id) {
-                if(id != -1) {
-                    addToCircle(id);
+				console.log("got somewhere");
+                if (id == -1) {
+					$("#alert-placeholder").replaceWith("<div class='alert alert-danger alert-dismissable' style='margin-left: 0px'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button><span>Could not create circle!</span></div>");
                 }
+				else {
+					addToCircle(id);
+					$("#friend-circle-modal").modal("toggle");
+				}
             }
     });
 }
