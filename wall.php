@@ -119,7 +119,7 @@
                             
                                 <div class="box-header">
                                 
-                                    <i class="fa fa-envelope"></i>
+                                    <i class="fa fa-bullhorn"></i>
                                     <h3 class="box-title">Post something!</h3>
                                     
                                     <select class="form-control" id="privacy-select">

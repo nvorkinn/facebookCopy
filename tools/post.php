@@ -19,7 +19,7 @@
     {
         // Make sure $privacy is a valid circle id
         $result = $mysqli->query("SELECT * FROM circle WHERE id = $privacy LIMIT 1");
-        if ($result->num_rows != 0)
+        if ($result)
         {
             // Find the circle's privacy setting or create one if there isn't one already
             $result = $mysqli->query("SELECT * FROM privacy_setting WHERE circle_id = $privacy LIMIT 1");

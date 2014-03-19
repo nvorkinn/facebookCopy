@@ -189,7 +189,7 @@
                                                 {
                                                     // Post
                                                     $post = $mysqli->query("SELECT * FROM post WHERE id = $activity->object_id LIMIT 1")->fetch_object();
-                                                    echo "<i class='fa fa-envelope bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
+                                                    echo "<i class='fa fa-bullhorn bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
                                                 }
                                             }
                                             else
