@@ -25,3 +25,8 @@ function saveSettings()
         $("#password_confirmation").addClass("invalid-password");
     }
 }
+
+function getXML()
+{
+    window.location = "tools/get_xml.php";
+}

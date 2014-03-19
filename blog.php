@@ -35,6 +35,7 @@
         <div class="wrapper row-offcanvas row-offcanvas-left">
 
             <?PHP include_once('includes/sidebar.php'); ?>
+            <script>$(document).ready(function () {$("#blog_menu").addClass("active");});</script>
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
 

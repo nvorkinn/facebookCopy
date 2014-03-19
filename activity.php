@@ -36,6 +36,7 @@
         
 
             <?PHP include_once('includes/sidebar.php'); ?>
+            <script>$(document).ready(function () {$("#activity_menu").addClass("active");});</script>
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
 
@@ -121,7 +122,20 @@
                                                 {
                                                     // Post
                                                     $post = $mysqli->query("SELECT * FROM post WHERE id = $activity->object_id LIMIT 1")->fetch_object();
-                                                    echo "<i class='fa fa-bullhorn bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
+                                                    if ($post)
+                                                    {
+                                                        echo "<i class='fa fa-bullhorn bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted <a href='view_post.php?id=$post->id'>$post->content</a> from <b>$post->location</b></div></div>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<i class='fa fa-bullhorn bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You posted something.</div></div>";
+                                                    }
+                                                }
+                                                else
+                                                if ($activity->sub_type == 1)
+                                                {
+                                                    // Deleted post
+                                                    echo "<i class='fa fa-bullhorn bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You deleted a post.</div></div>";
                                                 }
                                             }
                                             else
@@ -131,11 +145,35 @@
                                                 {
                                                     // Blog
                                                     $blog = $mysqli->query("SELECT * FROM blog WHERE id = $activity->object_id LIMIT 1")->fetch_object();
-                                                    echo "<i class='fa fa-file-text-o bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You made a blog entry titled <a href='view_blog.php?id=$blog->id'>$blog->title</a></div></div>";
+                                                    if ($blog)
+                                                    {
+                                                        echo "<i class='fa fa-file-text-o bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You made a blog entry titled <a href='view_blog.php?id=$blog->id'>$blog->title</a></div></div>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<i class='fa fa-file-text-o bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You made a blog entry.</div></div>";
+                                                    }
+                                                }
+                                                else
+                                                if ($activity->sub_type == 1)
+                                                {
+                                                    // Deleted blog
+                                                    echo "<i class='fa fa-file-text-o bg-blue'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i> " . date("H:i:s", strtotime($activity->created_date)) . "</span><div class='timeline-body'>You deleted a blog entry.</div></div>";
                                                 }
                                             }
                                             
                                             echo "</li>";
+                                        }
+                                        
+                                        if ($result->num_rows == 0)
+                                        {
+                                            echo "<!-- timeline time label -->
+                                                    <li class='time-label'>
+                                                        <span class='bg-red'>
+                                                            No activities recorded
+                                                        </span>
+                                                    </li>
+                                                    <!-- /.timeline-label -->";
                                         }
                                     }
                                     

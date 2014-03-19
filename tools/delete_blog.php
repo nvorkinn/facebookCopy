@@ -7,7 +7,7 @@
     $query = "DELETE FROM blog WHERE id = $id LIMIT 1";
     $mysqli->query($query);
     
-    $query = "DELETE FROM activity WHERE main_type = 4 AND sub_type = 0 AND object_id = $id LIMIT 1";
+    $query = "INSERT INTO activity (from_user_id, main_type, sub_type, object_id) VALUES (" . $_SESSION["user_id"] . ", 4, 1, -1)";
     $mysqli->query($query);
     
 ?>

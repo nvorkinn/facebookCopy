@@ -1,6 +1,7 @@
 <?php
 
     require_once ($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
+    //require_once ("../vendor/autoload.php");
     
     use WindowsAzure\Common\ServicesBuilder;
     use WindowsAzure\Blob\Models\CreateContainerOptions;

@@ -37,6 +37,7 @@
 	<div class="wrapper row-offcanvas row-offcanvas-left">
 
             <?PHP include_once('includes/sidebar.php'); ?>			<!-- Right side column. Contains the navbar and content of the page -->
+            <script>$(document).ready(function () {$("#circles_menu").addClass("active");});</script>
 			<aside class="right-side">
 
 				<!-- Main content -->
