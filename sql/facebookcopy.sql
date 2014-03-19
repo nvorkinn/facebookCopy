@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.2
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2014 at 02:08 AM
+-- Generation Time: Mar 19, 2014 at 10:53 PM
 -- Server version: 5.6.12-log
--- PHP Version: 5.5.1
+-- PHP Version: 5.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -39,24 +39,21 @@ CREATE TABLE IF NOT EXISTS `activity` (
   PRIMARY KEY (`id`),
   KEY `to_user_id` (`to_user_id`),
   KEY `from_user_id` (`from_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=137 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=195 ;
 
 --
 -- Dumping data for table `activity`
 --
 
 INSERT INTO `activity` (`id`, `from_user_id`, `to_user_id`, `main_type`, `sub_type`, `object_id`, `created_date`) VALUES
-(115, 9, NULL, 3, 0, 24, '2014-03-18 22:32:14'),
-(116, 9, NULL, 3, 0, 25, '2014-03-18 22:32:22'),
-(117, 9, NULL, 3, 0, 26, '2014-03-18 22:32:33'),
-(122, 8, 9, 0, 0, -1, '2014-03-18 23:09:29'),
-(123, 9, 8, 2, 1, -1, '2014-03-18 23:10:44'),
-(124, 14, 8, 0, 0, -1, '2014-03-18 23:16:05'),
-(125, 8, 14, 2, 1, -1, '2014-03-18 23:16:24'),
-(126, 14, NULL, 3, 0, 27, '2014-03-18 23:26:01'),
-(134, 8, NULL, 4, 0, 7, '2014-03-19 02:02:51'),
-(135, 8, NULL, 4, 0, 8, '2014-03-19 02:02:56'),
-(136, 8, NULL, 4, 0, 9, '2014-03-19 02:03:02');
+(186, 16, 17, 0, 0, -1, '2014-03-19 18:39:04'),
+(187, 17, 16, 2, 1, -1, '2014-03-19 18:39:37'),
+(189, 16, 20, 0, 0, -1, '2014-03-19 21:58:01'),
+(190, 20, 16, 2, 1, -1, '2014-03-19 21:58:23'),
+(191, 17, 20, 0, 0, -1, '2014-03-19 22:17:26'),
+(192, 20, 16, 2, 1, -1, '2014-03-19 22:19:18'),
+(193, 20, 16, 2, 1, -1, '2014-03-19 22:19:59'),
+(194, 20, 16, 2, 1, -1, '2014-03-19 22:20:16');
 
 -- --------------------------------------------------------
 
@@ -73,16 +70,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `privacy_setting_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
---
--- Dumping data for table `blog`
---
-
-INSERT INTO `blog` (`id`, `user_id`, `date`, `title`, `content`, `privacy_setting_id`) VALUES
-(7, 8, '2014-03-19 02:02:51', 'Public', '', 1),
-(8, 8, '2014-03-19 02:02:56', 'Friends', '', 2),
-(9, 8, '2014-03-19 02:03:02', 'Friends of Friends', '', 3);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -96,14 +84,18 @@ CREATE TABLE IF NOT EXISTS `circle` (
   `name` varchar(512) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `circle_ibfk_1` (`owner_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `circle`
 --
 
 INSERT INTO `circle` (`id`, `owner_user_id`, `name`) VALUES
-(6, 8, '');
+(13, 17, 'mates'),
+(14, 17, 'school'),
+(15, 20, 'school'),
+(17, 20, 'uni'),
+(18, 16, '');
 
 -- --------------------------------------------------------
 
@@ -128,15 +120,50 @@ CREATE TABLE IF NOT EXISTS `comment` (
 
 CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id` int(11) NOT NULL,
-  `content` varchar(5120) NOT NULL,
-  `status` int(11) NOT NULL,
-  `privacy_setting_id` int(11) NOT NULL,
+  `from_user_id` int(11) NOT NULL,
+  `text` longtext NOT NULL,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `photo_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `activity_id` (`activity_id`),
-  KEY `activity_id_2` (`activity_id`),
-  KEY `privacy_settings_id` (`privacy_setting_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `photo_id` (`photo_id`),
+  KEY `from_user_id` (`from_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`id`, `from_user_id`, `text`, `creation_date`, `photo_id`) VALUES
+(86, 16, 'Hey :)', '2014-03-19 22:26:02', NULL),
+(87, 16, 'hey jasper :)', '2014-03-19 22:27:18', NULL),
+(88, 16, 'sup hay?', '2014-03-19 22:27:27', NULL),
+(89, 17, 'how are you bro?', '2014-03-19 22:37:46', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message_subscriptions`
+--
+
+CREATE TABLE IF NOT EXISTS `message_subscriptions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) NOT NULL,
+  `to_user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `message_id` (`message_id`),
+  KEY `to_user_id` (`to_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
+
+--
+-- Dumping data for table `message_subscriptions`
+--
+
+INSERT INTO `message_subscriptions` (`id`, `message_id`, `to_user_id`) VALUES
+(78, 86, 20),
+(79, 86, 17),
+(80, 87, 20),
+(81, 88, 17),
+(82, 89, 16);
 
 -- --------------------------------------------------------
 
@@ -152,17 +179,21 @@ CREATE TABLE IF NOT EXISTS `notification` (
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `target` (`target_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=103 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=157 ;
 
 --
 -- Dumping data for table `notification`
 --
 
 INSERT INTO `notification` (`id`, `activity_id`, `target_id`, `seen`) VALUES
-(99, 122, 9, 1),
-(100, 123, 8, 1),
-(101, 124, 8, 1),
-(102, 125, 14, 0);
+(148, 186, 17, 1),
+(149, 187, 16, 1),
+(151, 189, 20, 1),
+(152, 190, 16, 0),
+(153, 191, 20, 0),
+(154, 192, 16, 0),
+(155, 193, 16, 0),
+(156, 194, 16, 0);
 
 -- --------------------------------------------------------
 
@@ -178,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
   PRIMARY KEY (`id`),
   KEY `privacy_settings_id` (`privacy_setting_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -198,17 +229,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `privacy_settings_id` (`privacy_setting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
-
---
--- Dumping data for table `post`
---
-
-INSERT INTO `post` (`id`, `user_id`, `main_type`, `privacy_setting_id`, `date`, `location`, `content`, `deleted`) VALUES
-(24, 9, 0, 1, '2014-03-18 22:32:14', 'London, United Kingdom', 'Public post', 0),
-(25, 9, 0, 2, '2014-03-18 22:32:22', 'London, United Kingdom', 'Only friends should see this', 0),
-(26, 9, 0, 3, '2014-03-18 22:32:33', 'London, United Kingdom', 'Only friends of friends should see this', 0),
-(27, 14, 0, 3, '2014-03-18 23:26:01', 'London, United Kingdom', 'FRIEEENDS OF FRIEEENDS', 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -221,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `privacy_setting` (
   `circle_id` int(11) DEFAULT NULL,
   `name` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `privacy_setting`
@@ -251,21 +272,16 @@ CREATE TABLE IF NOT EXISTS `profile` (
   PRIMARY KEY (`id`),
   KEY `profile_photo_id` (`profile_photo_id`),
   KEY `cover_photo_id` (`cover_photo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `profile`
 --
 
 INSERT INTO `profile` (`id`, `main_type`, `name`, `surname`, `profile_photo_id`, `cover_photo_id`, `dob`, `email`, `password`) VALUES
-(2, 0, 'Jay', 'Nanavati', NULL, NULL, '0000-00-00', 'jaysnanavati@hotmail.co.uk', '3831e9216d0a7b6d80ae1c1d8866dde36feca921'),
-(3, 0, 'Hay', 'Nanavati', NULL, NULL, '0000-00-00', 'hay@hay.com', 'b5853d3b1ce6ee58e7cfb13ddfbcc4587a6dc1b6'),
-(4, 0, 'Nik', 'Vorkinn', NULL, NULL, '2001-01-02', 'n.vorkinn@gmail.com', 'd99b6f33ea54c8d27bb39cc6d126299afcb4a9c7'),
-(5, 99, 'Victor Cristian', 'Popescu', NULL, NULL, '2014-12-31', 'victorcrpopescu@gmail.com', '9c1e7f7dc55369ed020a964666b66553722ac7b2'),
-(6, 99, 'Test1', 'Account', NULL, NULL, '2014-12-31', 'test@test.com', 'b626f58c301e022f34967a25611a34c775226834'),
-(9, 0, 'A', 'A', NULL, NULL, '2014-12-31', 'test1@commy.com', 'b444ac06613fc8d63795be9ad0beaf55011936ac'),
-(10, 0, 'B', 'B', NULL, NULL, '2014-12-31', 'test2@commy.com', '109f4b3c50d7b0df729d299bc6f8e9ef9066971f'),
-(15, 0, 'C', 'C', NULL, NULL, '2014-12-31', 'test3@commy.com', '3ebfa301dc59196f18593c45e519287a23297589');
+(17, 0, 'jay', 'nanavati', NULL, NULL, '1992-12-23', 'jaysnanavati@hotmail.co.uk', '3831e9216d0a7b6d80ae1c1d8866dde36feca921'),
+(18, 0, 'hay', 'nanavati', NULL, NULL, '1992-12-23', 'hay@hay.com', 'b5853d3b1ce6ee58e7cfb13ddfbcc4587a6dc1b6'),
+(21, 0, 'jasper', 'nanavati', NULL, NULL, '1992-12-23', 'jasper@jasper.com', '3831e9216d0a7b6d80ae1c1d8866dde36feca921');
 
 -- --------------------------------------------------------
 
@@ -282,15 +298,18 @@ CREATE TABLE IF NOT EXISTS `relationship` (
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`),
   KEY `privacy_settings_id` (`privacy_setting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `relationship`
 --
 
 INSERT INTO `relationship` (`id`, `activity_id`, `to_entity_id`, `privacy_setting_id`, `since`) VALUES
-(25, 122, 8, 1, '2014-03-18 23:10:44'),
-(26, 124, 14, 1, '2014-03-18 23:16:24');
+(46, 186, 16, 1, '2014-03-19 18:39:37'),
+(47, 189, 16, 1, '2014-03-19 21:58:23'),
+(48, 189, 16, 1, '2014-03-19 22:19:18'),
+(49, 189, 16, 1, '2014-03-19 22:19:59'),
+(50, 189, 16, 1, '2014-03-19 22:20:16');
 
 -- --------------------------------------------------------
 
@@ -308,21 +327,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   KEY `profile_id` (`profile_id`),
   KEY `profile_id_2` (`profile_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `profile_id`, `admin`, `verified`, `online`, `hash`) VALUES
-(1, 2, 0, 1, 1, '8bfd13cad0bc4b2ac41d9e235951e72c9b62c2aa'),
-(2, 3, 0, 1, 1, 'ebddd6b268d91849108444d7fc5c9941138e8ee0'),
-(3, 4, 0, 1, 1, 'hallo'),
-(4, 5, 99, 1, 99, '192fc044e74dffea144f9ac5dc9f3395'),
-(5, 6, 99, 1, 99, '2421fcb1263b9530df88f7f002e78ea5'),
-(8, 9, 0, 1, 0, '9dbb7f83a82dff4d62f7f5f2c0491527ce35cce8'),
-(9, 10, 0, 1, 0, '09d66f6e5482d9b0ba91815c350fd9af3770819b'),
-(14, 15, 0, 1, 0, 'ec91fc2dc062c0f220b5d7b52ac6446011bf98cd');
+(16, 17, 0, 0, 0, 'e77a763321d6cf825534ab228e1dfa33e71447c1'),
+(17, 18, 0, 0, 0, '6d5db0e809f71a43d3bada01e4c1c4d4b501b435'),
+(20, 21, 0, 0, 0, 'fc8d9e6e58db7ca861d6096d684bd0169ffd01cf');
 
 -- --------------------------------------------------------
 
@@ -339,6 +353,18 @@ CREATE TABLE IF NOT EXISTS `user_circle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `user_circle`
+--
+
+INSERT INTO `user_circle` (`user_id`, `circle_id`) VALUES
+(16, 13),
+(16, 14),
+(16, 15),
+(16, 17),
+(17, 18),
+(20, 18);
+
+--
 -- Constraints for dumped tables
 --
 
@@ -346,20 +372,20 @@ CREATE TABLE IF NOT EXISTS `user_circle` (
 -- Constraints for table `activity`
 --
 ALTER TABLE `activity`
-  ADD CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`from_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `activity_ibfk_2` FOREIGN KEY (`to_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`from_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_2` FOREIGN KEY (`to_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `blog`
 --
 ALTER TABLE `blog`
-  ADD CONSTRAINT `blog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `blog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `circle`
 --
 ALTER TABLE `circle`
-  ADD CONSTRAINT `circle_ibfk_1` FOREIGN KEY (`owner_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `circle_ibfk_1` FOREIGN KEY (`owner_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comment`
@@ -371,8 +397,15 @@ ALTER TABLE `comment`
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`privacy_setting_id`) REFERENCES `privacy_setting` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`from_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `photo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `message_subscriptions`
+--
+ALTER TABLE `message_subscriptions`
+  ADD CONSTRAINT `message_subscriptions_ibfk_1` FOREIGN KEY (`message_id`) REFERENCES `message` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `message_subscriptions_ibfk_2` FOREIGN KEY (`to_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `notification`
