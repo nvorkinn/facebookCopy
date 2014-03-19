@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+	<!DOCTYPE HTML>
 <html>
 
 
@@ -24,21 +24,13 @@
 			//Get all messages
 								
 								$message_query = "SELECT DISTINCT hash,user.id, name, surname 
-									FROM user, profile,message
+									FROM user, profile,message_subscriptions
 								WHERE user.profile_id = profile.id
 								AND user.id
 								IN (
-									SELECT 
-									CASE WHEN  from_user_id = $user_id
-									THEN  to_user_id 
-									ELSE  from_user_id 
-									END 
-									FROM activity, message
-									WHERE message.activity_id = activity.id
-									AND (
-										from_user_id = $user_id
-										OR to_user_id = $user_id
-									)
+									SELECT * FROM message WHERE message_subscriptions.to_user_id = $user_id
+									
+									WHERE message.from_user_id = message.from_user_id AND message_subscriptions.message_id=message.id
 								)";
 								$message_count=0;
 								$message_string;
@@ -60,6 +52,8 @@
                                     </div>';
 										echo $row["name"];
 									}
+								}else{
+									echo "could not get messages";
 								}
         ?>
  	<script type="text/javascript" src="js/jquery.tokeninput.js"></script>
@@ -119,7 +113,7 @@
 										<input type="text" id="recipients_entry" class="form-control">
 									</div>							
                                 </div>
-                                <div class="box-body chat" id="chat-box" style="height:445px;overflow-x:hidden;">		
+                                <div class="box-body chat" id="chat-box" style="height:350px;overflow-x:hidden;">		
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
@@ -170,7 +164,7 @@
 							url: "tools/protected/message_utils.php",
 							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text},
 							success: function(data){
-									
+								console.log(data);
 							} 
 						});							
 					});
@@ -182,6 +176,7 @@
 										url: "tools/protected/circle_utils.php",
 										data: {"action":"get_all_friends_from_all_circles"},
 										success: function (response) {
+											
 											if(response==-1) {
 												return;
 											}
@@ -199,6 +194,10 @@
 													url: "tools/protected/circle_utils.php",
 													data: {"action":"get_all_circles"},
 													success: function(data){
+														if(data==-1){
+															data_show(friends);
+															return;
+														}
 														var circles = $.parseJSON(data);
 														for(var i=0; i<circles.length; i++){
 															circles[i]["name"]="Circle: "+circles[i]["name"];														

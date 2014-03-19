@@ -10,15 +10,17 @@
 
     /* disable autocommit */
     $mysqli->autocommit(FALSE);
+	$from_user_id=$_SESSION["user_id"];
 
-    $insert_message="INSERT INTO message(text,creation_date) VALUES('$message_text','$creation_date')";
+    $insert_message="INSERT INTO message(from_user_id,text,creation_date) VALUES($from_user_id,'$message_text','$creation_date')";
 
+	
     if ($result= $mysqli->query($insert_message)) {
         $message_id = $mysqli->insert_id;
         foreach ($friends_to as $friend) {
             $friend_id=$friend->id;
             $insert_subscription = "INSERT INTO message_subscriptions(message_id,to_user_id) VALUES($message_id,$friend_id)";
-            echo $insert_subscription;
+            
             if ($result= $mysqli->query($insert_subscription)) {
                 echo 1;
             }else{

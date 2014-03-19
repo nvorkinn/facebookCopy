@@ -10,8 +10,7 @@ $(document).ready(function ()
 				
                 if(response !=-1)
                 {
-					alert(response);
-					
+				
 					var json = $.parseJSON(response);
 					if(json.to_hash){
 						registerNotification(conn,json.to_hash, "newFriendRequest");
