@@ -59,7 +59,7 @@
                     $("#general-notif-count").html('');
 					$.ajax({
                         type: "post",
-                        data: {"type" : "2"},
+                        data: {"main_type" : "2"},
                         url: "tools/protected/notif_utils.php",
                         success: function (response) {
                             if(response!=-1){
@@ -74,7 +74,7 @@
 					$("#friend-request-count").html('');
                     $.ajax({
                         type: "post",
-                        data: {"type" : "0"},
+                        data: {"main_type" : "0"},
                         url: "tools/protected/notif_utils.php",
                         success: function (response) {
                             if(response!=-1){
@@ -108,15 +108,15 @@
 	if ($result = $mysqli->query("SELECT * FROM notification,activity WHERE notification.activity_id=activity.id AND notification.target_id=".$_SESSION["user_id"]))
             {
 				while($row = $result->fetch_assoc()){
-					if($row['type']==0){
+					if($row['main_type']==0){
 						if($row['seen']==0){
 							$friend_requests++;
 						}
-					}else if($row['type']==1){
+					}else if($row['main_type']==1){
 						if($row['seen']==0){
 							$messages++;
 						}
-					}else if($row['type']==2){
+					}else if($row['main_type']==2){
 						if($row['seen']==0){
 							$general_notifs++;
 						}
@@ -223,7 +223,19 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+								
+									<?PHP
+									$profile_photo_url="img/avatar3.png";
+									
+									if($profile->profile_photo_id!=NULL){
+										if ($result = $mysqli->query("SELECT photo_url FROM photo WHERE photo.id=$profile->profile_photo_id LIMIT 1")){
+											$row= $result->fetch_assoc();
+											$profile_photo_url=$row['photo_url'];
+										}
+									}
+									 echo '<img src="'.$profile_photo_url.'" class="img-circle" alt="User Image" />';
+							
+									?>
                                     <p>
                                         <?PHP
                             

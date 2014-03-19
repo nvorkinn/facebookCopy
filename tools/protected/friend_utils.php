@@ -7,11 +7,11 @@
     $created_date = date("Y-m-d H:i:s");
     if($action=="newFriendRequest"){
         $to=$_POST["to_user_id"];
-        $if_friend_request = "SELECT from_user_id, to_user_id, type FROM activity WHERE from_user_id = '$from' AND to_user_id = '$to' AND type = '0' LIMIT 1";
+        $if_friend_request = "SELECT from_user_id, to_user_id, main_type FROM activity WHERE from_user_id = '$from' AND to_user_id = '$to' AND main_type = '0' LIMIT 1";
               
         if ($result = $mysqli->query($if_friend_request)){
                     if ($result->num_rows == 0){
-                        $query = "INSERT INTO activity (from_user_id, to_user_id, type, sub_type, object_id, created_date) VALUES ('$from', '$to', '0', '0', '-1', '$created_date')";
+                        $query = "INSERT INTO activity (from_user_id, to_user_id, main_type, sub_type, object_id, created_date) VALUES ('$from', '$to', '0', '0', '-1', '$created_date')";
                         $mysqli->query($query);
                         echo $mysqli->error;
                         $notif = new Notification($mysqli->insert_id, $from, $to);
@@ -19,6 +19,7 @@
                         echo 1;
                     }
                 }
+				
     }else if($action=="acceptFriendRequest"){
         $friend_hash=$_POST["friend_hash"];
         $activity_id=$_POST["activity_id"];	
@@ -30,12 +31,13 @@
                 $to_entity_id = $result->fetch_assoc()['id'];
                 $query="INSERT INTO relationship (activity_id, to_entity_id, privacy_setting_id, since) VALUES ('$activity_id', '$to_entity_id', 1, '$created_date')";
                 if ($mysqli->query($query)){
-                    $query_activity = "INSERT INTO activity (from_user_id, to_user_id, type, sub_type, object_id, created_date) VALUES ('$from', '$to_entity_id', '2','1', '-1', '$created_date')";
+                    $query_activity = "INSERT INTO activity (from_user_id, to_user_id, main_type, sub_type, object_id, created_date) VALUES ('$from', '$to_entity_id', '2','1', '-1', '$created_date')";
                     if($mysqli->query($query_activity)){
                         $notif = new Notification($mysqli->insert_id, $from, $to_entity_id);
                         $notif->save();
-                        
-                        echo 1;	
+						$mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=$activity_id AND target_id=".$_SESSION["user_id"];
+						$mysqli->query($mark_seen);
+						echo 1;	
                     }else{
                         echo -1;
                     }

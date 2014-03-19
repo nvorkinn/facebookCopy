@@ -1,16 +1,21 @@
 <?PHP
     require_once("../../includes/php-includes.php");
 
-    $type=$_POST["type"];
+    $main_type=$_POST["main_type"];
 
-    $query = "SELECT * FROM activity,profile,user,notification WHERE notification.activity_id=activity.id AND activity.type='$type' AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1) AND user.id=activity.from_user_id LIMIT 1";
+    $query = "SELECT * FROM activity,profile,user,notification WHERE notification.activity_id=activity.id AND activity.main_type='$main_type' AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1) AND user.id=activity.from_user_id LIMIT 1";
 
     if ($result = $mysqli->query($query)){
             $str='';
             while($row = $result->fetch_assoc()){
-                $str = generateNotifItems($row,$str,$type);
-                $mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=".$row["activity_id"]." AND target_id=".$_SESSION["user_id"];
+                
+				if(!($main_type==0 && $row["seen"]==1)){
+					$str = generateNotifItems($row,$str,$main_type);	
+				}
+				if($main_type!=0){
+				$mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=".$row["activity_id"]." AND target_id=".$_SESSION["user_id"];
                 $mysqli->query($mark_seen);
+				}
             }
         echo $str;	
     }else{
@@ -18,11 +23,11 @@
     }
         
 
-        function generateNotifItems($row,$str,$type){
+        function generateNotifItems($row,$str,$main_type){
             
             $item_str='';
         
-            if($type==0){
+            if($main_type==0){
             $item_str = '<li>
                                                 <a>
                                                     <div class="pull-left">
@@ -41,7 +46,7 @@
                                                 </a>
                                             </li>';
             }
-            if($type==2){
+            if($main_type==2){
             $message='';
             if($row["sub_type"]==1){
             $message = '<p>Accepted your friend request!</p>';
