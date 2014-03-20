@@ -34,17 +34,16 @@
 									//For each message sent by user
 									while ($row = $result->fetch_assoc()) {
 										//Get the set of recepients
-										
 										$members = array();
-										$conversations_query ="SELECT * FROM message_subscriptions WHERE message_id=".$row["id"]." ORDER BY id DESC";
-										if ($result2 = $mysqli->query($conversations_query)) {
-											while ($row2 = $result2->fetch_assoc()) {
-												array_push($members,$row2["to_user_id"]);
-										}
-											array_push($conversations,$members);
-											array_push($conversations,$members);
+										$conversations_query ="SELECT DISTINCT to_user_id FROM message_subscriptions WHERE message_id=".$row["id"]." ORDER BY to_user_id DESC";
+										if ($result1 = $mysqli->query($conversations_query)) {
+											while ($row1 = $result1->fetch_assoc()) {
+												array_push($members,$row1["to_user_id"]);
+												array_push($members,$row1["to_user_id"]);
+											}					
 										}
 									}
+									
 									echo json_encode($conversations);
 								}
 							
