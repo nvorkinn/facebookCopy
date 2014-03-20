@@ -2,9 +2,9 @@
 	    require_once("Modals.php");
 ?>
 		<script>
+		var conn = connectToNotifServer();
 		$( document ).ready(function() {
-			conn = connectToNotifServer();
-            var thread = null;
+			var thread = null;
 			
 			conn.onmessage = function(e) {
 				console.log(e.data);

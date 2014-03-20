@@ -48,7 +48,7 @@
                 <section class="content">
 
 						
-						<div id="friends_wrapper" style="width:30%;float:left">
+						<div id="friends_wrapper" style="width:35%;float:left">
 							<!-- Friends -->
                             <div class="box box-primary">
                                 <div class="box-header">
@@ -63,7 +63,7 @@
                             </div><!-- /.box (chat box) -->
 						</div>
 
-						<div id="messages_wrapper" style="width:69%;float:right">
+						<div id="messages_wrapper" style="width:64%;float:right">
 							<!-- Chat box -->
                             <div class="box box-success">
                                 <div class="box-header">
@@ -74,13 +74,13 @@
 										<input type="text" id="recipients_entry" class="form-control">
 									</div>							
                                 </div>
-                                <div class="box-body chat" id="instance-chat-box" style="height:350px;overflow-x:hidden;">		
+                                <div class="box-body chat" id="instant-chat-box" style="height:350px;overflow-x:hidden;">		
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
                                         <input class="form-control" id="message_text" placeholder="Type message..."/>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-success" id="message_send_btn"><i class="fa fa-plus"></i></button>
+                                            <button class="btn btn-success" id="message_send_btn"><i class="fa fa-plus"> <span  style="font-family:arial">Send</span></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -96,14 +96,16 @@
 	<script>
                         
                 $( document ).ready(function() {
-							
-					//get existing conversations
+					getConversations();
+					
+					//get existing conversations		
+					function getConversations(){
 						$.ajax({
 							type: "post",
 							url: "tools/protected/convo_utils.php",
 							data: {"action":"get_conversations"},
 							success: function(data){
-								console.log(data);
+								
 								if(data!=-1){
 									if(data!=''){
 										$("#chat-box").html(data);
@@ -113,20 +115,23 @@
 								}
 							}
 						});
+					}
 	
 					
 					//Register convo item click handler	
 					$(document).on("click",".convo-item",function() {
+						$("#message_recipients").hide();
 						$("#chat-box-title").text(" "+$(this).find(".convo_header").text());	
 						//get messages in the conversation
 						var id=$(this).attr("id");
+						
 						$.ajax({
 							type: "post",
 							url: "tools/protected/convo_utils.php",
 							data: {"action":"get_convo_messages","convo_id":id},
 							success: function(data){
 								if(data!=-1){
-									$("#instance-chat-box").html(data);
+									$("#instant-chat-box").html(data);
 									$("#message_send_btn").attr("data-convo-id",id);
 								}								
 							}
@@ -136,12 +141,17 @@
 					var friends_list=[];
 					var circles_list=[];
 											
-					$("#message_recipients").hide();
+					$("#message_recipients").show();
+					$("#chat-box-title").html(" New message");
+						
 					
 					$("#new_message_btn").click(function() {
 						
 						$("#chat-box-title").html(" New message");
 						$("#message_recipients").show();
+						$("#instant-chat-box").html('');
+						$("#message_send_btn").attr('data-convo-id',null);
+						
 					});
 					
 					     $('#message_send_btn').attr('disabled','disabled');
@@ -157,18 +167,16 @@
 						 });
 					
 					
-					$("#message_send_btn").click(function() {
+					function post_message(){
 					
 						var message_text = $("#message_text").val();
 						var current_convo_id = $("#message_send_btn").attr("data-convo-id");
+						
 					
 						$("#message_text").val("");
 						var friends_str = JSON.stringify(friends_list);
 						var circles_str = JSON.stringify(circles_list);
-						$( "#message_recipients" ).fadeTo( "slow" , 0.7,function(){
-								$('#message_recipients :input').attr('disabled','disabled');
-								$('#message_recipients :input').css({'opacity':'0'});
-						});
+						$( "#message_recipients" ).hide();
 						
 					
 						$.ajax({
@@ -176,20 +184,30 @@
 							url: "tools/protected/message_utils.php",
 							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text,"convo-id":current_convo_id},
 							success: function(data){
-								console.log(data);
 								if(data!=-1){
 									var response = $.parseJSON(data);
 									var nameSurname = '<?PHP echo $profile->name . " " . $profile->surname; ?>';
 									var chat_item = $.parseHTML('<div class="item"><img src="img/avatar2.png" alt="user image" class="online"/> <p class="message"><a href="#" class="name"> <small class="text-muted pull-right"><i class="fa fa-clock-o" style="margin-right:3px"></i><span data-livestamp="'+response.creation_date+'"></span></small>'+nameSurname+'</a>'+message_text+'</p></div>');
                                     
 									$(chat_item).hide();
-									$("#instance-chat-box").append(chat_item);
+									$("#instant-chat-box").append(chat_item);
 									$(chat_item).fadeIn("slow");
-									
+									if(current_convo_id==null){
+										
+										$("#message_send_btn").attr("data-convo-id",response.convo_id);
+										getConversations();
+										$("#message_recipients").hide();
+										$("#chat-box-title").text($("#"+response.convo_id).text());	
+						
+									}
 								}
 							} 
-						});							
-					});
+						});
+					}
+					
+					$("#message_send_btn").click(post_message);
+					$('#message_text').bind("enterKey",post_message);
+					
                     $(function () {
 								
 							 //Get all the friends if they exist

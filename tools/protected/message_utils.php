@@ -96,7 +96,7 @@
 		
         /* commit insert */
         $mysqli->commit();
-		 echo json_encode(array("creation_date"=>$creation_date));
+		 echo json_encode(array("creation_date"=>$creation_date,"convo_id"=>$convo_id));
     }else {
         $mysqli->rollback();
         echo -1;
