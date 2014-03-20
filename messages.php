@@ -23,28 +23,12 @@
 			
 			//Get all messages
 							
-								//All messages sent by the user
-								$conversations_query = "SELECT * FROM message WHERE from_user_id=$user_id";
+								$conversations_query = "SELECT * FROM `message_subscriptions`,`message` WHERE (to_user_id=$user_id OR from_user_id=$user_id) AND message_id=message.id GROUP BY message.id";
 								
 								if ($result = $mysqli->query($conversations_query)) {
-									
-									//Unique set of receeipients
-									$conversations = array();
-									
-									//For each message sent by user
 									while ($row = $result->fetch_assoc()) {
-										//Get the set of recepients
-										$members = array();
-										$conversations_query ="SELECT DISTINCT to_user_id FROM message_subscriptions WHERE message_id=".$row["id"]." ORDER BY to_user_id DESC";
-										if ($result1 = $mysqli->query($conversations_query)) {
-											while ($row1 = $result1->fetch_assoc()) {
-												array_push($members,$row1["to_user_id"]);
-												array_push($members,$row1["to_user_id"]);
-											}					
-										}
+										
 									}
-									
-									echo json_encode($conversations);
 								}
 							
 								$message_query = "SELECT DISTINCT hash,user.id, name, surname 

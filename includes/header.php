@@ -77,7 +77,6 @@
                         data: {"main_type" : "0"},
                         url: "tools/protected/notif_utils.php",
                         success: function (response) {
-							
                             if(response!=-1){
 								$("#friend-notif-data").html(response);
 							}

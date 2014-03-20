@@ -105,7 +105,36 @@
                                               <div data-id=$post->id class='box box-primary'>
                                                   <div class='box-body'>
                                                       <p>" . $post->content . "</p>
-                                                  </div><!-- /.box-body -->
+                                                      <div class='add-comment-box'>
+                                                        <input class='add-comment' type='text' placeholder='Type your comment here'><button class='btn btn-success comment_button' onclick='addComment(this);'>Comment</button>
+                                                      </div>";
+                                                      
+                                    $comments = $mysqli->query("SELECT * FROM comment WHERE post_id = $post->id ORDER BY date ASC");
+                                    for ($j = 0; $j < $comments->num_rows; $j++)
+                                    {
+                                        $comment = $comments->fetch_object();
+                                        
+                                        $userThatCommented = $mysqli->query("SELECT * FROM user WHERE id = $comment->user_id LIMIT 1")->fetch_object();
+                                        $profileThatCommented = $mysqli->query("SELECT * FROM profile WHERE id = $userThatCommented->profile_id LIMIT 1")->fetch_object();
+                                        
+                                        echo "<div data-id=$comment->id class='box box-primary comment-box'>
+                                                  <div class='box-body'>
+                                                      <a href='view_profile.php?id=$userThatCommented->id'>$profileThatCommented->name $profileThatCommented->surname</a> $comment->content
+                                                  </div>";
+                                                  
+                                        if ($_SESSION["admin"] == 1 || $comment->user_id == $_SESSION["user_id"])
+                                        {
+                                            echo "
+                                                  <div class='box-footer'>
+                                                      <button class='btn btn-danger delete_comment_button' onclick='deleteComment(this);'>Delete</button>
+                                                  </div><!-- /.box-footer-->";
+                                        }
+                                        
+                                        echo "</div>";
+                                        
+                                    }
+                                    
+                                    echo "</div><!-- /.box-body -->
                                                   <div class='box-footer'>
                                                       <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>
                                                   </div><!-- /.box-footer-->

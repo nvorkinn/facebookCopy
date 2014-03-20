@@ -4,12 +4,12 @@
     $main_type=$_POST["main_type"];
 
     $query = "SELECT * FROM activity,profile,user,notification WHERE notification.activity_id=activity.id AND seen=0 AND activity.main_type='$main_type' AND notification.target_id=".$_SESSION["user_id"]." AND profile.id=(SELECT profile_id FROM user WHERE user.id=activity.from_user_id LIMIT 1) AND user.id=activity.from_user_id";
-
+    
     if ($result = $mysqli->query($query)){
             $str='';
             while($row = $result->fetch_assoc()){
-					
-				$str = generateNotifItems($row,$str,$main_type);	
+                
+                $str = generateNotifItems($row,$str,$main_type);	
 				
 				if($main_type!=0){
 				$mark_seen = "UPDATE notification SET seen=1 WHERE activity_id=".$row["activity_id"]." AND target_id=".$_SESSION["user_id"];
