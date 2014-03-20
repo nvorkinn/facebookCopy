@@ -27,6 +27,9 @@ function addPost(id) {
                                        <div data-id=" + id + " class='box box-primary'>\
                                            <div class='box-body'>\
                                                <p>" + content + "</p>\
+                                           <div class='add-comment-box'>\
+                                                    <input class='add-comment' type='text' placeholder='Type your comment here'><button class='btn btn-success comment_button' onclick='addComment(this);'>Comment</button>\
+                                           </div>\
                                            </div><!-- /.box-body -->\
                                            <div class='box-footer'>\
                                                <button class='btn btn-danger delete_button' onclick='deletePost(this);'>Delete</button>\
