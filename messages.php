@@ -21,46 +21,7 @@
                 $profile = $result->fetch_object();
             }
 			
-			//Get all messages
 							
-								$conversations_query = "SELECT * FROM `message_subscriptions`,`message` WHERE (to_user_id=$user_id OR from_user_id=$user_id) AND message_id=message.id GROUP BY message.id";
-								
-								if ($result = $mysqli->query($conversations_query)) {
-									while ($row = $result->fetch_assoc()) {
-										
-									}
-								}
-							
-								$message_query = "SELECT DISTINCT hash,user.id, name, surname 
-									FROM user, profile,message_subscriptions
-								WHERE user.profile_id = profile.id
-								AND user.id
-								IN (
-									SELECT * FROM message WHERE message_subscriptions.to_user_id = $user_id
-									
-									WHERE message.from_user_id = message.from_user_id AND message_subscriptions.message_id=message.id
-								)";
-								$message_count=0;
-								$message_string;
-							
-								if ($result = $mysqli->query($message_query)) {
-									while ($row = $result->fetch_assoc()) {
-										$message_count=$message_count+1;
-										$from_name=$row=['name'];
-										$from_surname=$row['surname'];
-										$message_string=$message_string.'<div class="item">
-                                        <img src="img/avatar2.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-												'.$from_name.' '.$from_surname.'
-                                            </a>'.
-											$message_text.'
-                                        </p>
-                                    </div>';
-										echo $row["name"];
-									}
-								}
         ?>
  	<script type="text/javascript" src="js/jquery.tokeninput.js"></script>
 	<link rel="stylesheet" href="css/token-input-facebook.css" type="text/css" />
@@ -97,13 +58,7 @@
                                     </a>		
 								</div>
                                 <div class="box-body chat" id="chat-box" style="max-height:500px;overflow-x:hidden;">
-                                    <?PHP if($message_count==0){
-										echo '<span style="text-align:center"><p>You have no messages</p></span>';
-									}else{
-										echo $message_string;
-									}
-									?>
-								</div><!-- /.chat -->
+                                    								</div><!-- /.chat -->
                                 
                             </div><!-- /.box (chat box) -->
 						</div>
@@ -141,6 +96,43 @@
 	<script>
                         
                 $( document ).ready(function() {
+							
+					//get existing conversations
+						$.ajax({
+							type: "post",
+							url: "tools/protected/convo_utils.php",
+							data: {"action":"get_conversations"},
+							success: function(data){
+								console.log(data);
+								if(data!=-1){
+									if(data!=''){
+										$("#chat-box").html(data);
+									}else{
+										$("#chat-box").html("<span style='text-align:center'><p>No conversations</p></span>");
+									}
+								}
+							}
+						});
+	
+					
+					//Register convo item click handler	
+					$(document).on("click",".convo-item",function() {
+						$("#chat-box-title").text(" "+$(this).find(".convo_header").text());	
+						//get messages in the conversation
+						var id=$(this).attr("id");
+						$.ajax({
+							type: "post",
+							url: "tools/protected/convo_utils.php",
+							data: {"action":"get_convo_messages","convo_id":id},
+							success: function(data){
+								if(data!=-1){
+									$("#instance-chat-box").html(data);
+									$("#message_send_btn").attr("data-convo-id",id);
+								}								
+							}
+						});						
+					});
+					
 					var friends_list=[];
 					var circles_list=[];
 											
@@ -153,9 +145,12 @@
 					});
 					
 					     $('#message_send_btn').attr('disabled','disabled');
+						 
 						 $('#message_text').keyup(function() {
 							if($(this).val() != '' && (friends_list.length!=0 || circles_list.length!=0)) {
 							   $('#message_send_btn').removeAttr('disabled');
+							}else if($("#message_send_btn").attr("data-convo-id")!=null && $(this).val() != ''){
+								 $('#message_send_btn').removeAttr('disabled');
 							}else{
 								$('#message_send_btn').attr('disabled','disabled');
 							}
@@ -165,6 +160,8 @@
 					$("#message_send_btn").click(function() {
 					
 						var message_text = $("#message_text").val();
+						var current_convo_id = $("#message_send_btn").attr("data-convo-id");
+					
 						$("#message_text").val("");
 						var friends_str = JSON.stringify(friends_list);
 						var circles_str = JSON.stringify(circles_list);
@@ -173,13 +170,13 @@
 								$('#message_recipients :input').css({'opacity':'0'});
 						});
 						
-						
-	
+					
 						$.ajax({
 							type: "post",
 							url: "tools/protected/message_utils.php",
-							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text},
+							data: {"friends_to":friends_str,"circles_to":circles_str,"message_text":message_text,"convo-id":current_convo_id},
 							success: function(data){
+								console.log(data);
 								if(data!=-1){
 									var response = $.parseJSON(data);
 									var nameSurname = '<?PHP echo $profile->name . " " . $profile->surname; ?>';
