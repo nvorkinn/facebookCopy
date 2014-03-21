@@ -46,6 +46,13 @@
                             </a>
                         </li>
                         
+						
+                        <li id="profile_menu">
+                            <a href="photos.php">
+                                <i class="fa"></i> <span>Photos</span>
+                            </a>
+                        </li>
+						
                         <li id="profile_menu">
                             <a href="profile.php">
                                 <i class="fa"></i> <span>Profile</span>
