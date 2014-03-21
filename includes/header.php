@@ -238,6 +238,7 @@
 											$profile_photo_url=$row['photo_url'];
 										}
 									}
+									$_SESSION['profile_photo_url'] = $profile_photo_url;
 									 echo '<img src="'.$profile_photo_url.'" class="img-circle" alt="User Image" />';
 							
 									?>
@@ -246,6 +247,9 @@
                             
                                             if (isset($profile)) {
                                                 echo $profile->name . " " . $profile->surname;
+												
+											$_SESSION['user_name'] = $profile->name;
+											$_SESSION['user_surname'] = $profile->surname;
                                             }
                             
                                         ?>

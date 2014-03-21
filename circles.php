@@ -55,7 +55,7 @@
 								<ul id="friends">
 								<!-- Initiate members -->
 								<?PHP
-								$friend_query = "SELECT DISTINCT hash, name, surname 
+								$friend_query = "SELECT DISTINCT hash, name, surname,profile_photo_id 
 									FROM user, profile
 								WHERE user.profile_id = profile.id
 								AND user.id
@@ -76,7 +76,16 @@
 								$friends = array();
 								if ($friend_result = $mysqli->query($friend_query)) {
 									while ($row = $friend_result->fetch_assoc()) {
-										$friends[] = array("hash" => $row["hash"], "name" => $row["name"], "surname" => $row["surname"]);
+									
+									$photo_id=$row["profile_photo_id"];
+									$photo_url='img/avatar2.png';
+									if(isset($photo_id)){
+										if ($photo_q = $mysqli->query("SELECT photo_url FROM photo WHERE id=$photo_id LIMIT 1")) {
+											$photo_row = $photo_q->fetch_assoc();
+											$photo_url=$photo_row["photo_url"];
+										}
+									}
+									$friends[] = array("hash" => $row["hash"], "name" => $row["name"], "surname" => $row["surname"],"photo_url" => $photo_url);
 									}
 								}
 								if($friends) {
@@ -84,7 +93,7 @@
 										extract($friend);
 										echo "<li class='friend' id='$hash' data-id='$hash'>";
 										echo "<div class='thumbnail text-center'>";
-										echo "<img class='img' src='img/user.jpg' id='img$hash' draggable='false'>";
+										echo "<img class='img' style='width:100px;height:100px' src='$photo_url' id='img$hash' draggable='false'>";
 										echo "<div class='caption'><strong>".ucwords($name." ".$surname)."</strong></div>";
 										echo "</div>";
 										echo "</li>";

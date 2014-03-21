@@ -24,9 +24,16 @@ function deletePost(element) {
 
 function addPost(id) {
     var content = $("#status_update").val();
+	var profile_photo_url = '<%= session.getAttribute("profile_photo_url") %>';
+	var user_name = session.getAttribute("user_name");
+	var user_surname = session.getAttribute("user_surname");
+	
+	
     $("#posts_container").prepend("<div class='row'>\
-                                       <div data-id=" + id + " class='box box-primary'>\
-                                           <div class='box-body'>\
+                                       <div data-id=" + id + " class='box box-primary' style='width:600px'>\
+									   <div class='box-header' style='margin-left:10px'><img src='"+profile_photo_url+"' class='img-circle' alt='User Image' style='height:55px;width:55px;border: 2px solid #3c8dbc;margin-top:4px;margin-right:5px'/>\
+												<a href='#' style='color:#3D8DBC;font-weight:bold'>"+user_name +" " + user_surname+"</a>\
+											  </div><div class='box-body'>\
                                                <p>" + content + "</p>\
                                            <div class='add-comment-box'>\
                                                     <input class='add-comment' type='text' placeholder='Type your comment here'><button class='btn btn-success comment_button' onclick='addComment(this);'>Comment</button>\
