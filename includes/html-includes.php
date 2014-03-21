@@ -169,7 +169,7 @@ $(function () {
 				$.ajax({
                                 type: "POST",
                                 url: "tools/protected/record_file.php",
-                                data: {"photo-type": $('#fileupload').attr("data-photoType"),"files":data.result.files},
+                                data: {"photo-type": $('#fileupload').attr("data-photoType"),"photo_privacy":$('#fileupload').attr("data-photo-privacy"),"photo_caption":$('#fileupload').attr("data-photo-caption"),"files":data.result.files},
                                 success: function (response) {
 									alert(response);
                                     console.log(response);

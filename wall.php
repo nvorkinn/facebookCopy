@@ -41,6 +41,8 @@
 				
 				$( "#share-photo-btn" ).click(function() {
 					$( "#fileupload" ).attr("data-photoType","share-photo");
+					$( "#fileupload" ).attr("data-photo-privacy",$("#privacy-select").val());
+					$( "#fileupload" ).attr("data-photo-caption",$("#status_update").val());
 				});	
 			});
 			</script>
@@ -110,10 +112,26 @@
                                 for ($i = 0; $i < $result->num_rows; $i++) {
                                     $post = $result->fetch_object();
                                     
+									$post_photo_url=null;
+									if($post->main_type==1 && isset($post->photo_id)){
+										 if ($result_photo = $mysqli->query("SELECT * FROM photo WHERE id=".$post->photo_id." LIMIT 1")) {
+											$photo = $result_photo->fetch_object(); 
+											$post_photo_url = $photo->photo_url;
+										}										 
+									}
+									
+									$image_string='';
+									if($post_photo_url!=null){
+										$image_string="<img class='post_image' src='".$post_photo_url."'/><p/>";			
+									}
                                     echo "<div class='row'>
-                                              <div data-id=$post->id class='box box-primary'>
-                                                  <div class='box-body'>
-                                                      <p>" . $post->content . "</p>
+                                              <div data-id=$post->id class='box box-primary' style='width:600px'>
+											  <div class='box-header' style='margin-left:10px'>
+												    <img src='".$profile_photo_url."' class='img-circle' alt='User Image' style='height:55px;width:55px;border: 2px solid #3c8dbc;margin-top:4px;margin-right:5px'/>
+												<a href='#' style='color:#3D8DBC;font-weight:bold'>".$profile->name . " " . $profile->surname."</a>
+											  </div>
+                                                  <div class='box-body'>".$image_string."
+														<p>" . $post->content . "</p>
                                                       <div class='add-comment-box'>
                                                         <input class='add-comment' type='text' placeholder='Type your comment here'><button class='btn btn-success comment_button' onclick='addComment(this);'>Comment</button>
                                                       </div>";

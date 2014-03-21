@@ -4,6 +4,7 @@ function postStatusUpdate() {
         url: "tools/post.php",
         data: {content: $("#status_update").val(), privacy: $("#privacy-select").val()},
         success: function(id) {
+			alert(id);
             addPost(id);
             $("#status_update").val("");
         }

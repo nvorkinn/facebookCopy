@@ -50,5 +50,6 @@ li {
     height: 6.0em;
     padding: 0.5em;
     margin-bottom: 0.5em;
-    margin-top: 3.5em;
+    
+	margin-left:-7px;
 }

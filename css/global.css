@@ -106,3 +106,8 @@ input {
   margin-left:56px;
   margin-top:-10px;
 }
+
+.post_image{
+	height:100%;
+	width:100%;
+}

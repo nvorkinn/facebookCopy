@@ -1,6 +1,7 @@
 <?php
     require_once("../../includes/php-includes.php");
     require_once ("AzureStorageService.php");
+	require_once("../post_helper.php");
 
     $photo_type= $_POST["photo-type"];
     $files = $_POST["files"];
@@ -45,12 +46,12 @@
                 }
 		}else if($photo_type=="share-photo"){
 			$user_id = $_SESSION['user_id'];
-			$query = "INSERT INTO post (user_id, main_type, privacy_setting_id, location, content,photo_id, deleted) VALUES ($user_id, 1, 1, 'London, United Kingdom', '',$photo_id, 0)";
-			
-			 if (!$result = $mysqli->query($query)){
-                    echo 'Could not post photo' . mysql_error();
-                    exit;
-                }
+			$privacy_setting = $_POST['photo_privacy'];
+			if(!isset($privacy_setting)){
+				echo -1;
+				exit;
+			}
+			post_helper($privacy_setting,"PHOTO",$photo_id,$_POST["photo_caption"]);
 		}	
     }
 ?>
