@@ -6,8 +6,8 @@
 	$action=$_POST["action"];
 
 	function append_message_string($message_string,$conversation_id,$recepients,$photo_url){
-		$message_string=$message_string.'<div class="convo-item" style="padding-bottom:10px" id="'.$conversation_id.'"><div class="item">
-													<img src="'.$photo_url.'" alt="user image" class="offline"/>
+		$message_string=$message_string.'<div style="border-top: 1px solid rgba(0, 0, 0, 0.1);border-bottom: 1px solid rgba(255, 255, 255, 0.3);width:110%"><div><div class="convo-item" style="padding-bottom:5px" id="'.$conversation_id.'"><div class="item">
+													<img src="'.$photo_url.'" alt="user image" class="offline" style="margin-top:6px;"/>
 														<p class="message">
 														<a href="#" class="name">
 															<span class="convo_header">'.$recepients.'</span>
@@ -115,6 +115,26 @@
 											echo -1;
 											exit;
 										}
+	}else if($action=="get_convo_members"){
+		$convo_id= $_POST["convo_id"];
+		if(!isset($convo_id)){
+			echo -1;
+			exit;
+		}
+		
+		$get_all_convo_friends = "SELECT DISTINCT user_id,hash FROM user_conversation,user WHERE user_conversation.conversation_id=$convo_id AND user_id<>$user_id AND user_id=user.id";
+		
+		$users =array();
+		if ($result_message= $mysqli->query($get_all_convo_friends)) {
+			while ($row_convo_message = $result_message->fetch_assoc()) {
+				array_push($users,$row_convo_message);
+			}
+			echo json_encode($users);
+		}else{
+			echo -1;
+			exit;
+		}
+		
 	}else if($action=="get_convo_messages"){
 		$convo_id= $_POST["convo_id"];
 		if(!isset($convo_id)){

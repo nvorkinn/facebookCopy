@@ -46,7 +46,6 @@
 
                 <!-- Main content -->
                 <section class="content">
-
 						
 						<div id="friends_wrapper" style="width:35%;float:left">
 							<!-- Friends -->
@@ -94,8 +93,28 @@
 
 		
 	<script>
-                        
+            
+			   var current_conversation_friends;
+			   var current_conversation=-1;
+			   
+			      
+			  function message_handler(e){
+					header_message(e);
+					var message = $.parseJSON(e.data);
+					if(message.name="imessage"){
+						if(current_conversation!=-1){
+							var chat_item = $.parseHTML(message.message);
+
+							$(current_conversation).append(chat_item);
+							$(current_conversation).animate({ scrollTop: $(current_conversation)[0].scrollHeight}, 0);
+
+						}
+					}
+			   }
+			   
+			   
                 $( document ).ready(function() {
+					conn.onmessage=message_handler;
 					getConversations();
 					
 					//get existing conversations		
@@ -124,7 +143,7 @@
 						$("#chat-box-title").text(" "+$(this).find(".convo_header").text());	
 						//get messages in the conversation
 						var id=$(this).attr("id");
-						
+						current_conversation=$("#instant-chat-box");
 						$.ajax({
 							type: "post",
 							url: "tools/protected/convo_utils.php",
@@ -133,6 +152,18 @@
 								if(data!=-1){
 									$("#instant-chat-box").html(data);
 									$("#message_send_btn").attr("data-convo-id",id);
+									
+								}								
+							}
+						});
+
+						$.ajax({
+							type: "post",
+							url: "tools/protected/convo_utils.php",
+							data: {"action":"get_convo_members","convo_id":id},
+							success: function(data){
+								if(data!=-1){
+									current_conversation_friends=$.parseJSON(data);
 								}								
 							}
 						});						
@@ -176,6 +207,7 @@
 						$("#message_text").val("");
 						var friends_str = JSON.stringify(friends_list);
 						var circles_str = JSON.stringify(circles_list);
+			
 						$( "#message_recipients" ).hide();
 						
 					
@@ -187,18 +219,27 @@
 								if(data!=-1){
 									var response = $.parseJSON(data);
 									var nameSurname = '<?PHP echo $profile->name . " " . $profile->surname; ?>';
-									var chat_item = $.parseHTML('<div class="item"><img src="img/avatar2.png" alt="user image" class="online"/> <p class="message"><a href="#" class="name"> <small class="text-muted pull-right"><i class="fa fa-clock-o" style="margin-right:3px"></i><span data-livestamp="'+response.creation_date+'"></span></small>'+nameSurname+'</a>'+message_text+'</p></div>');
+									var chat_msg='<div class="item"><img src="img/avatar2.png" alt="user image" class="online"/> <p class="message"><a href="#" class="name"> <small class="text-muted pull-right"><i class="fa fa-clock-o" style="margin-right:3px"></i><span data-livestamp="'+response.creation_date+'"></span></small>'+nameSurname+'</a>'+message_text+'</p></div>';
+									var chat_item = $.parseHTML(chat_msg);
                                     
 									$(chat_item).hide();
 									$("#instant-chat-box").append(chat_item);
 									$(chat_item).fadeIn("slow");
+									
+									var imessage = new Object();
+									imessage.name = "imessage";
+									imessage.message=chat_msg;
+									imessage.conversation_id=response.convo_id;
+
+									for (var i=0;i<current_conversation_friends.length;i++){
+										registerNotification(conn,current_conversation_friends[i]["hash"], JSON.stringify(imessage));
+									}
+									
 									if(current_convo_id==null){
 										
 										$("#message_send_btn").attr("data-convo-id",response.convo_id);
 										getConversations();
 										$("#message_recipients").hide();
-										$("#chat-box-title").text($("#"+response.convo_id).text());	
-						
 									}
 								}
 							} 

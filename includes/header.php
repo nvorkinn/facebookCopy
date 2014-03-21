@@ -3,11 +3,10 @@
 ?>
 		<script>
 		var conn = connectToNotifServer();
-		$( document ).ready(function() {
-			var thread = null;
-			
-			conn.onmessage = function(e) {
-				console.log(e.data);
+
+				
+		function header_message(e){
+			console.log(e.data);
 				if(e.data=="newFriendRequest"){
 					var elem = document.getElementById('friend-request-count');
 					if(elem){
@@ -24,8 +23,14 @@
 					}else{
 						$("#general-notif").append('<span class="label label-success" id="general-notif-count">1</span>');
 					}
-				}
-			};
+				}	
+		}
+		
+		
+		$( document ).ready(function() {
+			var thread = null;
+			
+			conn.onmessage = header_message;
 			
 			$(document.body).on( "click",".friend-notif-respond", function() {
 				var friend_hash = $(this).attr('id');
