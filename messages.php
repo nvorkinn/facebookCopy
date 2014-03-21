@@ -55,6 +55,10 @@
 									<a class="btn btn-app" style="float:right;" id="new_message_btn">
                                         <i class="fa fa-plus"></i> New message
                                     </a>		
+									<div class="input-group" id="conversation_search" style="margin-left:10px;margin-top:43px;width:290px;gloat:left">
+										<span class="input-group-addon"><i class="fa fa-search"></i></span>
+										<input type="text" class="form-control" id="convo-search" placeholder="Search conversations..">
+									</div>		
 								</div>
                                 <div class="box-body chat" id="chat-box" style="max-height:500px;overflow-x:hidden;">
                                     								</div><!-- /.chat -->
@@ -62,6 +66,8 @@
                             </div><!-- /.box (chat box) -->
 						</div>
 
+						
+						
 						<div id="messages_wrapper" style="width:64%;float:right">
 							<!-- Chat box -->
                             <div class="box box-success">
@@ -103,17 +109,21 @@
 					var message = $.parseJSON(e.data);
 					if(message.name="imessage"){
 						if(current_conversation!=-1){
+						
 							var chat_item = $.parseHTML(message.message);
 
 							$(current_conversation).append(chat_item);
 							$(current_conversation).animate({ scrollTop: $(current_conversation)[0].scrollHeight}, 0);
-
+							$(chat_item).effect( "highlight", {color:"#3C8DBC"}, 1000 );
+						
 						}
 					}
 			   }
 			   
 			   
                 $( document ).ready(function() {
+				
+					message_search_setup();
 					conn.onmessage=message_handler;
 					getConversations();
 					
@@ -231,15 +241,19 @@
 									imessage.message=chat_msg;
 									imessage.conversation_id=response.convo_id;
 
+									
+									if(current_convo_id==null){
+												
+										$("#message_send_btn").attr("data-convo-id",response.convo_id);
+										getConversations();
+										$("#message_recipients").hide();
+										
+									}else{
+										
 									for (var i=0;i<current_conversation_friends.length;i++){
 										registerNotification(conn,current_conversation_friends[i]["hash"], JSON.stringify(imessage));
 									}
 									
-									if(current_convo_id==null){
-										
-										$("#message_send_btn").attr("data-convo-id",response.convo_id);
-										getConversations();
-										$("#message_recipients").hide();
 									}
 								}
 							} 
@@ -333,6 +347,20 @@
 								});
 							});
                     });
+					
+					function message_search_setup(){
+
+						/* filter messages as you type */
+						$("#convo-search").on("keyup click input", function () {
+							if (this.value.length > 0) {
+								$("#chat-box div").hide().filter(function () {
+									return $(this).text().toLowerCase().indexOf($("#convo-search").val().toLowerCase()) != -1;
+								}).show();
+							}else{
+								 $("#chat-box div").show();
+							}
+						});
+					}
             </script>
 	
     </body>

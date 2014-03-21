@@ -6,13 +6,13 @@
     
          <?PHP 
         
-            require("includes/php-includes.php"); 
+            include_once("includes/php-includes.php"); 
             
             if(!isset($_SESSION["user_id"])){
                 header("location: index.php");
             }
         
-            require("includes/html-includes.php");     
+            include_once("includes/html-includes.php");     
             
             if ($result = $mysqli->query("SELECT * FROM profile WHERE id = (SELECT profile_id FROM user WHERE id = " . $_SESSION["user_id"] . ") LIMIT 1"))
             {
@@ -28,15 +28,22 @@
 
 
     <body class="skin-blue">
-    
-        <?PHP
-			require("includes/header.php"); 
+  
+		<?PHP
+			include_once("includes/header.php"); 
         ?>    
         <div class="wrapper row-offcanvas row-offcanvas-left">
         
-
+	
             <?PHP include_once('includes/sidebar.php'); ?>
-            <script>$(document).ready(function () {$("#wall_menu").addClass("active");});</script>
+            <script>$(document).ready(function () {
+				$("#wall_menu").addClass("active");
+				
+				$( "#share-photo-btn" ).click(function() {
+					$( "#fileupload" ).attr("data-photoType","share-photo");
+				});	
+			});
+			</script>
 			
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -84,6 +91,8 @@
                                 </div><!-- /.box-body -->
                                 
                                 <div class="box-footer">
+								
+									<button class="btn btn-info"  id="share-photo-btn" data-toggle="modal" data-target="#photoUploadModal">Share photo</button>
                                     <button class="btn btn-primary" id="post_button" onclick="postStatusUpdate();">Post</button>
                                 </div><!-- /.box-footer-->
                                 

@@ -43,6 +43,14 @@
                     echo 'Could not update profile' . mysql_error();
                     exit;
                 }
+		}else if($photo_type=="share-photo"){
+			$user_id = $_SESSION['user_id'];
+			$query = "INSERT INTO post (user_id, main_type, privacy_setting_id, location, content,photo_id, deleted) VALUES ($user_id, 1, 1, 'London, United Kingdom', '',$photo_id, 0)";
+			
+			 if (!$result = $mysqli->query($query)){
+                    echo 'Could not post photo' . mysql_error();
+                    exit;
+                }
 		}	
     }
 ?>
